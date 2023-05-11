@@ -1,16 +1,29 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: camel_case_types, prefer_const_constructors
 import 'package:flutter/material.dart';
 import 'package:medical_app/widgets/colors.dart';
+import '../../widgets/auth_widgets/buttons_widget.dart';
+import '../../widgets/auth_widgets/text_input_widgets.dart';
 
-class SignInScreen extends StatelessWidget {
+class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
+
+  @override
+  State<SignInScreen> createState() => _SignInScreenState();
+}
+
+class _SignInScreenState extends State<SignInScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
+      body: SingleChildScrollView(
         child: Column(
           children: [
-            _topImage(),
+            const _topImage(),
             Container(
               width: double.infinity,
               margin: const EdgeInsets.only(left: 16, right: 16, top: 32),
@@ -18,7 +31,67 @@ class SignInScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  _topTitle(),
+                  const _topTitle(),
+                  const SizedBox(
+                    height: 44,
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(bottom: 40),
+                    child: Form(
+                      key: _formKey,
+                      // autovalidateMode: AutovalidateMode.onUserInteraction,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          buildTextFormField(
+                            controller: emailController,
+                            hintText: 'Enter your email',
+                            iconName: Icon(Icons.email),
+                            inputType: 'email',
+                            validatorType: 'emailValid',
+                          ),
+                          buildTextFormField(
+                            controller: passwordController,
+                            hintText: 'Password',
+                            iconName: Icon(Icons.lock),
+                            inputType: 'password',
+                            validatorType: 'passwordValid',
+                          ),
+                          SizedBox(
+                            height: 26,
+                          ),
+                          buildSignInAndSignUpButton(
+                            text: 'Login',
+                            submitType: 'login',
+                          ),
+                          Container(
+                            margin: EdgeInsets.symmetric(vertical: 6),
+                            child: Center(
+                              child: Text(
+                                '--- Or ---',
+                                style: TextStyle(
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ),
+                          buildSignInAndSignUpButton(
+                            text: 'Register',
+                            submitType: 'register',
+                          ),
+                          Row(
+                            children: [
+                              buildForgotPassword(
+                                text: 'Forgot your password?',
+                                buttonType: 'forgotButton',
+                              )
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -29,6 +102,7 @@ class SignInScreen extends StatelessWidget {
   }
 }
 
+// top image widgets
 class _topImage extends StatelessWidget {
   const _topImage({
     Key? key,
@@ -48,6 +122,7 @@ class _topImage extends StatelessWidget {
   }
 }
 
+// top title
 class _topTitle extends StatelessWidget {
   const _topTitle({
     Key? key,
@@ -60,7 +135,7 @@ class _topTitle extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Text(
-          'Log In',
+          'Login Account',
           style: TextStyle(
             color: AppColors.textColor.withOpacity(1),
             fontSize: 26,
@@ -72,7 +147,7 @@ class _topTitle extends StatelessWidget {
           height: 4,
         ),
         Text(
-          'Login with your accound',
+          'Please log in to continue using our professional and convenient healthcare services.',
           style: TextStyle(
             color: AppColors.textColor.withOpacity(0.6),
             fontSize: 16,
@@ -80,6 +155,13 @@ class _topTitle extends StatelessWidget {
             fontWeight: FontWeight.normal,
           ),
         ),
+        Container(
+          margin: EdgeInsets.symmetric(vertical: 4),
+          child: Divider(
+            height: 1,
+            color: Colors.black,
+          ),
+        )
       ],
     );
   }
