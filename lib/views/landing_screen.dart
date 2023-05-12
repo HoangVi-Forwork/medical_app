@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:medical_app/widgets/colors.dart';
+import 'package:medical_app/widgets/draw.dart';
 import '../widgets/buttons/floating_scroll_button.dart';
 import '../widgets/text_title_and_subtitle.dart';
 
@@ -12,6 +13,7 @@ class LandingScreen extends StatefulWidget {
 }
 
 class _LandingScreenState extends State<LandingScreen> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   // ignore: non_constant_identifier_names
   final imagePosterList = [
     // 'https://i.pinimg.com/564x/be/40/82/be40821440e028c7ab9465129451ec1a.jpg',
@@ -102,18 +104,31 @@ class _LandingScreenState extends State<LandingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0.0,
         backgroundColor: Colors.transparent,
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            _scaffoldKey.currentState?.openDrawer();
+          },
           icon: const Icon(
             Icons.menu_sharp,
-            color: Colors.black,
+            color: AppColors.primaryColor,
           ),
         ),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(
+              Icons.notifications,
+              color: AppColors.primaryColor,
+            ),
+          ),
+        ],
       ),
+      drawer: const buildDrawer(),
       body: Container(
         margin: const EdgeInsets.only(left: 16, right: 16),
         width: double.infinity,
@@ -159,22 +174,22 @@ class _LandingScreenState extends State<LandingScreen> {
                       child: Center(
                         child: ListTile(
                           onTap: (() {
-                            showBottomSheet(
-                              context: context,
-                              builder: (context) {
-                                return Container(
-                                  width: double.infinity,
-                                  height: 360,
-                                  decoration: const BoxDecoration(
-                                    color: AppColors.primaryColor,
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(12),
-                                      topRight: Radius.circular(12),
-                                    ),
-                                  ),
-                                );
-                              },
-                            );
+                            // showBottomSheet(
+                            //   context: context,
+                            //   builder: (context) {
+                            //     return Container(
+                            //       width: double.infinity,
+                            //       height: 360,
+                            //       decoration: const BoxDecoration(
+                            //         color: AppColors.primaryColor,
+                            //         borderRadius: BorderRadius.only(
+                            //           topLeft: Radius.circular(12),
+                            //           topRight: Radius.circular(12),
+                            //         ),
+                            //       ),
+                            //     );
+                            //   },
+                            // );
                           }),
                           leading: Container(
                             width: 66,
