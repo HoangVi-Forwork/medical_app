@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:medical_app/widgets/colors.dart';
 import 'package:medical_app/widgets/draw.dart';
+import '../widgets/buttons/bottom_navigation_bar_widget.dart';
 import '../widgets/buttons/floating_scroll_button.dart';
 import '../widgets/text_title_and_subtitle.dart';
 
@@ -122,6 +123,13 @@ class _LandingScreenState extends State<LandingScreen> {
           IconButton(
             onPressed: () {},
             icon: const Icon(
+              Icons.search,
+              color: AppColors.primaryColor,
+            ),
+          ),
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(
               Icons.notifications,
               color: AppColors.primaryColor,
             ),
@@ -237,44 +245,7 @@ class _LandingScreenState extends State<LandingScreen> {
         isVisibale: isVisibale,
         scrollController: scrollController,
       ),
-      bottomNavigationBar: _buildBottomNavigationBar(),
-    );
-  }
-
-  BottomNavigationBar _buildBottomNavigationBar() {
-    return BottomNavigationBar(
-      elevation: 2,
-      items: const [
-        BottomNavigationBarItem(
-          icon: Icon(
-            Icons.home,
-          ),
-          label: 'Home',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(
-            Icons.newspaper,
-          ),
-          label: 'Mail',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(
-            Icons.bookmark,
-          ),
-          label: 'Mail',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(
-            Icons.person,
-          ),
-          label: 'Person',
-        ),
-      ],
-      backgroundColor: Colors.black,
-      showSelectedLabels: false,
-      showUnselectedLabels: false,
-      selectedItemColor: AppColors.primaryColor,
-      unselectedItemColor: AppColors.primaryColor.withOpacity(0.2),
+      bottomNavigationBar: const buildBottomNavigationBar(),
     );
   }
 
