@@ -13,6 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: "Medical App",
       theme: ThemeData(
         backgroundColor: AppColors.backgroundColor,
         fontFamily: GoogleFonts.poppins().toString(),
