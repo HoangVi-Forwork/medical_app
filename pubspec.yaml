@@ -39,6 +39,9 @@ dependencies:
   google_fonts: ^4.0.4
   animated_bottom_navigation_bar: ^1.2.0
   animations: ^2.0.7
+  equatable: ^2.0.5
+  firebase_core: ^2.12.0
+  flutter_bloc: ^8.1.2
 
 dev_dependencies:
   flutter_test:
