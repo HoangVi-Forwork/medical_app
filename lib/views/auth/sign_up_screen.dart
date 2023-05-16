@@ -90,6 +90,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           buildSignInAndSignUpButton(
                             text: 'Register',
                             submitType: 'register',
+                            submitButton: () {},
                           ),
                           Row(
                             children: [

@@ -1,5 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-// ignore_for_file: camel_case_types, prefer_const_constructors
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medical_app/views/landing_screen.dart';
@@ -30,211 +28,118 @@ class _SignInScreenState extends State<SignInScreen> {
                 MaterialPageRoute(builder: (context) => const LandingScreen()));
           }
           if (state is AuthError) {
-            ScaffoldMessenger.of(context)
-                .showSnackBar(SnackBar(content: Text(state.error)));
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  state.error,
+                  style: const TextStyle(
+                    fontStyle: FontStyle.italic,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            );
           }
         },
-        //   child: BlocBuilder<AuthBloc, AuthState>(
-        //     builder: (context, state) {
-        //       if (state is Loading) {
-        //         // Showing the loading indicator while the user is signing in
-        //         return const Center(
-        //           child: CircularProgressIndicator(),
-        //         );
-        //       }
-        //       if (state is UnAuthenticated) {
-        //         // Showing the sign in form if the user is not authenticated
-        //         return Center(child: //...)
-        //       }
-        //       return Container();
-        //     },
-        //   ),
-        // ),
         child: BlocBuilder<AuthBloc, AuthState>(
           builder: (context, state) {
             if (state is Loading) {
               return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            if (state is UnAuthenticated) {
-              SingleChildScrollView(
-                child: Column(
-                  children: [
-                    const _topImage(),
-                    Container(
-                      width: double.infinity,
-                      margin:
-                          const EdgeInsets.only(left: 16, right: 16, top: 32),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          const _topTitle(),
-                          const SizedBox(
-                            height: 44,
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(bottom: 40),
-                            child: Form(
-                              key: _formKey,
-                              // autovalidateMode: AutovalidateMode.onUserInteraction,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  buildTextFormField(
-                                    controller: emailController,
-                                    hintText: 'Enter your email',
-                                    iconName: Icon(Icons.email),
-                                    inputType: 'email',
-                                    validatorType: 'emailValid',
-                                  ),
-                                  buildTextFormField(
-                                    controller: passwordController,
-                                    hintText: 'Password',
-                                    iconName: Icon(Icons.lock),
-                                    inputType: 'password',
-                                    validatorType: 'passwordValid',
-                                  ),
-                                  SizedBox(
-                                    height: 26,
-                                  ),
-                                  // buildSignInAndSignUpButton(
-                                  //   text: 'Login',
-                                  //   submitType: 'login',
-                                  // ),
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      _authenticateWithEmailAndPassword(
-                                          context);
-                                    },
-                                    child: Icon(Icons.tiktok),
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.symmetric(vertical: 6),
-                                    child: Center(
-                                      child: Text(
-                                        '--- Or ---',
-                                        style: TextStyle(
-                                            color: Colors.grey,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                  ),
-                                  buildSignInAndSignUpButton(
-                                    text: 'Register',
-                                    submitType: 'register',
-                                  ),
-                                  Row(
-                                    children: [
-                                      buildForgotPassword(
-                                        text: 'Forgot your password?',
-                                        buttonType: 'forgotButton',
-                                      )
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                child: CircularProgressIndicator(
+                  color: AppColors.primaryColor,
                 ),
               );
             }
-            return SingleChildScrollView(
-              child: Column(
-                children: [
-                  const _topImage(),
-                  Container(
-                    width: double.infinity,
-                    margin: const EdgeInsets.only(left: 16, right: 16, top: 32),
+            if (state is UnAuthenticated) _buildSignInScreen(context);
+            return _buildSignInScreen(context);
+          },
+        ),
+      ),
+    );
+  }
+
+  //! MAIN LOGIN SCREEN BODY
+  SingleChildScrollView _buildSignInScreen(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          const _topImage(),
+          Container(
+            width: double.infinity,
+            margin: const EdgeInsets.only(left: 16, right: 16, top: 32),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                const _topTitle(),
+                const SizedBox(
+                  height: 44,
+                ),
+                Container(
+                  margin: const EdgeInsets.only(bottom: 40),
+                  child: Form(
+                    key: _formKey,
+                    // autovalidateMode: AutovalidateMode.onUserInteraction,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        const _topTitle(),
+                        buildTextFormField(
+                          controller: emailController,
+                          hintText: 'Enter your email',
+                          iconName: const Icon(Icons.email),
+                          inputType: 'email',
+                          validatorType: 'emailValid',
+                        ),
+                        buildTextFormField(
+                          controller: passwordController,
+                          hintText: 'Password',
+                          iconName: const Icon(Icons.lock),
+                          inputType: 'password',
+                          validatorType: 'passwordValid',
+                        ),
                         const SizedBox(
-                          height: 44,
+                          height: 26,
+                        ),
+                        buildSignInAndSignUpButton(
+                          text: 'Login',
+                          submitType: 'login',
+                          submitButton: () {
+                            _authenticateWithEmailAndPassword(context);
+                          },
                         ),
                         Container(
-                          margin: EdgeInsets.only(bottom: 40),
-                          child: Form(
-                            key: _formKey,
-                            // autovalidateMode: AutovalidateMode.onUserInteraction,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                buildTextFormField(
-                                  controller: emailController,
-                                  hintText: 'Enter your email',
-                                  iconName: Icon(Icons.email),
-                                  inputType: 'email',
-                                  validatorType: 'emailValid',
-                                ),
-                                buildTextFormField(
-                                  controller: passwordController,
-                                  hintText: 'Password',
-                                  iconName: Icon(Icons.lock),
-                                  inputType: 'password',
-                                  validatorType: 'passwordValid',
-                                ),
-                                SizedBox(
-                                  height: 26,
-                                ),
-                                // buildSignInAndSignUpButton(
-                                //   text: 'Login',
-                                //   submitType: 'login',
-                                // ),
-                                Container(
-                                  width: double.infinity,
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      _authenticateWithEmailAndPassword(
-                                          context);
-                                    },
-                                    child: Text("Login"),
-                                  ),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.symmetric(vertical: 6),
-                                  child: Center(
-                                    child: Text(
-                                      '--- Or ---',
-                                      style: TextStyle(
-                                          color: Colors.grey,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                ),
-                                buildSignInAndSignUpButton(
-                                  text: 'Register',
-                                  submitType: 'register',
-                                ),
-                                Row(
-                                  children: [
-                                    buildForgotPassword(
-                                      text: 'Forgot your password?',
-                                      buttonType: 'forgotButton',
-                                    )
-                                  ],
-                                )
-                              ],
+                          margin: const EdgeInsets.symmetric(vertical: 6),
+                          child: const Center(
+                            child: Text(
+                              '--- Or ---',
+                              style: TextStyle(
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.bold),
                             ),
                           ),
                         ),
+                        buildSignInAndSignUpButton(
+                          text: 'Register',
+                          submitType: 'register',
+                          submitButton: () {},
+                        ),
+                        Row(
+                          children: [
+                            buildForgotPassword(
+                              text: 'Forgot your password?',
+                              buttonType: 'forgotButton',
+                            )
+                          ],
+                        )
                       ],
                     ),
                   ),
-                ],
-              ),
-            );
-          },
-        ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -302,8 +207,8 @@ class _topTitle extends StatelessWidget {
           ),
         ),
         Container(
-          margin: EdgeInsets.symmetric(vertical: 4),
-          child: Divider(
+          margin: const EdgeInsets.symmetric(vertical: 4),
+          child: const Divider(
             height: 1,
             color: Colors.black,
           ),

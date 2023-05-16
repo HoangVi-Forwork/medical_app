@@ -2,8 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:medical_app/views/auth/sign_up_screen.dart';
-import 'package:medical_app/views/landing_screen.dart';
-
 import '../colors.dart';
 
 class buildComeBackButton extends StatelessWidget {
@@ -55,10 +53,12 @@ class buildForgotPassword extends StatelessWidget {
 class buildSignInAndSignUpButton extends StatelessWidget {
   String text;
   String submitType;
+  final Function submitButton;
   buildSignInAndSignUpButton({
     Key? key,
     required this.text,
     required this.submitType,
+    required this.submitButton,
   }) : super(key: key);
 
   @override
@@ -66,12 +66,13 @@ class buildSignInAndSignUpButton extends StatelessWidget {
     return GestureDetector(
       onTap: submitType == 'login'
           ? () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const LandingScreen(),
-                ),
-              );
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (context) => const LandingScreen(),
+              //   ),
+              // );
+              submitButton();
             }
           : () {
               Navigator.push(
