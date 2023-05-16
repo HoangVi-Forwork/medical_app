@@ -4,14 +4,73 @@ import 'package:medical_app/blocs/bloc/auth_bloc.dart';
 import 'package:medical_app/views/auth/sign_in_screen.dart';
 import 'package:medical_app/widgets/colors.dart';
 
+// ignore: camel_case_types
 class buildDrawer extends StatelessWidget {
   const buildDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // LOGOUT FUNC
     void _logout(context) {
       BlocProvider.of<AuthBloc>(context).add(
         SignOutRequested(),
+      );
+    }
+
+    void _buildShowLogoutDialog(BuildContext context) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            icon: Image.asset(
+              'assets/icons/sad.png',
+              width: 44,
+              height: 44,
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            backgroundColor: AppColors.highLightColor,
+            title: const Text(
+              'Are you leaving?',
+              style: TextStyle(
+                color: AppColors.primaryColor,
+              ),
+            ),
+            content: const Text(
+              'Are you sure you want to log out?',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: AppColors.primaryColor,
+                fontSize: 12,
+                fontStyle: FontStyle.italic,
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('No'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  _logout(context);
+                  Navigator.of(context).pop();
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primaryColor,
+                ),
+                child: const Text(
+                  'Yes',
+                  style: TextStyle(
+                    color: AppColors.whiteColor,
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
       );
     }
 
@@ -89,7 +148,9 @@ class buildDrawer extends StatelessWidget {
                         ),
                       ),
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          print('Okey, Click cai qq');
+                        },
                         icon: const Icon(
                           Icons.edit,
                           color: Colors.white,
@@ -108,18 +169,27 @@ class buildDrawer extends StatelessWidget {
                     children: [
                       Expanded(
                         child: ListView(
-                          children: const [
+                          children: [
                             ListTile(
-                              leading: Icon(Icons.book),
-                              title: Text('My health check book '),
+                              onTap: () {
+                                print('Okey, Click cai qq');
+                              },
+                              leading: const Icon(Icons.book),
+                              title: const Text('My health check book '),
                             ),
                             ListTile(
-                              leading: Icon(Icons.save),
-                              title: Text('Favorites'),
+                              onTap: () {
+                                print('Okey, Click cai qq');
+                              },
+                              leading: const Icon(Icons.save),
+                              title: const Text('Favorites'),
                             ),
                             ListTile(
-                              leading: Icon(Icons.shopping_bag),
-                              title: Text('My Card'),
+                              onTap: () {
+                                print('Okey, Click cai qq');
+                              },
+                              leading: const Icon(Icons.shopping_bag),
+                              title: const Text('My Card'),
                             ),
                           ],
                         ),
@@ -133,10 +203,10 @@ class buildDrawer extends StatelessWidget {
                         title: Text('Setting'),
                       ),
                       ListTile(
-                        leading: Icon(Icons.logout),
-                        title: Text('Log Out'),
+                        leading: const Icon(Icons.logout),
+                        title: const Text('Log Out'),
                         onTap: () {
-                          _logout(context);
+                          _buildShowLogoutDialog(context);
                         },
                       ),
                     ],

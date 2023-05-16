@@ -44,9 +44,15 @@ class _SignInScreenState extends State<SignInScreen> {
         child: BlocBuilder<AuthBloc, AuthState>(
           builder: (context, state) {
             if (state is Loading) {
-              return const Center(
-                child: CircularProgressIndicator(
-                  color: AppColors.primaryColor,
+              return Center(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: Image.asset(
+                    'assets/icons/medicine.gif',
+                    width: 86,
+                    height: 86,
+                    filterQuality: FilterQuality.high,
+                  ),
                 ),
               );
             }
@@ -63,7 +69,7 @@ class _SignInScreenState extends State<SignInScreen> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          const _topImage(),
+          const TopImage(),
           Container(
             width: double.infinity,
             margin: const EdgeInsets.only(left: 16, right: 16, top: 32),
@@ -71,7 +77,7 @@ class _SignInScreenState extends State<SignInScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const _topTitle(),
+                const TopTitle(),
                 const SizedBox(
                   height: 44,
                 ),
@@ -154,8 +160,8 @@ class _SignInScreenState extends State<SignInScreen> {
 }
 
 // top image widgets
-class _topImage extends StatelessWidget {
-  const _topImage({
+class TopImage extends StatelessWidget {
+  const TopImage({
     Key? key,
   }) : super(key: key);
 
@@ -174,8 +180,8 @@ class _topImage extends StatelessWidget {
 }
 
 // top title
-class _topTitle extends StatelessWidget {
-  const _topTitle({
+class TopTitle extends StatelessWidget {
+  const TopTitle({
     Key? key,
   }) : super(key: key);
 
