@@ -107,7 +107,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         const SizedBox(
                           height: 26,
                         ),
-                        buildSignInAndSignUpButton(
+                        buildSignInButton(
                           text: 'Login',
                           submitType: 'login',
                           submitButton: () {
@@ -125,7 +125,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             ),
                           ),
                         ),
-                        buildSignInAndSignUpButton(
+                        buildSignInButton(
                           text: 'Register',
                           submitType: 'register',
                           submitButton: () {},
@@ -133,6 +133,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         Row(
                           children: [
                             buildForgotPassword(
+                              submitButton: () {},
                               text: 'Forgot your password?',
                               buttonType: 'forgotButton',
                             )
