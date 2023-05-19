@@ -168,12 +168,14 @@ class TopImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final String url =
+        'https://i.pinimg.com/564x/d0/54/14/d0541464bb5055e62b2d98435184ceb6.jpg';
     return Container(
       width: double.infinity,
       height: 300,
       color: Colors.grey,
       child: Image.network(
-        'https://i.pinimg.com/564x/d0/54/14/d0541464bb5055e62b2d98435184ceb6.jpg',
+        url,
         fit: BoxFit.cover,
       ),
     );
