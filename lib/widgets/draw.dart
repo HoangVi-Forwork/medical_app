@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medical_app/blocs/bloc/auth_bloc.dart';
 import 'package:medical_app/views/auth/sign_in_screen.dart';
+import 'package:medical_app/views/news_screen.dart';
 import 'package:medical_app/widgets/colors.dart';
 
 // ignore: camel_case_types
@@ -137,7 +138,7 @@ class buildDrawer extends StatelessWidget {
                               height: 4,
                             ),
                             Text(
-                              "Nguyen Hoang Vi",
+                              "0907656399",
                               style: TextStyle(
                                 fontSize: 12,
                                 color: Colors.grey,
@@ -179,7 +180,9 @@ class buildDrawer extends StatelessWidget {
                             ),
                             ListTile(
                               onTap: () {
-                                print('Okey, Click cai qq');
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => const NewsScreen(),
+                                ));
                               },
                               leading: const Icon(Icons.save),
                               title: const Text('Favorites'),

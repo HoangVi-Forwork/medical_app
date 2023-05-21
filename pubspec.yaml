@@ -43,6 +43,7 @@ dependencies:
   firebase_core: ^2.12.0
   firebase_auth:
   flutter_bloc: ^8.1.2
+  youtube_player_flutter:
 
 
 dev_dependencies:
