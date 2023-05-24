@@ -44,6 +44,8 @@ dependencies:
   firebase_auth:
   flutter_bloc: ^8.1.2
   youtube_player_flutter:
+  flutter_slidable: ^2.0.0
+  cloud_firestore: ^4.7.1
 
 
 dev_dependencies:

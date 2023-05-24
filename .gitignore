@@ -34,7 +34,7 @@ migrate_working_dir/
 /build/
 /assets/
 /model/
-/
+
 # Symbolication related
 app.*.symbols
 

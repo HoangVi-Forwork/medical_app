@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medical_app/views/landing_screen.dart';
 import 'package:medical_app/widgets/colors.dart';
-import '../../blocs/bloc/auth_bloc.dart';
+import '../../blocs/auth/auth_bloc.dart';
 import '../../widgets/auth_widgets/buttons_widget.dart';
 import '../../widgets/auth_widgets/text_input_widgets.dart';
 

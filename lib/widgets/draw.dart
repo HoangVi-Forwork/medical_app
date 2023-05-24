@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:medical_app/blocs/bloc/auth_bloc.dart';
 import 'package:medical_app/views/auth/sign_in_screen.dart';
 import 'package:medical_app/views/news_screen.dart';
 import 'package:medical_app/widgets/colors.dart';
+
+import '../blocs/auth/auth_bloc.dart';
 
 // ignore: camel_case_types
 class buildDrawer extends StatelessWidget {
