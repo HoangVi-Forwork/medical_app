@@ -4,6 +4,8 @@ import 'package:medical_app/widgets/buttons/bottom_navigation_bar_widget.dart';
 import 'package:medical_app/widgets/colors.dart';
 import 'package:medical_app/widgets/draw.dart';
 
+import '../../widgets/container_config/container_customization.dart';
+
 class NewsDatailScreen extends StatelessWidget {
   final String title;
   final String content;
@@ -26,7 +28,12 @@ class NewsDatailScreen extends StatelessWidget {
         title: const Text("News"),
         centerTitle: true,
         backgroundColor: AppColors.primaryColor,
-        actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.share))],
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.share),
+          ),
+        ],
       ),
       endDrawer: const buildDrawer(),
       body: SingleChildScrollView(
@@ -55,13 +62,7 @@ class NewsDatailScreen extends StatelessWidget {
                       fontStyle: FontStyle.italic,
                     ),
                   ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(vertical: 16),
-                    child: const Divider(
-                      height: 1,
-                      color: Colors.grey,
-                    ),
-                  )
+                  ContainersCustomization.dividerInContainer(),
                 ],
               ),
               Container(
@@ -76,13 +77,7 @@ class NewsDatailScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              Container(
-                margin: const EdgeInsets.only(top: 0, bottom: 24),
-                child: const Divider(
-                  height: 1,
-                  color: Colors.grey,
-                ),
-              ),
+              ContainersCustomization.dividerInContainer(),
               Text(
                 textParagraphs[0].toString(),
                 style: TextStyle(
@@ -97,13 +92,15 @@ class NewsDatailScreen extends StatelessWidget {
                 children: textParagraphs
                     .sublist(
                         1) // Bỏ qua đoạn văn bản đầu tiên vì đã được hiển thị trước đó
-                    .map((paragraph) => Text(
-                          paragraph,
-                          style: TextStyle(
-                            fontFamily: GoogleFonts.poppins().toString(),
-                            height: 1.5,
-                          ),
-                        ))
+                    .map(
+                      (paragraph) => Text(
+                        paragraph,
+                        style: TextStyle(
+                          fontFamily: GoogleFonts.poppins().toString(),
+                          height: 1.5,
+                        ),
+                      ),
+                    )
                     .toList(),
               )
             ],

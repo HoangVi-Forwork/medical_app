@@ -3,10 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medical_app/views/landing_screen.dart';
-import 'package:medical_app/widgets/colors.dart';
 import '../../blocs/auth/auth_bloc.dart';
-import '../../widgets/auth_widgets/buttons_widget.dart';
-import '../../widgets/auth_widgets/text_input_widgets.dart';
+import '../../utils/sign_up_utils.dart';
+import '../../widgets/buttons/auth/buttons_widget.dart';
+import '../../widgets/text_input_widgets/auth/text_input_widgets.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -82,11 +82,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
+  //! Body of SignUpScreen
   SingleChildScrollView _buildSignUpBodyScreen() {
     return SingleChildScrollView(
       child: Column(
         children: [
-          const _topImage(),
+          topImage(context),
           Container(
             width: double.infinity,
             margin: const EdgeInsets.only(left: 16, right: 16, top: 32),
@@ -94,7 +95,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const _topTitle(),
+                topTitle(context),
                 const SizedBox(
                   height: 44,
                 ),
@@ -162,70 +163,5 @@ class _SignUpScreenState extends State<SignUpScreen> {
         SignUpRequested(emailController.text, passwordController.text),
       );
     }
-  }
-}
-
-// top image widgets
-class _topImage extends StatelessWidget {
-  const _topImage({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: 300,
-      color: Colors.grey,
-      child: Image.network(
-        'https://i.pinimg.com/564x/e0/c8/0e/e0c80e4c6fad4391f14d371f9d86683f.jpg',
-        fit: BoxFit.cover,
-      ),
-    );
-  }
-}
-
-// top title
-class _topTitle extends StatelessWidget {
-  const _topTitle({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Text(
-          'Sign Up',
-          style: TextStyle(
-            color: AppColors.textColor.withOpacity(1),
-            fontSize: 26,
-            fontStyle: FontStyle.normal,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        const SizedBox(
-          height: 4,
-        ),
-        Text(
-          'Register to become a member of our healthcare community and experience top-notch healthcare services. ',
-          style: TextStyle(
-            color: AppColors.textColor.withOpacity(0.6),
-            fontSize: 16,
-            fontStyle: FontStyle.italic,
-            fontWeight: FontWeight.normal,
-          ),
-        ),
-        Container(
-          margin: EdgeInsets.symmetric(vertical: 4),
-          child: Divider(
-            height: 1,
-            color: Colors.black,
-          ),
-        )
-      ],
-    );
   }
 }

@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:medical_app/views/auth/sign_up_screen.dart';
-import '../colors.dart';
+import '../../colors.dart';
 
 class buildComeBackButton extends StatelessWidget {
   String text;

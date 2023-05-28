@@ -6,8 +6,8 @@ import 'package:medical_app/model/news_model.dart';
 import 'package:medical_app/repositories/news_repositories.dart';
 import 'package:medical_app/views/news/news_detail.dart';
 import 'package:medical_app/widgets/colors.dart';
+import 'package:medical_app/widgets/container_config/container_customization.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
-
 import '../../widgets/buttons/bottom_navigation_bar_widget.dart';
 import '../../widgets/draw.dart';
 
@@ -65,6 +65,7 @@ class _NewsScreenState extends State<NewsScreen> {
     );
   }
 
+  // AppBar
   AppBar _buildAppBar() {
     return AppBar(
       title: const Text("News"),
@@ -74,6 +75,7 @@ class _NewsScreenState extends State<NewsScreen> {
     );
   }
 
+  // Body
   SingleChildScrollView _newsBody(List<NewsModel> newsList) {
     return SingleChildScrollView(
       child: Column(
@@ -81,13 +83,8 @@ class _NewsScreenState extends State<NewsScreen> {
         children: [
           // Top News
           _topNewsVideo(),
-          //
-          Container(
+          ContainersCustomization.dividerInContainer(
             margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-            child: const Divider(
-              height: 1,
-              color: Colors.black,
-            ),
           ),
           // News
           _titleContent(),
@@ -105,6 +102,7 @@ class _NewsScreenState extends State<NewsScreen> {
                     : Colors.white.withOpacity(0.7);
 
                 return Slidable(
+                  // Start Actions
                   startActionPane: ActionPane(
                     motion: const StretchMotion(),
                     children: [
@@ -126,6 +124,7 @@ class _NewsScreenState extends State<NewsScreen> {
                       ),
                     ],
                   ),
+                  // End Actions
                   endActionPane: ActionPane(
                     motion: const StretchMotion(),
                     children: [
@@ -210,6 +209,7 @@ class _NewsScreenState extends State<NewsScreen> {
     );
   }
 
+  //
   Container _titleContent() {
     return Container(
       margin: const EdgeInsets.only(left: 16, right: 16, bottom: 24),
@@ -225,9 +225,11 @@ class _NewsScreenState extends State<NewsScreen> {
     );
   }
 
+  // Top Video
   Column _topNewsVideo() {
     return Column(
       children: [
+        // Video
         Container(
           margin: const EdgeInsets.only(bottom: 0),
           width: double.infinity,
@@ -254,6 +256,7 @@ class _NewsScreenState extends State<NewsScreen> {
         const SizedBox(
           height: 12,
         ),
+        // Title of Video
         Container(
           margin: const EdgeInsets.only(left: 16, right: 16, bottom: 12),
           child: Column(
