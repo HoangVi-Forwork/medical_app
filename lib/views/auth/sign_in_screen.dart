@@ -168,14 +168,32 @@ class TopImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String url =
+    const String url =
         'https://i.pinimg.com/564x/d0/54/14/d0541464bb5055e62b2d98435184ceb6.jpg';
     return Container(
       width: double.infinity,
       height: 300,
-      color: Colors.grey,
+      color: AppColors.whiteColor,
       child: Image.network(
         url,
+        errorBuilder: (context, error, stackTrace) {
+          return Center(
+            child: Column(
+              children: [
+                Image.asset(
+                  'assets/images/error_01.jpg',
+                  width: 200,
+                  height: 200,
+                  fit: BoxFit.cover,
+                ),
+                const SizedBox(
+                  height: 4,
+                ),
+                const Text('Failed to load image'),
+              ],
+            ),
+          );
+        },
         fit: BoxFit.cover,
       ),
     );

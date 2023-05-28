@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medical_app/views/auth/sign_in_screen.dart';
-import 'package:medical_app/views/news_screen.dart';
+import 'package:medical_app/views/landing_screen.dart';
+import 'package:medical_app/views/news/news_screen.dart';
 import 'package:medical_app/widgets/colors.dart';
 
 import '../blocs/auth/auth_bloc.dart';
@@ -174,10 +175,12 @@ class buildDrawer extends StatelessWidget {
                           children: [
                             ListTile(
                               onTap: () {
-                                print('Okey, Click cai qq');
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => const LandingScreen(),
+                                ));
                               },
-                              leading: const Icon(Icons.book),
-                              title: const Text('My health check book '),
+                              leading: const Icon(Icons.home),
+                              title: const Text('Home'),
                             ),
                             ListTile(
                               onTap: () {
@@ -185,8 +188,8 @@ class buildDrawer extends StatelessWidget {
                                   builder: (context) => const NewsScreen(),
                                 ));
                               },
-                              leading: const Icon(Icons.save),
-                              title: const Text('Favorites'),
+                              leading: const Icon(Icons.newspaper),
+                              title: const Text('Newspaper'),
                             ),
                             ListTile(
                               onTap: () {
