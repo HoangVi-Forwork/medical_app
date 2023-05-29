@@ -4,7 +4,6 @@ import 'package:medical_app/views/auth/sign_in_screen.dart';
 import 'package:medical_app/views/landing_screen.dart';
 import 'package:medical_app/views/news/news_screen.dart';
 import 'package:medical_app/widgets/colors.dart';
-
 import '../blocs/auth/auth_bloc.dart';
 
 // ignore: camel_case_types
