@@ -4,6 +4,8 @@ import 'package:medical_app/views/auth/sign_in_screen.dart';
 import 'package:medical_app/views/landing_screen.dart';
 import 'package:medical_app/views/news/news_screen.dart';
 import 'package:medical_app/widgets/colors.dart';
+import 'package:medical_app/widgets/container_config/container_customization.dart';
+
 import '../blocs/auth/auth_bloc.dart';
 
 // ignore: camel_case_types
@@ -200,10 +202,7 @@ class buildDrawer extends StatelessWidget {
                           ],
                         ),
                       ),
-                      const Divider(
-                        height: 40,
-                        thickness: 1,
-                      ),
+                      ContainersCustomization.dividerInContainer(),
                       const ListTile(
                         leading: Icon(Icons.settings),
                         title: Text('Setting'),

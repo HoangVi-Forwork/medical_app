@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medical_app/views/landing_screen.dart';
-import 'package:medical_app/widgets/colors.dart';
 import '../../blocs/auth/auth_bloc.dart';
-import '../../widgets/auth_widgets/buttons_widget.dart';
-import '../../widgets/auth_widgets/text_input_widgets.dart';
+import '../../utils/sign_in_utils.dart';
+import '../../widgets/buttons/auth/buttons_widget.dart';
+import '../../widgets/text_input_widgets/auth/text_input_widgets.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -69,7 +69,7 @@ class _SignInScreenState extends State<SignInScreen> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          const TopImage(),
+          topImage(context),
           Container(
             width: double.infinity,
             margin: const EdgeInsets.only(left: 16, right: 16, top: 32),
@@ -77,7 +77,8 @@ class _SignInScreenState extends State<SignInScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const TopTitle(),
+                topTile(context),
+                // TopImage(),
                 const SizedBox(
                   height: 44,
                 ),
@@ -157,90 +158,5 @@ class _SignInScreenState extends State<SignInScreen> {
         SignInRequested(emailController.text, passwordController.text),
       );
     }
-  }
-}
-
-// top image widgets
-class TopImage extends StatelessWidget {
-  const TopImage({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    const String url =
-        'https://i.pinimg.com/564x/d0/54/14/d0541464bb5055e62b2d98435184ceb6.jpg';
-    return Container(
-      width: double.infinity,
-      height: 300,
-      color: AppColors.whiteColor,
-      child: Image.network(
-        url,
-        errorBuilder: (context, error, stackTrace) {
-          return Center(
-            child: Column(
-              children: [
-                Image.asset(
-                  'assets/images/error_01.jpg',
-                  width: 200,
-                  height: 200,
-                  fit: BoxFit.cover,
-                ),
-                const SizedBox(
-                  height: 4,
-                ),
-                const Text('Failed to load image'),
-              ],
-            ),
-          );
-        },
-        fit: BoxFit.cover,
-      ),
-    );
-  }
-}
-
-// top title
-class TopTitle extends StatelessWidget {
-  const TopTitle({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Text(
-          'Login Account',
-          style: TextStyle(
-            color: AppColors.textColor.withOpacity(1),
-            fontSize: 26,
-            fontStyle: FontStyle.normal,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        const SizedBox(
-          height: 4,
-        ),
-        Text(
-          'Please log in to continue using our professional and convenient healthcare services.',
-          style: TextStyle(
-            color: AppColors.textColor.withOpacity(0.6),
-            fontSize: 16,
-            fontStyle: FontStyle.italic,
-            fontWeight: FontWeight.normal,
-          ),
-        ),
-        Container(
-          margin: const EdgeInsets.symmetric(vertical: 4),
-          child: const Divider(
-            height: 1,
-            color: Colors.black,
-          ),
-        )
-      ],
-    );
   }
 }

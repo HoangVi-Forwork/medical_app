@@ -11,13 +11,9 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
   NewsBloc(this._newsRepository) : super(NewsLoadingState()) {
     on<NewsLoadEvent>((event, emit) async {
       emit(NewsLoadingState());
-      print('Loading');
       try {
-        print('wait loading');
         final news = await _newsRepository.fetchNews();
-        print('wait loading: $news');
         emit(NewsLoadedState(news as dynamic));
-        print(news);
       } catch (e) {
         emit(NewsErrorState(e.toString()));
       }
