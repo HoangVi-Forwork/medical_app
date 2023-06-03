@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:medical_app/blocs/news/news_bloc.dart';
 import 'package:medical_app/model/news_model.dart';
 import 'package:medical_app/repositories/news_repositories.dart';
@@ -48,9 +49,10 @@ class _NewsScreenState extends State<NewsScreen> {
           ),
         child: BlocBuilder<NewsBloc, NewsState>(builder: (context, state) {
           if (state is NewsLoadingState) {
-            return const Center(
-              child: CircularProgressIndicator(
+            return Center(
+              child: LoadingAnimationWidget.inkDrop(
                 color: AppColors.primaryColor,
+                size: 56,
               ),
             );
           }
