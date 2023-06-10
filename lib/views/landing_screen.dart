@@ -72,8 +72,8 @@ class _LandingScreenState extends State<LandingScreen> {
   ];
 
   final ScrollController scrollController = ScrollController();
+  // listen for user actions funcs
   bool isVisibale = false;
-
   @override
   void initState() {
     super.initState();
@@ -94,12 +94,12 @@ class _LandingScreenState extends State<LandingScreen> {
       }
       //
     });
+  }
 
-    @override
-    void dispose() {
-      scrollController.dispose();
-      super.dispose();
-    }
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -107,35 +107,7 @@ class _LandingScreenState extends State<LandingScreen> {
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        elevation: 0.0,
-        backgroundColor: Colors.transparent,
-        leading: IconButton(
-          onPressed: () {
-            _scaffoldKey.currentState?.openDrawer();
-          },
-          icon: const Icon(
-            Icons.menu_sharp,
-            color: AppColors.primaryColor,
-          ),
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.search,
-              color: AppColors.primaryColor,
-            ),
-          ),
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.notifications,
-              color: AppColors.primaryColor,
-            ),
-          ),
-        ],
-      ),
+      // appBar: buildAppBar(),
       drawer: const buildDrawer(),
       body: Container(
         margin: const EdgeInsets.only(left: 16, right: 16),
@@ -245,7 +217,40 @@ class _LandingScreenState extends State<LandingScreen> {
         isVisibale: isVisibale,
         scrollController: scrollController,
       ),
-      bottomNavigationBar: const buildBottomNavigationBar(),
+      //bottomNavigationBar: const buildBottomNavigationBar(),
+    );
+  }
+
+  //! Appbar for LandingScreen
+  AppBar buildAppBar() {
+    return AppBar(
+      elevation: 0.0,
+      backgroundColor: Colors.transparent,
+      leading: IconButton(
+        onPressed: () {
+          _scaffoldKey.currentState?.openDrawer();
+        },
+        icon: const Icon(
+          Icons.menu_sharp,
+          color: AppColors.primaryColor,
+        ),
+      ),
+      actions: [
+        IconButton(
+          onPressed: () {},
+          icon: const Icon(
+            Icons.search,
+            color: AppColors.primaryColor,
+          ),
+        ),
+        IconButton(
+          onPressed: () {},
+          icon: const Icon(
+            Icons.notifications,
+            color: AppColors.primaryColor,
+          ),
+        ),
+      ],
     );
   }
 
@@ -298,10 +303,11 @@ class _LandingScreenState extends State<LandingScreen> {
     );
   }
 
-  SizedBox _topListViewPoster(List<String> imagePosterList) {
-    return SizedBox(
+  Container _topListViewPoster(List<String> imagePosterList) {
+    return Container(
       width: double.infinity,
       height: 160,
+      margin: const EdgeInsets.only(top: 8),
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: 5,

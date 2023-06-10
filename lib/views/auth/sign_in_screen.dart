@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:medical_app/views/home_screen.dart';
 import 'package:medical_app/views/landing_screen.dart';
 import '../../blocs/auth/auth_bloc.dart';
 import '../../utils/sign_in_utils.dart';
@@ -25,7 +26,7 @@ class _SignInScreenState extends State<SignInScreen> {
         listener: (context, state) {
           if (state is Authenticated) {
             Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => const LandingScreen()));
+                MaterialPageRoute(builder: (context) => const HomeScreen()));
           }
           if (state is AuthError) {
             ScaffoldMessenger.of(context).showSnackBar(

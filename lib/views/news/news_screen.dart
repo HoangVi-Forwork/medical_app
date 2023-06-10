@@ -9,11 +9,13 @@ import 'package:medical_app/views/news/news_detail.dart';
 import 'package:medical_app/widgets/colors.dart';
 import 'package:medical_app/widgets/container_config/container_customization.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
-import '../../widgets/buttons/bottom_navigation_bar_widget.dart';
 import '../../widgets/draw.dart';
 
 class NewsScreen extends StatefulWidget {
-  const NewsScreen({super.key});
+  final String appBarTitle = '';
+  const NewsScreen({
+    super.key,
+  });
 
   @override
   State<NewsScreen> createState() => _NewsScreenState();
@@ -22,6 +24,7 @@ class NewsScreen extends StatefulWidget {
 class _NewsScreenState extends State<NewsScreen> {
   final videoURL = 'https://youtu.be/xXH-vHY7Ifw';
   late YoutubePlayerController _controller;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -39,7 +42,6 @@ class _NewsScreenState extends State<NewsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _buildAppBar(),
       drawer: const buildDrawer(),
       body: BlocProvider(
         create: (context) => NewsBloc(
@@ -63,17 +65,7 @@ class _NewsScreenState extends State<NewsScreen> {
           return Container();
         }),
       ),
-      bottomNavigationBar: const buildBottomNavigationBar(),
-    );
-  }
-
-  // AppBar
-  AppBar _buildAppBar() {
-    return AppBar(
-      title: const Text("News"),
-      centerTitle: true,
-      elevation: 0,
-      backgroundColor: AppColors.primaryColor,
+      // bottomNavigationBar: const buildBottomNavigationBar(),
     );
   }
 

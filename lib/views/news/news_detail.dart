@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:medical_app/widgets/buttons/bottom_navigation_bar_widget.dart';
 import 'package:medical_app/widgets/colors.dart';
-import 'package:medical_app/widgets/draw.dart';
-
 import '../../widgets/container_config/container_customization.dart';
 
 class NewsDatailScreen extends StatelessWidget {
@@ -35,7 +32,7 @@ class NewsDatailScreen extends StatelessWidget {
           ),
         ],
       ),
-      endDrawer: const buildDrawer(),
+      // endDrawer: const buildDrawer(),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -107,7 +104,7 @@ class NewsDatailScreen extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: const buildBottomNavigationBar(),
+      // bottomNavigationBar: const buildBottomNavigationBar(),
     );
   }
 }

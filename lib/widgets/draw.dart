@@ -1,3 +1,5 @@
+// ignore_for_file: unrelated_type_equality_checks
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medical_app/views/auth/sign_in_screen.dart';
@@ -7,6 +9,9 @@ import 'package:medical_app/widgets/colors.dart';
 import 'package:medical_app/widgets/container_config/container_customization.dart';
 
 import '../blocs/auth/auth_bloc.dart';
+import '../views/favourited_screen.dart';
+import '../views/home_screen.dart';
+import '../views/search_sreen.dart';
 
 // ignore: camel_case_types
 class buildDrawer extends StatelessWidget {
@@ -184,6 +189,18 @@ class buildDrawer extends StatelessWidget {
                               title: const Text('Home'),
                             ),
                             ListTile(
+                              leading: const Icon(Icons.search),
+                              title: const Text('Search'),
+                              onTap: () {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const SearchScreen(),
+                                  ),
+                                );
+                              },
+                            ),
+                            ListTile(
                               onTap: () {
                                 Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) => const NewsScreen(),
@@ -191,6 +208,41 @@ class buildDrawer extends StatelessWidget {
                               },
                               leading: const Icon(Icons.newspaper),
                               title: const Text('Newspaper'),
+                            ),
+                            ListTile(
+                              leading: const Icon(Icons.favorite),
+                              title: const Text('Favorites'),
+                              onTap: () {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => FavouritedScreen(
+                                      appBar: AppBar(
+                                        title: const Text('favourites List'),
+                                        leading: IconButton(
+                                          onPressed: (() {
+                                            print('object');
+                                            Future<bool> canPop =
+                                                Navigator.of(context)
+                                                    .maybePop();
+                                            if (canPop == false) {
+                                              Navigator.pushReplacement(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const HomeScreen(),
+                                                ),
+                                              );
+                                            }
+                                          }),
+                                          icon:
+                                              const Icon(Icons.arrow_back_ios),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
                             ListTile(
                               onTap: () {
