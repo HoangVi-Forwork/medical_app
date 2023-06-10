@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medical_app/views/auth/sign_in_screen.dart';
+import 'package:medical_app/views/diseases_sreen.dart';
 import 'package:medical_app/views/landing_screen.dart';
 import 'package:medical_app/views/news/news_screen.dart';
 import 'package:medical_app/widgets/colors.dart';
@@ -196,6 +197,19 @@ class buildDrawer extends StatelessWidget {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => const SearchScreen(),
+                                  ),
+                                );
+                              },
+                            ),
+                            ListTile(
+                              leading: const Icon(Icons.search),
+                              title: const Text('Search'),
+                              onTap: () {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const ListDiseaseScreen(),
                                   ),
                                 );
                               },
