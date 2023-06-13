@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medical_app/views/auth/sign_in_screen.dart';
 import 'package:medical_app/views/landing_screen.dart';
-import 'package:medical_app/views/news/news_screen.dart';
 import 'package:medical_app/widgets/colors.dart';
 import 'package:medical_app/widgets/container_config/container_customization.dart';
 
 import '../blocs/auth/auth_bloc.dart';
 import '../views/favourited_screen.dart';
 import '../views/home_screen.dart';
+import '../views/news/news_screen.dart';
 import '../views/search_sreen.dart';
 
 // ignore: camel_case_types

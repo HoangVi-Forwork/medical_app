@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:medical_app/widgets/colors.dart';
 import 'package:medical_app/widgets/draw.dart';
-import '../widgets/buttons/bottom_navigation_bar_widget.dart';
 import '../widgets/buttons/floating_scroll_button.dart';
 import '../widgets/text_input_widgets/text_title_and_subtitle.dart';
 
