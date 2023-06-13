@@ -34,9 +34,9 @@ class _HomeScreenState extends State<HomeScreen> {
       body: IndexedStack(
         index: currentIndex,
         children: [
-          LandingScreen(),
-          SearchScreen(),
-          NewsScreen(),
+          const LandingScreen(),
+          const SearchScreen(),
+          const NewsScreen(),
           FavouritedScreen(
             appBar: AppBar(),
           ),
