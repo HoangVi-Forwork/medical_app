@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medical_app/views/home_screen.dart';
-import 'package:medical_app/views/landing_screen.dart';
 import '../../blocs/auth/auth_bloc.dart';
 import '../../utils/sign_in_utils.dart';
 import '../../widgets/buttons/auth/buttons_widget.dart';

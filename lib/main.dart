@@ -7,6 +7,7 @@ import 'package:medical_app/blocs/news/news_bloc.dart';
 import 'package:medical_app/repositories/auth_repositories.dart';
 import 'package:medical_app/repositories/news_repositories.dart';
 import 'package:medical_app/views/home_screen.dart';
+import 'package:medical_app/views/landing_screen.dart';
 import 'package:medical_app/widgets/colors.dart';
 import 'firebase_options.dart';
 
@@ -28,9 +29,6 @@ class MyApp extends StatelessWidget {
         RepositoryProvider<AuthRepositories>(
           create: (context) => AuthRepositories(),
         ),
-        // RepositoryProvider<NewsRepository>(
-        //   create: (context) => NewsRepository(),
-        // ),
         BlocProvider(
           create: (context) => NewsBloc(
             NewsRepository(),
@@ -48,7 +46,7 @@ class MyApp extends StatelessWidget {
             fontFamily: GoogleFonts.poppins().toString(),
           ),
           debugShowCheckedModeBanner: false,
-          home: const HomeScreen(),
+          home: const LandingScreen(),
         ),
       ),
     );

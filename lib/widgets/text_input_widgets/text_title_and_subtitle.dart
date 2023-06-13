@@ -33,6 +33,7 @@ class textTitleAndSubTitle extends StatelessWidget {
               color: Colors.grey,
               fontSize: 14,
               fontWeight: FontWeight.normal,
+              fontStyle: FontStyle.italic,
             ),
           ),
         ],

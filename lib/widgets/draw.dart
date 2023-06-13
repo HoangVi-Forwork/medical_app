@@ -3,15 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medical_app/views/auth/sign_in_screen.dart';
-import 'package:medical_app/views/landing_screen.dart';
 import 'package:medical_app/widgets/colors.dart';
 import 'package:medical_app/widgets/container_config/container_customization.dart';
 
 import '../blocs/auth/auth_bloc.dart';
-import '../views/favourited_screen.dart';
-import '../views/home_screen.dart';
-import '../views/news/news_screen.dart';
-import '../views/search_sreen.dart';
 
 // ignore: camel_case_types
 class buildDrawer extends StatelessWidget {
@@ -20,10 +15,9 @@ class buildDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // LOGOUT FUNC
-    void _logout(context) {
-      BlocProvider.of<AuthBloc>(context).add(
-        SignOutRequested(),
-      );
+
+    void _logout(BuildContext context) {
+      BlocProvider.of<AuthBloc>(context).add(SignOutRequested());
     }
 
     void _buildShowLogoutDialog(BuildContext context) {
@@ -41,13 +35,13 @@ class buildDrawer extends StatelessWidget {
             ),
             backgroundColor: AppColors.highLightColor,
             title: const Text(
-              'Are you leaving?',
+              'Bạn thật sự muốn đăng xuất?',
               style: TextStyle(
                 color: AppColors.primaryColor,
               ),
             ),
             content: const Text(
-              'Are you sure you want to log out?',
+              'Hãy quay trở lại khi cần bạn nhé!',
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: AppColors.primaryColor,
@@ -60,7 +54,7 @@ class buildDrawer extends StatelessWidget {
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: const Text('No'),
+                child: const Text('Hủy'),
               ),
               ElevatedButton(
                 onPressed: () {
@@ -71,7 +65,7 @@ class buildDrawer extends StatelessWidget {
                   backgroundColor: AppColors.primaryColor,
                 ),
                 child: const Text(
-                  'Yes',
+                  'Đăng xuất',
                   style: TextStyle(
                     color: AppColors.whiteColor,
                   ),
@@ -83,197 +77,136 @@ class buildDrawer extends StatelessWidget {
       );
     }
 
-    return BlocBuilder<AuthBloc, AuthState>(
-      builder: (context, state) {
-        if (state is Loading) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-        if (state is UnAuthenticated) {
-          return const SignInScreen();
-        }
-        return Drawer(
-          backgroundColor: AppColors.highLightColor,
-          child: Column(
-            children: [
-              // TOP INFOMATIONS
-              Container(
-                width: double.infinity,
-                height: 240,
-                padding: const EdgeInsets.all(16),
-                decoration: const BoxDecoration(
-                  color: AppColors.primaryColor,
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(16),
-                    bottomRight: Radius.circular(16),
+    return Drawer(
+      backgroundColor: AppColors.highLightColor,
+      child: Column(
+        children: [
+          // TOP INFOMATIONS
+          Container(
+            width: double.infinity,
+            height: 240,
+            padding: const EdgeInsets.all(16),
+            decoration: const BoxDecoration(
+              color: AppColors.primaryColor,
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(16),
+                bottomRight: Radius.circular(16),
+              ),
+            ),
+            child: Container(
+              alignment: Alignment.bottomLeft,
+              margin: const EdgeInsets.only(top: 86),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(50),
+                    child: SizedBox(
+                      width: 68,
+                      height: 68,
+                      // margin: const EdgeInsets.only(bottom: 0),
+                      child: Image.network(
+                        'https://i.pinimg.com/564x/ec/fd/c0/ecfdc07b30149c927956fe5bb6126e2c.jpg',
+                      ),
+                    ),
                   ),
-                ),
-                child: Container(
-                  alignment: Alignment.bottomLeft,
-                  margin: const EdgeInsets.only(top: 86),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(50),
-                        child: SizedBox(
-                          width: 68,
-                          height: 68,
-                          // margin: const EdgeInsets.only(bottom: 0),
-                          child: Image.network(
-                            'https://i.pinimg.com/564x/ec/fd/c0/ecfdc07b30149c927956fe5bb6126e2c.jpg',
+                  //
+                  Container(
+                    margin: const EdgeInsets.only(bottom: 0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Text(
+                          "Nguyen Hoang Vi",
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: AppColors.whiteColor,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                      ),
-                      //
-                      Container(
-                        margin: const EdgeInsets.only(bottom: 0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            Text(
-                              "Nguyen Hoang Vi",
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: AppColors.whiteColor,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 4,
-                            ),
-                            Text(
-                              "0907656399",
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.grey,
-                                fontWeight: FontWeight.normal,
-                              ),
-                            ),
-                          ],
+                        SizedBox(
+                          height: 4,
                         ),
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          print('Okey, Click cai qq');
-                        },
-                        icon: const Icon(
-                          Icons.edit,
-                          color: Colors.white,
+                        Text(
+                          "0907656399",
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey,
+                            fontWeight: FontWeight.normal,
+                          ),
                         ),
-                      )
-                    ],
+                      ],
+                    ),
                   ),
-                ),
+                  IconButton(
+                    onPressed: () {
+                      print('Okey, Click cai qq');
+                    },
+                    icon: const Icon(
+                      Icons.edit,
+                      color: Colors.white,
+                    ),
+                  )
+                ],
               ),
-              // FUNC ICONS
-              Expanded(
-                child: Container(
-                  margin:
-                      const EdgeInsets.symmetric(vertical: 26, horizontal: 16),
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: ListView(
-                          children: [
-                            ListTile(
-                              onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => const LandingScreen(),
-                                ));
-                              },
-                              leading: const Icon(Icons.home),
-                              title: const Text('Home'),
-                            ),
-                            ListTile(
-                              leading: const Icon(Icons.search),
-                              title: const Text('Search'),
-                              onTap: () {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const SearchScreen(),
-                                  ),
-                                );
-                              },
-                            ),
-                            ListTile(
-                              onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => const NewsScreen(),
-                                ));
-                              },
-                              leading: const Icon(Icons.newspaper),
-                              title: const Text('Newspaper'),
-                            ),
-                            ListTile(
-                              leading: const Icon(Icons.favorite),
-                              title: const Text('Favorites'),
-                              onTap: () {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => FavouritedScreen(
-                                      appBar: AppBar(
-                                        title: const Text('favourites List'),
-                                        leading: IconButton(
-                                          onPressed: (() {
-                                            print('object');
-                                            Future<bool> canPop =
-                                                Navigator.of(context)
-                                                    .maybePop();
-                                            if (canPop == false) {
-                                              Navigator.pushReplacement(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      const HomeScreen(),
-                                                ),
-                                              );
-                                            }
-                                          }),
-                                          icon:
-                                              const Icon(Icons.arrow_back_ios),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                            ListTile(
-                              onTap: () {
-                                print('Okey, Click cai qq');
-                              },
-                              leading: const Icon(Icons.shopping_bag),
-                              title: const Text('My Card'),
-                            ),
-                          ],
-                        ),
-                      ),
-                      ContainersCustomization.dividerInContainer(),
-                      const ListTile(
-                        leading: Icon(Icons.settings),
-                        title: Text('Setting'),
-                      ),
-                      ListTile(
-                        leading: const Icon(Icons.logout),
-                        title: const Text('Log Out'),
-                        onTap: () {
-                          _buildShowLogoutDialog(context);
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
-        );
-      },
+          // FUNC ICONS
+          Expanded(
+            child: Container(
+              margin: const EdgeInsets.symmetric(vertical: 26, horizontal: 16),
+              child: Column(
+                children: [
+                  Expanded(
+                    child: ListView(
+                      children: [
+                        ListTile(
+                          onTap: () {},
+                          leading: const Icon(Icons.person),
+                          title: const Text('Hồ sơ'),
+                        ),
+                        ListTile(
+                          leading: const Icon(Icons.calendar_view_day_rounded),
+                          title: const Text('Lịch khám'),
+                          onTap: () {},
+                        ),
+                        ListTile(
+                          leading: const Icon(Icons.medical_services),
+                          title: const Text('Mua thuốc nhanh'),
+                          onTap: () {},
+                        ),
+                        ListTile(
+                          onTap: () {
+                            print('Okey, Click cai qq');
+                          },
+                          leading: const Icon(Icons.shopping_bag),
+                          title: const Text(
+                            'Giỏ hàng',
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  ContainersCustomization.dividerInContainer(),
+                  const ListTile(
+                    leading: Icon(Icons.settings),
+                    title: Text('Cài đặt'),
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.logout),
+                    title: const Text('Đăng suất'),
+                    onTap: () {
+                      _buildShowLogoutDialog(context);
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
