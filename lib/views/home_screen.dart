@@ -21,15 +21,40 @@ class _HomeScreenState extends State<HomeScreen> {
     'assets/images/POSTER_02.png',
     'assets/images/POSTER_03.png',
   ];
-  Map<String, dynamic> iconsList = {
-    'policlinic': 'assets/icons/stethoscope.png',
-    'emergency': 'assets/icons/hospital.png',
-    'vaccination': 'assets/icons/injection.png',
-    'medicine': 'assets/icons/capsules.png',
-    'heart': 'assets/icons/cardiogram.png',
-    'bloodtest': 'assets/icons/blood-test.png'
-  };
-
+  // Map<String, dynamic> iconsList = {
+  //   'policlinic': 'assets/icons/stethoscope.png',
+  //   'emergency': 'assets/icons/hospital.png',
+  //   'vaccination': 'assets/icons/injection.png',
+  //   'medicine': 'assets/icons/capsules.png',
+  //   'heart': 'assets/icons/cardiogram.png',
+  //   'bloodtest': 'assets/icons/blood-test.png'
+  // };
+  List<Map<String, dynamic>> iconsList = [
+    {
+      'icon': 'assets/icons/hospital.png',
+      'label': 'Cấp cứu',
+    },
+    {
+      'icon': 'assets/icons/stethoscope.png',
+      'label': 'Khám bệnh',
+    },
+    {
+      'icon': 'assets/icons/capsules.png',
+      'label': 'Dược phẩm',
+    },
+    {
+      'icon': 'assets/icons/injection.png',
+      'label': 'Tiêm ngừa',
+    },
+    {
+      'icon': 'assets/icons/blood-test.png',
+      'label': 'Xét nghiệm',
+    },
+    {
+      'icon': 'assets/icons/cardiogram.png',
+      'label': 'Tim mạch',
+    },
+  ];
   List<Map<String, dynamic>> newDiseaseList = [
     {
       "url":
@@ -286,19 +311,21 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   //! Service List Icons
-  Container _serviceListIcons(Map<String, dynamic> iconsList) {
+  Container _serviceListIcons(iconsList) {
     return Container(
       width: double.infinity,
-      height: 64,
-      margin: const EdgeInsets.only(left: 0, right: 0, top: 12),
+      height: 100,
+      margin: const EdgeInsets.only(left: 20, right: 0, top: 12),
       padding: const EdgeInsets.all(6),
       // color: Colors.pink,
       child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: iconsList.length,
           itemBuilder: (context, index) {
-            String key = iconsList.keys.elementAt(index);
-            String value = iconsList[key];
+            // String key = iconsList.keys.elementAt(index);
+            // String value = iconsList[key]['icon'];
+            String iconPath = iconsList[index]['icon'];
+            String label = iconsList[index]['label'];
             return GestureDetector(
               onTap: () {
                 setState(() {
@@ -318,28 +345,34 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
                 });
               },
-              child: Container(
-                width: 52,
-                height: 52,
-                margin: const EdgeInsets.only(left: 16),
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color.fromARGB(255, 217, 217, 217)
-                          .withOpacity(1),
-                      blurRadius: 6.0,
-                      spreadRadius: 4.0,
-                      offset: const Offset(1, 0.0),
-                    )
-                  ],
-                ),
-                child: Image.asset(
-                  value,
-                  fit: BoxFit.cover,
-                ),
+              child: Column(
+                children: [
+                  Container(
+                    width: 54,
+                    height: 54,
+                    margin: const EdgeInsets.symmetric(horizontal: 18),
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color.fromARGB(255, 217, 217, 217)
+                              .withOpacity(1),
+                          blurRadius: 6.0,
+                          spreadRadius: 0.1,
+                          offset: const Offset(3, 3),
+                        )
+                      ],
+                    ),
+                    child: Image.asset(
+                      iconPath,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(label),
+                ],
               ),
             );
           }),
@@ -362,6 +395,15 @@ class _HomeScreenState extends State<HomeScreen> {
             decoration: BoxDecoration(
               color: Colors.grey,
               borderRadius: BorderRadius.circular(8),
+              boxShadow: [
+                BoxShadow(
+                  color:
+                      const Color.fromARGB(255, 217, 217, 217).withOpacity(1),
+                  blurRadius: 6.0,
+                  spreadRadius: 0.1,
+                  offset: const Offset(3, 3),
+                )
+              ],
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8.0),
