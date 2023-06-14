@@ -73,7 +73,7 @@ class _LandingScreenState extends State<LandingScreen> {
             label: 'Favorited Screen',
           ),
         ],
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.white,
         showSelectedLabels: false,
         showUnselectedLabels: false,
         selectedItemColor: AppColors.primaryColor,
@@ -84,9 +84,15 @@ class _LandingScreenState extends State<LandingScreen> {
 
   AppBar customAppBar() {
     return AppBar(
-      title: Text(appBarTitles[currentIndex]),
+      title: Text(
+        appBarTitles[currentIndex],
+        style: const TextStyle(
+          color: AppColors.primaryColor,
+        ),
+      ),
       elevation: 0,
-      backgroundColor: AppColors.primaryColor,
+      // backgroundColor: AppColors.primaryColor,
+      backgroundColor: Colors.white,
       leading: IconButton(
         onPressed: () {
           if (currentIndex == 0) {
@@ -97,12 +103,18 @@ class _LandingScreenState extends State<LandingScreen> {
             });
           }
         },
-        icon: Icon(appBarLeadingIcons[currentIndex]),
+        icon: Icon(
+          appBarLeadingIcons[currentIndex],
+          color: AppColors.primaryColor,
+        ),
       ),
       actions: [
         IconButton(
           onPressed: () {},
-          icon: Icon(appBarActionIcons[currentIndex]),
+          icon: Icon(
+            appBarActionIcons[currentIndex],
+            color: AppColors.primaryColor,
+          ),
         )
       ],
     );

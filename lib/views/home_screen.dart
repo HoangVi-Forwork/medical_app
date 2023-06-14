@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:medical_app/widgets/colors.dart';
 import 'package:medical_app/widgets/draw.dart';
 import '../widgets/buttons/floating_scroll_button.dart';
@@ -41,7 +42,8 @@ class _HomeScreenState extends State<HomeScreen> {
       "url":
           "https://tamanhhospital.vn/wp-content/uploads/2022/07/tac-nhan-gay-benh-sot-ret.jpg",
       "diseaseName": "Sốt rét",
-      "indentificationSign": "Sốt, đau đầu, buồn nôn, co giật, mất ý thức",
+      "indentificationSign":
+          "Sốt, đau đầu, buồn nôn, co giật, mất ý thức, Sốt, nôn ói, tiêu chảy, đau bụng",
       "diseaseObject": "Trẻ em và người già",
     },
     {
@@ -55,14 +57,16 @@ class _HomeScreenState extends State<HomeScreen> {
       "url":
           "https://hanoimoi.com.vn/Uploads/images/tuandiep/2019/08/13/Khong-tai-dan-o-nhung-co-so.jpg",
       "diseaseName": "Bệnh dịch tả",
-      "indentificationSign": "Sốt, nôn ói, tiêu chảy, đau bụng",
+      "indentificationSign":
+          "Sốt, nôn ói, tiêu chảy, đau bụng, Sốt, nôn ói, tiêu chảy, đau bụng, Sốt, nôn ói, tiêu chảy, đau bụng, Sốt, nôn ói, tiêu chảy, đau bụng nôn ói, tiêu chảy, đau bụng, Sốt, nôn ói",
       "diseaseObject": "Trẻ em và người già",
     },
     {
       "url":
           "https://bcp.cdnchinhphu.vn/thumb_w/640/334894974524682240/2023/3/20/sxh-1679285610784870118864.jpg",
       "diseaseName": "Sốt xuất huyết",
-      "indentificationSign": "Sốt, đau đầu, đau mắt, đau khớp, chảy máu nhiều",
+      "indentificationSign":
+          "Sốt, đau đầu, đau mắt, đau khớp, chảy máu nhiều, Sốt, nôn ói, tiêu chảy, đau bụng",
       "diseaseObject": "Trẻ em và người già",
     },
   ];
@@ -121,72 +125,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 textTitle: 'Bệnh phổ biến',
                 subTitle: 'Hãy cẩn thận với sự thay đổi của thời tiết',
               ),
-              Container(
-                width: double.infinity,
-                margin: const EdgeInsets.symmetric(vertical: 24),
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: newDiseaseList.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      width: double.infinity,
-                      height: 180,
-                      margin:
-                          const EdgeInsets.only(bottom: 16, left: 4, right: 4),
-                      decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 255, 255, 255),
-                        borderRadius: BorderRadius.circular(12),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.3),
-                            blurRadius: 12.0,
-                            spreadRadius: 0.0,
-                            offset: const Offset(0.0, 0.1),
-                          )
-                        ],
-                      ),
-                      child: Center(
-                        child: ListTile(
-                          onTap: (() {}),
-                          leading: Container(
-                            width: 66,
-                            height: 66,
-                            decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(6),
-                              child: Image.network(
-                                newDiseaseList[index]['url'],
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                          title: Text(
-                            newDiseaseList[index]['diseaseName'],
-                            style: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          subtitle: Text(
-                            newDiseaseList[index]['indentificationSign'],
-                            style: const TextStyle(
-                                color: Colors.grey,
-                                fontSize: 14,
-                                fontWeight: FontWeight.normal,
-                                fontStyle: FontStyle.italic),
-                          ),
-                          trailing: const Icon(Icons.arrow_right),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
+              _buildListOfCommonDiseases(),
             ],
           ),
         ),
@@ -196,6 +135,120 @@ class _HomeScreenState extends State<HomeScreen> {
         scrollController: scrollController,
       ),
       //bottomNavigationBar: const buildBottomNavigationBar(),
+    );
+  }
+
+  //! List Of Common Diseases
+  Container _buildListOfCommonDiseases() {
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.symmetric(vertical: 24),
+      child: ListView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: newDiseaseList.length,
+        itemBuilder: (context, index) {
+          return Container(
+            width: double.infinity,
+            height: 160,
+            margin: const EdgeInsets.only(
+              bottom: 16,
+              left: 4,
+              right: 4,
+            ),
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: const Color.fromARGB(255, 255, 255, 255),
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.3),
+                  blurRadius: 12.0,
+                  spreadRadius: 0.0,
+                  offset: const Offset(0.0, 0.1),
+                )
+              ],
+            ),
+            child: Center(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(
+                    width: 86,
+                    height: double.infinity,
+                    margin: const EdgeInsets.only(bottom: 12),
+                    decoration: BoxDecoration(
+                      color: Colors.pink,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(6),
+                      child: Image.network(
+                        newDiseaseList[index]['url'],
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 19,
+                  ),
+                  Expanded(
+                    child: Container(
+                      width: double.infinity,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            newDiseaseList[index]['diseaseName'],
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: GoogleFonts.tajawal().toString(),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          Text(
+                            newDiseaseList[index]['indentificationSign'],
+                            softWrap: true,
+                            overflow: TextOverflow.visible,
+                            maxLines: 3,
+                            style: const TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(top: 4, bottom: 4),
+                            child: const Divider(
+                              height: 1,
+                              color: Colors.black,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 6,
+                          ),
+                          Text(
+                            'Đối tượng: ${newDiseaseList[index]['diseaseObject']}',
+                            softWrap: true,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 
@@ -275,7 +328,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   borderRadius: BorderRadius.circular(12),
                   boxShadow: [
                     BoxShadow(
-                      color: Color.fromARGB(255, 217, 217, 217).withOpacity(1),
+                      color: const Color.fromARGB(255, 217, 217, 217)
+                          .withOpacity(1),
                       blurRadius: 6.0,
                       spreadRadius: 4.0,
                       offset: const Offset(1, 0.0),

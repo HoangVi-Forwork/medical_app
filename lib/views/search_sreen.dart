@@ -21,7 +21,7 @@ class SearchScreen extends StatelessWidget {
           ),
           // Use Center to position your text
           const Center(
-            child: Text("My Screen"),
+            child: Text("Tìm kiếm"),
           ),
         ],
       ),
