@@ -22,7 +22,7 @@ class NewsDatailScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        title: const Text("News"),
+        title: const Text("Tin Mới"),
         centerTitle: true,
         backgroundColor: AppColors.primaryColor,
         actions: [
