@@ -123,7 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               Container(
                 width: double.infinity,
-                margin: const EdgeInsets.symmetric(vertical: 12),
+                margin: const EdgeInsets.symmetric(vertical: 24),
                 child: ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
@@ -131,39 +131,24 @@ class _HomeScreenState extends State<HomeScreen> {
                   itemBuilder: (context, index) {
                     return Container(
                       width: double.infinity,
-                      height: 86,
-                      margin: const EdgeInsets.only(bottom: 8),
+                      height: 180,
+                      margin:
+                          const EdgeInsets.only(bottom: 16, left: 4, right: 4),
                       decoration: BoxDecoration(
                         color: const Color.fromARGB(255, 255, 255, 255),
                         borderRadius: BorderRadius.circular(12),
                         boxShadow: [
                           BoxShadow(
-                            color: const Color.fromARGB(255, 0, 0, 0)
-                                .withOpacity(0.2),
-                            offset: const Offset(0, 1),
-                          ),
+                            color: Colors.grey.withOpacity(0.3),
+                            blurRadius: 12.0,
+                            spreadRadius: 0.0,
+                            offset: const Offset(0.0, 0.1),
+                          )
                         ],
                       ),
                       child: Center(
                         child: ListTile(
-                          onTap: (() {
-                            // showBottomSheet(
-                            //   context: context,
-                            //   builder: (context) {
-                            //     return Container(
-                            //       width: double.infinity,
-                            //       height: 360,
-                            //       decoration: const BoxDecoration(
-                            //         color: AppColors.primaryColor,
-                            //         borderRadius: BorderRadius.only(
-                            //           topLeft: Radius.circular(12),
-                            //           topRight: Radius.circular(12),
-                            //         ),
-                            //       ),
-                            //     );
-                            //   },
-                            // );
-                          }),
+                          onTap: (() {}),
                           leading: Container(
                             width: 66,
                             height: 66,
@@ -251,8 +236,10 @@ class _HomeScreenState extends State<HomeScreen> {
   Container _serviceListIcons(Map<String, dynamic> iconsList) {
     return Container(
       width: double.infinity,
-      height: 56,
-      margin: const EdgeInsets.only(top: 12),
+      height: 64,
+      margin: const EdgeInsets.only(left: 0, right: 0, top: 12),
+      padding: const EdgeInsets.all(6),
+      // color: Colors.pink,
       child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: iconsList.length,
@@ -279,13 +266,21 @@ class _HomeScreenState extends State<HomeScreen> {
                 });
               },
               child: Container(
-                width: 56,
-                height: 56,
-                margin: const EdgeInsets.only(right: 12),
-                padding: const EdgeInsets.all(8),
+                width: 52,
+                height: 52,
+                margin: const EdgeInsets.only(left: 16),
+                padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.2),
+                  color: Colors.white,
                   borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color.fromARGB(255, 217, 217, 217).withOpacity(1),
+                      blurRadius: 6.0,
+                      spreadRadius: 4.0,
+                      offset: const Offset(1, 0.0),
+                    )
+                  ],
                 ),
                 child: Image.asset(
                   value,
