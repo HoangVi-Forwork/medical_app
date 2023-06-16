@@ -19,7 +19,7 @@ class _SignInScreenState extends State<SignInScreen> {
   final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-
+  bool isForgotPasswordButtonPressed = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -134,15 +134,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           submitType: 'register',
                           submitButton: () {},
                         ),
-                        Row(
-                          children: [
-                            buildForgotPassword(
-                              submitButton: () {},
-                              text: 'Forgot your password?',
-                              buttonType: 'forgotButton',
-                            )
-                          ],
-                        )
+                        _buildForgotPassButton(context)
                       ],
                     ),
                   ),
@@ -152,6 +144,142 @@ class _SignInScreenState extends State<SignInScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  Row _buildForgotPassButton(BuildContext context) {
+    return Row(
+      children: [
+        TextButton(
+          onPressed: () {
+            showBottomSheet(
+              context: context,
+              builder: (context) {
+                return Container(
+                  width: double.infinity,
+                  height: 420,
+                  margin: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: AppColors.primaryColor,
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.3),
+                        blurRadius: 12.0,
+                        spreadRadius: 0.0,
+                        offset: const Offset(0.0, 0.1),
+                      )
+                    ],
+                  ),
+                  child: Column(
+                    children: [
+                      // icon close
+                      Container(
+                        height: 30,
+                        width: double.infinity,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                        ),
+                        child: Center(
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Image.asset(
+                              'assets/images/down-arrow.png',
+                            ),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 16, horizontal: 24),
+                        // color: Colors.white,
+                        child: Form(
+                          child: Column(
+                            children: [
+                              Container(
+                                margin:
+                                    const EdgeInsets.only(top: 12, bottom: 12),
+                                width: double.infinity,
+                                child: Column(
+                                  children: [
+                                    const Text(
+                                      'Cấp lại mật khẩu',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 18,
+                                    ),
+                                    Text(
+                                      'Vui lòng nhập địa chỉ email của bạn. Bạn sẽ nhận được yêu cầu tạo mật khẩu mới tại email của mình.',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.white.withOpacity(0.8),
+                                        fontStyle: FontStyle.italic,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              TextFormField(
+                                decoration: const InputDecoration(
+                                  labelText: 'Email',
+                                  labelStyle: TextStyle(color: Colors.white),
+                                  border: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.white),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.white),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.white),
+                                  ),
+                                  prefixIcon: Icon(
+                                    Icons.email,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                              Container(
+                                width: double.infinity,
+                                height: 48,
+                                margin: const EdgeInsets.only(top: 36),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                                child: GestureDetector(
+                                  child: const Center(
+                                    child: Text('Gữi mã xác nhận'),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            );
+          },
+          child: Text(
+            "Quên mật khẩu",
+            style: TextStyle(
+              color: AppColors.secondaryColor.withOpacity(0.6),
+              fontStyle: FontStyle.italic,
+            ),
+          ),
+        )
+      ],
     );
   }
 
