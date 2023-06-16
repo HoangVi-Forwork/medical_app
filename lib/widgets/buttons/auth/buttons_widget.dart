@@ -90,6 +90,14 @@ class buildSignInButton extends StatelessWidget {
                   color: Colors.black,
                 ),
           borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.3),
+              blurRadius: 12.0,
+              spreadRadius: 0.0,
+              offset: const Offset(0.0, 0.1),
+            )
+          ],
         ),
         child: Center(
           child: Text(

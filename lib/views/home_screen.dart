@@ -15,20 +15,13 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  // ignore: non_constant_identifier_names
+
   final imagePosterList = [
     'assets/images/POSTER_01.png',
     'assets/images/POSTER_02.png',
     'assets/images/POSTER_03.png',
   ];
-  // Map<String, dynamic> iconsList = {
-  //   'policlinic': 'assets/icons/stethoscope.png',
-  //   'emergency': 'assets/icons/hospital.png',
-  //   'vaccination': 'assets/icons/injection.png',
-  //   'medicine': 'assets/icons/capsules.png',
-  //   'heart': 'assets/icons/cardiogram.png',
-  //   'bloodtest': 'assets/icons/blood-test.png'
-  // };
+
   List<Map<String, dynamic>> iconsList = [
     {
       'icon': 'assets/icons/hospital.png',
@@ -53,6 +46,10 @@ class _HomeScreenState extends State<HomeScreen> {
     {
       'icon': 'assets/icons/cardiogram.png',
       'label': 'Tim mạch',
+    },
+    {
+      'icon': 'assets/icons/application.png',
+      'label': 'Khác',
     },
   ];
   List<Map<String, dynamic>> newDiseaseList = [
@@ -163,7 +160,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  //! List Of Common Diseases
+  // List Of Common Diseases
   Container _buildListOfCommonDiseases() {
     return Container(
       width: double.infinity,
@@ -204,7 +201,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     height: double.infinity,
                     margin: const EdgeInsets.only(bottom: 12),
                     decoration: BoxDecoration(
-                      color: Colors.pink,
+                      color: Colors.grey,
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: ClipRRect(
@@ -219,7 +216,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     width: 19,
                   ),
                   Expanded(
-                    child: Container(
+                    child: SizedBox(
                       width: double.infinity,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -239,7 +236,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             newDiseaseList[index]['indentificationSign'],
                             softWrap: true,
                             overflow: TextOverflow.visible,
-                            maxLines: 3,
+                            maxLines: 2,
                             style: const TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.normal,
@@ -263,11 +260,27 @@ class _HomeScreenState extends State<HomeScreen> {
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
                             ),
-                          )
+                          ),
+                          Container(
+                            width: double.infinity,
+                            margin: const EdgeInsets.only(top: 2),
+                            alignment: Alignment.bottomRight,
+                            child: TextButton.icon(
+                              onPressed: () {},
+                              label: const Text('Đọc thêm',
+                                  style: TextStyle(
+                                    color: AppColors.primaryColor,
+                                  )),
+                              icon: const Icon(
+                                Icons.arrow_right_alt,
+                                color: AppColors.primaryColor,
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -277,40 +290,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  //! Appbar for LandingScreen
-  AppBar buildAppBar() {
-    return AppBar(
-      elevation: 0.0,
-      backgroundColor: Colors.transparent,
-      leading: IconButton(
-        onPressed: () {
-          _scaffoldKey.currentState?.openDrawer();
-        },
-        icon: const Icon(
-          Icons.menu_sharp,
-          color: AppColors.primaryColor,
-        ),
-      ),
-      actions: [
-        IconButton(
-          onPressed: () {},
-          icon: const Icon(
-            Icons.search,
-            color: AppColors.primaryColor,
-          ),
-        ),
-        IconButton(
-          onPressed: () {},
-          icon: const Icon(
-            Icons.notifications,
-            color: AppColors.primaryColor,
-          ),
-        ),
-      ],
-    );
-  }
-
-  //! Service List Icons
+  // Service List Icons
   Container _serviceListIcons(iconsList) {
     return Container(
       width: double.infinity,
@@ -322,8 +302,6 @@ class _HomeScreenState extends State<HomeScreen> {
           scrollDirection: Axis.horizontal,
           itemCount: iconsList.length,
           itemBuilder: (context, index) {
-            // String key = iconsList.keys.elementAt(index);
-            // String value = iconsList[key]['icon'];
             String iconPath = iconsList[index]['icon'];
             String label = iconsList[index]['label'];
             return GestureDetector(
@@ -379,7 +357,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  //! Top List Poster
+  // Top List Poster
   Container _topListViewPoster(List<String> imagePosterList) {
     return Container(
       width: double.infinity,

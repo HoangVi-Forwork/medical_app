@@ -4,33 +4,40 @@ import '../widgets/colors.dart';
 
 //! Top Imge for Sign In Screen
 Widget topImage(BuildContext context) {
-  const String url =
-      'https://i.pinimg.com/564x/d0/54/14/d0541464bb5055e62b2d98435184ceb6.jpg';
+  const String url = 'assets/images/22.jpg';
   return Container(
-    width: double.infinity,
+    width: 260,
     height: 300,
-    color: AppColors.whiteColor,
-    child: Image.network(
-      url,
-      errorBuilder: (context, error, stackTrace) {
-        return Center(
-          child: Column(
-            children: [
-              Image.asset(
-                'assets/images/error_01.jpg',
-                width: 200,
-                height: 200,
-                fit: BoxFit.cover,
-              ),
-              const SizedBox(
-                height: 4,
-              ),
-              const Text('Failed to load image'),
-            ],
-          ),
-        );
-      },
-      fit: BoxFit.cover,
+    margin: const EdgeInsets.only(top: 48),
+    child: ClipRRect(
+      borderRadius: const BorderRadius.only(
+        topLeft: Radius.circular(2),
+        topRight: Radius.circular(2),
+        bottomLeft: Radius.circular(200),
+        bottomRight: Radius.circular(200),
+      ),
+      child: Image.asset(
+        url,
+        errorBuilder: (context, error, stackTrace) {
+          return Center(
+            child: Column(
+              children: [
+                Image.asset(
+                  'assets/images/error_01.jpg',
+                  width: 200,
+                  height: 200,
+                  fit: BoxFit.cover,
+                ),
+                const SizedBox(
+                  height: 4,
+                ),
+                const Text('Failed to load image'),
+              ],
+            ),
+          );
+        },
+        fit: BoxFit.cover,
+      ),
     ),
   );
 }
@@ -38,38 +45,34 @@ Widget topImage(BuildContext context) {
 //! Top Title for SignIn Screen
 
 Widget topTile(BuildContext context) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    mainAxisAlignment: MainAxisAlignment.start,
-    children: [
-      Text(
-        'Login Account',
-        style: TextStyle(
-          color: AppColors.textColor.withOpacity(1),
-          fontSize: 26,
-          fontStyle: FontStyle.normal,
-          fontWeight: FontWeight.bold,
+  return SizedBox(
+    width: double.infinity,
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          'Medical Project',
+          style: TextStyle(
+            color: AppColors.primaryColor.withOpacity(1),
+            fontSize: 26,
+            fontStyle: FontStyle.normal,
+            fontWeight: FontWeight.bold,
+          ),
         ),
-      ),
-      const SizedBox(
-        height: 4,
-      ),
-      Text(
-        'Please log in to continue using our professional and convenient healthcare services.',
-        style: TextStyle(
-          color: AppColors.textColor.withOpacity(0.6),
-          fontSize: 16,
-          fontStyle: FontStyle.italic,
-          fontWeight: FontWeight.normal,
+        const SizedBox(
+          height: 4,
         ),
-      ),
-      Container(
-        margin: const EdgeInsets.symmetric(vertical: 4),
-        child: const Divider(
-          height: 1,
-          color: Colors.black,
+        Text(
+          'Đồng hành cùng chăm sóc sức khỏe của bạn!',
+          style: TextStyle(
+            color: AppColors.textColor.withOpacity(1),
+            fontSize: 14,
+            fontStyle: FontStyle.italic,
+            fontWeight: FontWeight.w400,
+          ),
         ),
-      )
-    ],
+      ],
+    ),
   );
 }
