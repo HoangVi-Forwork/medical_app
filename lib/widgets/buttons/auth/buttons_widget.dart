@@ -30,6 +30,7 @@ class buildForgotPassword extends StatelessWidget {
   String text;
   String buttonType;
   final Function submitButton;
+
   buildForgotPassword({
     Key? key,
     required this.text,
