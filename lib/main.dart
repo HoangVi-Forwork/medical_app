@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
             fontFamily: GoogleFonts.poppins().toString(),
           ),
           debugShowCheckedModeBanner: false,
-          home: const SignInScreen(),
+          home: SignInScreen(),
         ),
       ),
     );
