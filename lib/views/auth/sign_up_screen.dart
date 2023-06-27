@@ -82,7 +82,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  //! Body of SignUpScreen
+  // Body of SignUpScreen
   SingleChildScrollView _buildSignUpBodyScreen() {
     return SingleChildScrollView(
       child: Column(
