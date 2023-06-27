@@ -6,7 +6,7 @@ const mysql = require("mysql2");
 const db = require("./data/data.js");
 require("./data/data.js");
 const session = require("express-session");
-const port = 9000;
+const port = 5090;
 
 app.use(express.json());
 app.use(
