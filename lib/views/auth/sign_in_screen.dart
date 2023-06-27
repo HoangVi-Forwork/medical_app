@@ -1,4 +1,7 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+// ignore: depend_on_referenced_packages
+import 'package:http/http.dart' as http;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medical_app/views/home_screen.dart';
 import 'package:medical_app/views/landing_screen.dart';
@@ -19,6 +22,32 @@ class _SignInScreenState extends State<SignInScreen> {
   final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+
+  String message = '';
+
+  void login() async {
+  const String apiUrl = 'http://localhost:5090/login';
+  final response = await http.post(Uri.parse(apiUrl), body: {
+    'email': emailController.text,
+    'password': passwordController.text,
+  });
+
+  final responseBody = json.decode(response.body);
+
+  if (response.statusCode == 200) {
+    // Đăng nhập thành công
+    // ignore: use_build_context_synchronously
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const LandingScreen()),
+    );
+  } else {
+    // Hiển thị thông báo lỗi đăng nhập
+    setState(() {
+      message = responseBody['message'];
+    });
+  }
+}
   bool isForgotPasswordButtonPressed = true;
   @override
   Widget build(BuildContext context) {
@@ -94,6 +123,22 @@ class _SignInScreenState extends State<SignInScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
+                        Container(
+                          alignment: Alignment.center,
+                          width: double.infinity,
+                          child: Text(
+                            
+                            message, 
+                            style: TextStyle(
+                              color:
+                                 const Color.fromARGB(255, 255, 0, 0).withOpacity(1),
+                              fontSize: 14,
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.bold,
+                        
+                            ),
+                          ),
+                        ),
                         buildTextFormField(
                           controller: emailController,
                           hintText: 'Tên đăng nhập',
@@ -115,7 +160,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           text: 'Login',
                           submitType: 'login',
                           submitButton: () {
-                            _authenticateWithEmailAndPassword(context);
+                            login();
                           },
                         ),
                         Container(
