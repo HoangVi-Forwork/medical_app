@@ -6,21 +6,8 @@ const mysql = require("mysql2");
 const db = require("./data/data.js");
 require("./data/data.js");
 const session = require("express-session");
-const multiparty = require("connect-multiparty");
-const port = 5092;
-const bcrypt = require("bcrypt");
-const saltRounds = 10;
+const port = 9000;
 
-const multer = require("multer");
-var path = require("path");
-
-// app.use(
-//   cors({
-//     origin: ["http://localhost:3000"],
-//     method: ["POST", "GET"],
-//     credentials: true,
-//   })
-// );
 app.use(express.json());
 app.use(
   session({
