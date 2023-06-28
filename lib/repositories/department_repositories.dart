@@ -12,7 +12,7 @@ class DepartmentRepository {
       print(result);
       return result.map((i) => DepartmentModel.fromJson(i)).toList();
     } else {
-      throw 'Error';
+      throw 'Error in DepartmentRepository';
     }
   }
 }

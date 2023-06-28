@@ -3,7 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:medical_app/model/list_deases_model.dart';
+import 'package:medical_app/model/diseases_model.dart';
+import 'package:medical_app/repositories/diseases_repositories.dart';
 import 'package:medical_app/widgets/colors.dart';
 import 'package:medical_app/widgets/draw.dart';
 import '../widgets/buttons/floating_scroll_button.dart';
@@ -18,6 +19,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final DiseaseRepository diseaseRepository = DiseaseRepository();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final imagePosterList = [
     'assets/images/POSTER_01.png',
@@ -165,6 +167,36 @@ class _HomeScreenState extends State<HomeScreen> {
                 subTitle: 'Hãy cẩn thận với sự thay đổi của thời tiết',
               ),
               // buildListOfCommonDiseases(),
+              Container(
+                width: double.infinity,
+                child: FutureBuilder(
+                    future: diseaseRepository.fetchDiseasesList(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else if (snapshot.hasError) {
+                        return const Center(
+                          child: Text("Have Error"),
+                        );
+                      } else {
+                        final List<DiseasesModel> diseasesList = snapshot.data!;
+                        //print("Data nè: " + diseasesList.toString());
+                        return ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: diseasesList.length,
+                            itemBuilder: (context, index) {
+                              final disease = diseasesList[index];
+                              return ListTile(
+                                title: Text(disease.tenBenh ?? '...'),
+                                subtitle: Text(disease.nguyenNhan ?? '...'),
+                              );
+                            });
+                      }
+                    }),
+              )
             ],
           ),
         ),
