@@ -42,7 +42,7 @@ class _LandingScreenState extends State<LandingScreen> {
         children: const [
           HomeScreen(),
           SearchScreen(),
-          NewsScreen(),
+          // NewsScreen(),
           FavouritedScreen(),
         ],
       ),

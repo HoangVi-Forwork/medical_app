@@ -28,11 +28,11 @@ class MyApp extends StatelessWidget {
         RepositoryProvider<AuthRepositories>(
           create: (context) => AuthRepositories(),
         ),
-        BlocProvider(
-          create: (context) => NewsBloc(
-            NewsRepository(),
-          ),
-        ),
+        // BlocProvider(
+        //   create: (context) => NewsBloc(
+        //     NewsRepository(),
+        //   ),
+        // ),
       ],
       child: BlocProvider(
         create: (context) => AuthBloc(

@@ -25,8 +25,7 @@ class _SignInScreenState extends State<SignInScreen> {
   String message = '';
 
   void login() async {
-    print("click");
-    const String apiUrl = 'http://localhost:5090/login';
+    const String apiUrl = 'http://10.7.134.227:5090/login';
     final response = await http.post(Uri.parse(apiUrl), body: {
       'email': emailController.text,
       'password': passwordController.text,
@@ -159,9 +158,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           text: 'Login',
                           submitType: 'login',
                           submitButton: () {
-                            setState(() {
-                              login();
-                            });
+                            login();
                           },
                         ),
                         Container(

@@ -1,10 +1,14 @@
+// ignore_for_file: depend_on_referenced_packages, unused_import
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:medical_app/model/list_deases_model.dart';
 import 'package:medical_app/widgets/colors.dart';
 import 'package:medical_app/widgets/draw.dart';
 import '../widgets/buttons/floating_scroll_button.dart';
 import '../widgets/text_input_widgets/text_title_and_subtitle.dart';
+import 'package:http/http.dart' as http;
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -93,6 +97,85 @@ class _HomeScreenState extends State<HomeScreen> {
     },
   ];
 
+  // static showDiseases() async {
+  //   List<ListDiseasesModel> diseases = [];
+  //   const String endpoint = 'http://192.168.11.20:5090/danhsachbenh';
+  //   try {
+  //     final res = await http.get(Uri.parse(endpoint));
+  //     if (res.statusCode == 200) {
+  //       var data = jsonDecode(res.body);
+  //       data['diseases'].forEach((value) => {
+  //             diseases.add(ListDiseasesModel(
+  //               id_benh: value['id_benh'],
+  //               tenbenh: value['tenbenh'],
+  //               hinhanh: value['hinhanh'],
+  //               trieuchung: value['trieuchung'],
+  //               nguyennhan: value['nguyennhan'],
+  //               phongngua: value['phongngua'],
+  //               noidung: value['noidung'],
+  //               id_loaibenh: value['id_loaibenh'],
+  //               tenrieng: value['tenrieng'],
+  //             ))
+  //           });
+
+  //       return diseases;
+  //     } else {
+  //       return [];
+  //     }
+  //   } catch (e) {
+  //     print(e.toString());
+  //   }
+  // }
+
+  Future<List<ListDiseasesModel>> showDiseases() async {
+    List<ListDiseasesModel> diseases = [];
+    const String endpoint = 'http://10.7.134.227:5090/danhsachbenh';
+    try {
+      final res = await http.get(Uri.parse(endpoint));
+
+      if (res.statusCode == 201) {
+        var data = jsonDecode(res.body) as dynamic;
+
+        print('have Data');
+        data['diseases'].forEach((value, index) {
+          diseases.add(ListDiseasesModel(
+            id_benh: value[index]['id_benh'],
+            tenbenh: value[index]['tenbenh'],
+            hinhanh: value[index]['hinhanh'],
+            trieuchung: value[index]['trieuchung'],
+            nguyennhan: value[index]['nguyennhan'],
+            phongngua: value[index]['phongngua'],
+            noidung: value[index]['noidung'],
+            id_loaibenh: value['id_loaibenh'],
+            tenrieng: value['tenrieng'],
+          ));
+          // print('DATA: ' + data);
+        });
+
+        return diseases;
+      } else {
+        print("have Error");
+        return [];
+      }
+    } catch (e) {
+      print("have Error 2");
+      print(e.toString());
+      return [];
+    }
+  }
+
+  // Future<List<ListDiseasesModel>> fetchDataFromServer() async {
+  //   final res =
+  //       await http.get(Uri.parse('http://10.7.134.227:5090/danhsachbenh'));
+  //   if (res.statusCode == 201) {
+  //     final data = jsonDecode(res.body);
+  //     print('This is data: ' + data);
+  //     return data as List<ListDiseasesModel>;
+  //   } else {
+  //     throw Exception('Failed to fetch data from server');
+  //   }
+  // }
+
   final ScrollController scrollController = ScrollController();
   // listen for user actions funcs
   bool isVisibale = false;
@@ -102,9 +185,11 @@ class _HomeScreenState extends State<HomeScreen> {
     scrollController.addListener(() {
       if (scrollController.position.userScrollDirection ==
           ScrollDirection.reverse) {
-        setState(() {
-          isVisibale = false;
-        });
+        setState(
+          () {
+            isVisibale = false;
+          },
+        );
       }
 
       if (scrollController.position.userScrollDirection ==
@@ -147,7 +232,22 @@ class _HomeScreenState extends State<HomeScreen> {
                 textTitle: 'Bệnh phổ biến',
                 subTitle: 'Hãy cẩn thận với sự thay đổi của thời tiết',
               ),
-              _buildListOfCommonDiseases(),
+              // buildListOfCommonDiseases(),
+              FutureBuilder(
+                  future: showDiseases(),
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    if (!snapshot.hasData) {
+                      return const Center(
+                        child: CircularProgressIndicator(
+                          color: Colors.pink,
+                        ),
+                      );
+                    } else {
+                      List<ListDiseasesModel> diseaseDatas = snapshot.data!;
+                      print(diseaseDatas);
+                      return Container();
+                    }
+                  }),
             ],
           ),
         ),
@@ -161,7 +261,136 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   // List Of Common Diseases
-  Container _buildListOfCommonDiseases() {
+  // Container _buildListOfCommonDiseases() {
+  //   return Container(
+  //     width: double.infinity,
+  //     margin: const EdgeInsets.symmetric(vertical: 24),
+  //     child: ListView.builder(
+  //       shrinkWrap: true,
+  //       physics: const NeverScrollableScrollPhysics(),
+  //       itemCount: newDiseaseList.length,
+  //       itemBuilder: (context, index) {
+  //         return Container(
+  //           width: double.infinity,
+  //           height: 160,
+  //           margin: const EdgeInsets.only(
+  //             bottom: 16,
+  //             left: 4,
+  //             right: 4,
+  //           ),
+  //           padding: const EdgeInsets.all(12),
+  //           decoration: BoxDecoration(
+  //             color: const Color.fromARGB(255, 255, 255, 255),
+  //             borderRadius: BorderRadius.circular(12),
+  //             boxShadow: [
+  //               BoxShadow(
+  //                 color: Colors.grey.withOpacity(0.3),
+  //                 blurRadius: 12.0,
+  //                 spreadRadius: 0.0,
+  //                 offset: const Offset(0.0, 0.1),
+  //               )
+  //             ],
+  //           ),
+  //           child: Center(
+  //             child: Row(
+  //               crossAxisAlignment: CrossAxisAlignment.start,
+  //               mainAxisAlignment: MainAxisAlignment.start,
+  //               children: [
+  //                 Container(
+  //                   width: 86,
+  //                   height: double.infinity,
+  //                   margin: const EdgeInsets.only(bottom: 12),
+  //                   decoration: BoxDecoration(
+  //                     color: Colors.grey,
+  //                     borderRadius: BorderRadius.circular(12),
+  //                   ),
+  //                   child: ClipRRect(
+  //                     borderRadius: BorderRadius.circular(6),
+  //                     child: Image.network(
+  //                       newDiseaseList[index]['url'],
+  //                       fit: BoxFit.cover,
+  //                     ),
+  //                   ),
+  //                 ),
+  //                 const SizedBox(
+  //                   width: 19,
+  //                 ),
+  //                 Expanded(
+  //                   child: SizedBox(
+  //                     width: double.infinity,
+  //                     child: Column(
+  //                       crossAxisAlignment: CrossAxisAlignment.start,
+  //                       children: [
+  //                         Text(
+  //                           newDiseaseList[index]['diseaseName'],
+  //                           style: TextStyle(
+  //                             fontSize: 18,
+  //                             fontWeight: FontWeight.bold,
+  //                             fontFamily: GoogleFonts.tajawal().toString(),
+  //                           ),
+  //                         ),
+  //                         const SizedBox(
+  //                           height: 8,
+  //                         ),
+  //                         Text(
+  //                           newDiseaseList[index]['indentificationSign'],
+  //                           softWrap: true,
+  //                           overflow: TextOverflow.visible,
+  //                           maxLines: 2,
+  //                           style: const TextStyle(
+  //                             fontSize: 12,
+  //                             fontWeight: FontWeight.normal,
+  //                           ),
+  //                         ),
+  //                         Container(
+  //                           margin: const EdgeInsets.only(top: 4, bottom: 4),
+  //                           child: const Divider(
+  //                             height: 1,
+  //                             color: Colors.black,
+  //                           ),
+  //                         ),
+  //                         const SizedBox(
+  //                           height: 6,
+  //                         ),
+  //                         Text(
+  //                           'Đối tượng: ${newDiseaseList[index]['diseaseObject']}',
+  //                           softWrap: true,
+  //                           overflow: TextOverflow.ellipsis,
+  //                           style: const TextStyle(
+  //                             fontSize: 12,
+  //                             fontWeight: FontWeight.bold,
+  //                           ),
+  //                         ),
+  //                         Container(
+  //                           width: double.infinity,
+  //                           margin: const EdgeInsets.only(top: 2),
+  //                           alignment: Alignment.bottomRight,
+  //                           child: TextButton.icon(
+  //                             onPressed: () {},
+  //                             label: const Text('Đọc thêm',
+  //                                 style: TextStyle(
+  //                                   color: AppColors.primaryColor,
+  //                                 )),
+  //                             icon: const Icon(
+  //                               Icons.arrow_right_alt,
+  //                               color: AppColors.primaryColor,
+  //                             ),
+  //                           ),
+  //                         ),
+  //                       ],
+  //                     ),
+  //                   ),
+  //                 ),
+  //               ],
+  //             ),
+  //           ),
+  //         );
+  //       },
+  //     ),
+  //   );
+  // }
+
+  Container buildListOfCommonDiseases() {
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.symmetric(vertical: 24),
@@ -170,14 +399,11 @@ class _HomeScreenState extends State<HomeScreen> {
         physics: const NeverScrollableScrollPhysics(),
         itemCount: newDiseaseList.length,
         itemBuilder: (context, index) {
+          final disease = newDiseaseList[index];
           return Container(
             width: double.infinity,
             height: 160,
-            margin: const EdgeInsets.only(
-              bottom: 16,
-              left: 4,
-              right: 4,
-            ),
+            margin: const EdgeInsets.only(bottom: 16, left: 4, right: 4),
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
               color: const Color.fromARGB(255, 255, 255, 255),
@@ -191,98 +417,86 @@ class _HomeScreenState extends State<HomeScreen> {
                 )
               ],
             ),
-            child: Center(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Container(
-                    width: 86,
-                    height: double.infinity,
-                    margin: const EdgeInsets.only(bottom: 12),
-                    decoration: BoxDecoration(
-                      color: Colors.grey,
-                      borderRadius: BorderRadius.circular(12),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: 86,
+                  height: double.infinity,
+                  margin: const EdgeInsets.only(bottom: 12),
+                  decoration: BoxDecoration(
+                    color: Colors.grey,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(6),
+                    child: Image.network(
+                      disease['url'],
+                      fit: BoxFit.cover,
                     ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(6),
-                      child: Image.network(
-                        newDiseaseList[index]['url'],
-                        fit: BoxFit.cover,
+                  ),
+                ),
+                const SizedBox(width: 19),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        disease['diseaseName'],
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: GoogleFonts.tajawal().toString(),
+                        ),
                       ),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 19,
-                  ),
-                  Expanded(
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            newDiseaseList[index]['diseaseName'],
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: GoogleFonts.tajawal().toString(),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 8,
-                          ),
-                          Text(
-                            newDiseaseList[index]['indentificationSign'],
-                            softWrap: true,
-                            overflow: TextOverflow.visible,
-                            maxLines: 2,
-                            style: const TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.only(top: 4, bottom: 4),
-                            child: const Divider(
-                              height: 1,
-                              color: Colors.black,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 6,
-                          ),
-                          Text(
-                            'Đối tượng: ${newDiseaseList[index]['diseaseObject']}',
-                            softWrap: true,
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Container(
-                            width: double.infinity,
-                            margin: const EdgeInsets.only(top: 2),
-                            alignment: Alignment.bottomRight,
-                            child: TextButton.icon(
-                              onPressed: () {},
-                              label: const Text('Đọc thêm',
-                                  style: TextStyle(
-                                    color: AppColors.primaryColor,
-                                  )),
-                              icon: const Icon(
-                                Icons.arrow_right_alt,
-                                color: AppColors.primaryColor,
-                              ),
-                            ),
-                          ),
-                        ],
+                      const SizedBox(height: 8),
+                      Text(
+                        disease['indentificationSign'],
+                        softWrap: true,
+                        overflow: TextOverflow.visible,
+                        maxLines: 2,
+                        style: const TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.normal,
+                        ),
                       ),
-                    ),
+                      Container(
+                        margin: const EdgeInsets.only(top: 4, bottom: 4),
+                        child: const Divider(
+                          height: 1,
+                          color: Colors.black,
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      Text(
+                        'Đối tượng: ${disease['diseaseObject']}',
+                        softWrap: true,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Container(
+                        width: double.infinity,
+                        margin: const EdgeInsets.only(top: 2),
+                        alignment: Alignment.bottomRight,
+                        child: TextButton.icon(
+                          onPressed: () {},
+                          label: const Text(
+                            'Đọc thêm',
+                            style: TextStyle(color: AppColors.primaryColor),
+                          ),
+                          icon: const Icon(
+                            Icons.arrow_right_alt,
+                            color: AppColors.primaryColor,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           );
         },
