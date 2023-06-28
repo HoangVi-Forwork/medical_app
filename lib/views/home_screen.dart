@@ -19,13 +19,11 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
   final imagePosterList = [
     'assets/images/POSTER_01.png',
     'assets/images/POSTER_02.png',
     'assets/images/POSTER_03.png',
   ];
-
   List<Map<String, dynamic>> iconsList = [
     {
       'icon': 'assets/icons/hospital.png',
@@ -97,82 +95,17 @@ class _HomeScreenState extends State<HomeScreen> {
     },
   ];
 
-  // static showDiseases() async {
-  //   List<ListDiseasesModel> diseases = [];
-  //   const String endpoint = 'http://192.168.11.20:5090/danhsachbenh';
-  //   try {
-  //     final res = await http.get(Uri.parse(endpoint));
-  //     if (res.statusCode == 200) {
-  //       var data = jsonDecode(res.body);
-  //       data['diseases'].forEach((value) => {
-  //             diseases.add(ListDiseasesModel(
-  //               id_benh: value['id_benh'],
-  //               tenbenh: value['tenbenh'],
-  //               hinhanh: value['hinhanh'],
-  //               trieuchung: value['trieuchung'],
-  //               nguyennhan: value['nguyennhan'],
-  //               phongngua: value['phongngua'],
-  //               noidung: value['noidung'],
-  //               id_loaibenh: value['id_loaibenh'],
-  //               tenrieng: value['tenrieng'],
-  //             ))
-  //           });
+  // Future<Map<dynamic, dynamic>> fetchData() async {
+  //   final response =
+  //       await http.get(Uri.parse('http://172.19.201.157:5090/danhsachbenh'));
 
-  //       return diseases;
-  //     } else {
-  //       return [];
-  //     }
-  //   } catch (e) {
-  //     print(e.toString());
-  //   }
-  // }
-
-  Future<List<ListDiseasesModel>> showDiseases() async {
-    List<ListDiseasesModel> diseases = [];
-    const String endpoint = 'http://10.7.134.227:5090/danhsachbenh';
-    try {
-      final res = await http.get(Uri.parse(endpoint));
-
-      if (res.statusCode == 201) {
-        var data = jsonDecode(res.body) as dynamic;
-
-        print('have Data');
-        data['diseases'].forEach((value, index) {
-          diseases.add(ListDiseasesModel(
-            id_benh: value[index]['id_benh'],
-            tenbenh: value[index]['tenbenh'],
-            hinhanh: value[index]['hinhanh'],
-            trieuchung: value[index]['trieuchung'],
-            nguyennhan: value[index]['nguyennhan'],
-            phongngua: value[index]['phongngua'],
-            noidung: value[index]['noidung'],
-            id_loaibenh: value['id_loaibenh'],
-            tenrieng: value['tenrieng'],
-          ));
-          // print('DATA: ' + data);
-        });
-
-        return diseases;
-      } else {
-        print("have Error");
-        return [];
-      }
-    } catch (e) {
-      print("have Error 2");
-      print(e.toString());
-      return [];
-    }
-  }
-
-  // Future<List<ListDiseasesModel>> fetchDataFromServer() async {
-  //   final res =
-  //       await http.get(Uri.parse('http://10.7.134.227:5090/danhsachbenh'));
-  //   if (res.statusCode == 201) {
-  //     final data = jsonDecode(res.body);
-  //     print('This is data: ' + data);
-  //     return data as List<ListDiseasesModel>;
+  //   if (response.statusCode == 201) {
+  //     final jsonBody = jsonDecode(response.body);
+  //     final jsonData = jsonBody as Map<String, dynamic>;
+  //     final model = DiseaseModel.fromJson(jsonData);
+  //     return model as dynamic;
   //   } else {
-  //     throw Exception('Failed to fetch data from server');
+  //     throw Exception('Failed to fetch data');
   //   }
   // }
 
@@ -191,7 +124,6 @@ class _HomeScreenState extends State<HomeScreen> {
           },
         );
       }
-
       if (scrollController.position.userScrollDirection ==
           ScrollDirection.forward) {
         setState(() {
@@ -233,21 +165,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 subTitle: 'Hãy cẩn thận với sự thay đổi của thời tiết',
               ),
               // buildListOfCommonDiseases(),
-              FutureBuilder(
-                  future: showDiseases(),
-                  builder: (BuildContext context, AsyncSnapshot snapshot) {
-                    if (!snapshot.hasData) {
-                      return const Center(
-                        child: CircularProgressIndicator(
-                          color: Colors.pink,
-                        ),
-                      );
-                    } else {
-                      List<ListDiseasesModel> diseaseDatas = snapshot.data!;
-                      print(diseaseDatas);
-                      return Container();
-                    }
-                  }),
             ],
           ),
         ),

@@ -48,6 +48,7 @@ app.get("/loaibenh", (req, res) => {
       res.status(422).json("không thực hiện được");
     } else {
       res.status(201).json(result);
+      // print(result.body);
     }
   });
 });
