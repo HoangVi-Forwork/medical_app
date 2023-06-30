@@ -1,5 +1,6 @@
 // ignore_for_file: depend_on_referenced_packages, unused_import
 import 'dart:convert';
+import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -8,7 +9,8 @@ import 'package:medical_app/repositories/diseases_repositories.dart';
 import 'package:medical_app/widgets/colors.dart';
 import 'package:medical_app/widgets/draw.dart';
 import '../widgets/buttons/floating_scroll_button.dart';
-import '../widgets/text_input_widgets/text_title_and_subtitle.dart';
+import '../widgets/home/build_list_of_common_diseases.dart';
+import '../widgets/home/text_title_and_subtitle.dart';
 import 'package:http/http.dart' as http;
 
 class HomeScreen extends StatefulWidget {
@@ -97,20 +99,6 @@ class _HomeScreenState extends State<HomeScreen> {
     },
   ];
 
-  // Future<Map<dynamic, dynamic>> fetchData() async {
-  //   final response =
-  //       await http.get(Uri.parse('http://172.19.201.157:5090/danhsachbenh'));
-
-  //   if (response.statusCode == 201) {
-  //     final jsonBody = jsonDecode(response.body);
-  //     final jsonData = jsonBody as Map<String, dynamic>;
-  //     final model = DiseaseModel.fromJson(jsonData);
-  //     return model as dynamic;
-  //   } else {
-  //     throw Exception('Failed to fetch data');
-  //   }
-  // }
-
   final ScrollController scrollController = ScrollController();
   // listen for user actions funcs
   bool isVisibale = false;
@@ -166,37 +154,104 @@ class _HomeScreenState extends State<HomeScreen> {
                 textTitle: 'Bệnh phổ biến',
                 subTitle: 'Hãy cẩn thận với sự thay đổi của thời tiết',
               ),
-              // buildListOfCommonDiseases(),
+
               Container(
                 width: double.infinity,
+                // height: 500,
+                constraints: const BoxConstraints(
+                  minHeight: 200,
+                ),
+                margin: const EdgeInsets.only(top: 26),
                 child: FutureBuilder(
-                    future: diseaseRepository.fetchDiseasesList(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      } else if (snapshot.hasError) {
-                        return const Center(
-                          child: Text("Have Error"),
-                        );
-                      } else {
-                        final List<DiseasesModel> diseasesList = snapshot.data!;
-                        //print("Data nè: " + diseasesList.toString());
-                        return ListView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: diseasesList.length,
-                            itemBuilder: (context, index) {
-                              final disease = diseasesList[index];
-                              return ListTile(
-                                title: Text(disease.tenBenh ?? '...'),
-                                subtitle: Text(disease.nguyenNhan ?? '...'),
-                              );
-                            });
-                      }
-                    }),
-              )
+                  future: diseaseRepository.fetchDiseasesList(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else if (snapshot.hasError) {
+                      return const Center(
+                        child: Text("Have Error"),
+                      );
+                    } else {
+                      final List<DiseasesModel> diseasesList = snapshot.data!;
+                      final limitedList = diseasesList.take(5).toList();
+                      //print("Data nè: " + diseasesList.toString());
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: limitedList.length,
+                        itemBuilder: (context, index) {
+                          final disease = diseasesList[index];
+                          return GestureDetector(
+                            onTap: () {
+                              showBottomSheet(
+                                  context: context,
+                                  builder: (context) {
+                                    return Container(
+                                      width: double.infinity,
+                                      height: 460,
+                                      margin: const EdgeInsets.all(16),
+                                      color: AppColors.primaryColor,
+                                    );
+                                  });
+                            },
+                            child: Container(
+                              margin: const EdgeInsets.only(bottom: 12),
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: const Color.fromARGB(255, 255, 255, 255),
+                                borderRadius: BorderRadius.circular(12),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.3),
+                                    blurRadius: 12.0,
+                                    spreadRadius: 0.0,
+                                    offset: const Offset(0.0, 0.1),
+                                  )
+                                ],
+                              ),
+                              child: ListTile(
+                                leading: SizedBox(
+                                  width: 56,
+                                  height: 56,
+                                  child: Image.network(
+                                    '${disease.hinhAnh}',
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                title: Container(
+                                  margin: const EdgeInsets.only(bottom: 4),
+                                  child: Text(
+                                    disease.tenBenh ?? '...',
+                                    maxLines: 3,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                subtitle: Text(
+                                  disease.nguyenNhan ?? '...',
+                                  maxLines: 3,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    color: Colors.grey,
+                                    fontStyle: FontStyle.italic,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    }
+                  },
+                ),
+              ),
+              // List Of Common Disease
+              buildListOfCommonDiseases(newDiseaseList),
             ],
           ),
         ),
@@ -206,250 +261,6 @@ class _HomeScreenState extends State<HomeScreen> {
         scrollController: scrollController,
       ),
       //bottomNavigationBar: const buildBottomNavigationBar(),
-    );
-  }
-
-  // List Of Common Diseases
-  // Container _buildListOfCommonDiseases() {
-  //   return Container(
-  //     width: double.infinity,
-  //     margin: const EdgeInsets.symmetric(vertical: 24),
-  //     child: ListView.builder(
-  //       shrinkWrap: true,
-  //       physics: const NeverScrollableScrollPhysics(),
-  //       itemCount: newDiseaseList.length,
-  //       itemBuilder: (context, index) {
-  //         return Container(
-  //           width: double.infinity,
-  //           height: 160,
-  //           margin: const EdgeInsets.only(
-  //             bottom: 16,
-  //             left: 4,
-  //             right: 4,
-  //           ),
-  //           padding: const EdgeInsets.all(12),
-  //           decoration: BoxDecoration(
-  //             color: const Color.fromARGB(255, 255, 255, 255),
-  //             borderRadius: BorderRadius.circular(12),
-  //             boxShadow: [
-  //               BoxShadow(
-  //                 color: Colors.grey.withOpacity(0.3),
-  //                 blurRadius: 12.0,
-  //                 spreadRadius: 0.0,
-  //                 offset: const Offset(0.0, 0.1),
-  //               )
-  //             ],
-  //           ),
-  //           child: Center(
-  //             child: Row(
-  //               crossAxisAlignment: CrossAxisAlignment.start,
-  //               mainAxisAlignment: MainAxisAlignment.start,
-  //               children: [
-  //                 Container(
-  //                   width: 86,
-  //                   height: double.infinity,
-  //                   margin: const EdgeInsets.only(bottom: 12),
-  //                   decoration: BoxDecoration(
-  //                     color: Colors.grey,
-  //                     borderRadius: BorderRadius.circular(12),
-  //                   ),
-  //                   child: ClipRRect(
-  //                     borderRadius: BorderRadius.circular(6),
-  //                     child: Image.network(
-  //                       newDiseaseList[index]['url'],
-  //                       fit: BoxFit.cover,
-  //                     ),
-  //                   ),
-  //                 ),
-  //                 const SizedBox(
-  //                   width: 19,
-  //                 ),
-  //                 Expanded(
-  //                   child: SizedBox(
-  //                     width: double.infinity,
-  //                     child: Column(
-  //                       crossAxisAlignment: CrossAxisAlignment.start,
-  //                       children: [
-  //                         Text(
-  //                           newDiseaseList[index]['diseaseName'],
-  //                           style: TextStyle(
-  //                             fontSize: 18,
-  //                             fontWeight: FontWeight.bold,
-  //                             fontFamily: GoogleFonts.tajawal().toString(),
-  //                           ),
-  //                         ),
-  //                         const SizedBox(
-  //                           height: 8,
-  //                         ),
-  //                         Text(
-  //                           newDiseaseList[index]['indentificationSign'],
-  //                           softWrap: true,
-  //                           overflow: TextOverflow.visible,
-  //                           maxLines: 2,
-  //                           style: const TextStyle(
-  //                             fontSize: 12,
-  //                             fontWeight: FontWeight.normal,
-  //                           ),
-  //                         ),
-  //                         Container(
-  //                           margin: const EdgeInsets.only(top: 4, bottom: 4),
-  //                           child: const Divider(
-  //                             height: 1,
-  //                             color: Colors.black,
-  //                           ),
-  //                         ),
-  //                         const SizedBox(
-  //                           height: 6,
-  //                         ),
-  //                         Text(
-  //                           'Đối tượng: ${newDiseaseList[index]['diseaseObject']}',
-  //                           softWrap: true,
-  //                           overflow: TextOverflow.ellipsis,
-  //                           style: const TextStyle(
-  //                             fontSize: 12,
-  //                             fontWeight: FontWeight.bold,
-  //                           ),
-  //                         ),
-  //                         Container(
-  //                           width: double.infinity,
-  //                           margin: const EdgeInsets.only(top: 2),
-  //                           alignment: Alignment.bottomRight,
-  //                           child: TextButton.icon(
-  //                             onPressed: () {},
-  //                             label: const Text('Đọc thêm',
-  //                                 style: TextStyle(
-  //                                   color: AppColors.primaryColor,
-  //                                 )),
-  //                             icon: const Icon(
-  //                               Icons.arrow_right_alt,
-  //                               color: AppColors.primaryColor,
-  //                             ),
-  //                           ),
-  //                         ),
-  //                       ],
-  //                     ),
-  //                   ),
-  //                 ),
-  //               ],
-  //             ),
-  //           ),
-  //         );
-  //       },
-  //     ),
-  //   );
-  // }
-
-  Container buildListOfCommonDiseases() {
-    return Container(
-      width: double.infinity,
-      margin: const EdgeInsets.symmetric(vertical: 24),
-      child: ListView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: newDiseaseList.length,
-        itemBuilder: (context, index) {
-          final disease = newDiseaseList[index];
-          return Container(
-            width: double.infinity,
-            height: 160,
-            margin: const EdgeInsets.only(bottom: 16, left: 4, right: 4),
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: const Color.fromARGB(255, 255, 255, 255),
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.3),
-                  blurRadius: 12.0,
-                  spreadRadius: 0.0,
-                  offset: const Offset(0.0, 0.1),
-                )
-              ],
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  width: 86,
-                  height: double.infinity,
-                  margin: const EdgeInsets.only(bottom: 12),
-                  decoration: BoxDecoration(
-                    color: Colors.grey,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(6),
-                    child: Image.network(
-                      disease['url'],
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 19),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        disease['diseaseName'],
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: GoogleFonts.tajawal().toString(),
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        disease['indentificationSign'],
-                        softWrap: true,
-                        overflow: TextOverflow.visible,
-                        maxLines: 2,
-                        style: const TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.normal,
-                        ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.only(top: 4, bottom: 4),
-                        child: const Divider(
-                          height: 1,
-                          color: Colors.black,
-                        ),
-                      ),
-                      const SizedBox(height: 6),
-                      Text(
-                        'Đối tượng: ${disease['diseaseObject']}',
-                        softWrap: true,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Container(
-                        width: double.infinity,
-                        margin: const EdgeInsets.only(top: 2),
-                        alignment: Alignment.bottomRight,
-                        child: TextButton.icon(
-                          onPressed: () {},
-                          label: const Text(
-                            'Đọc thêm',
-                            style: TextStyle(color: AppColors.primaryColor),
-                          ),
-                          icon: const Icon(
-                            Icons.arrow_right_alt,
-                            color: AppColors.primaryColor,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
-      ),
     );
   }
 

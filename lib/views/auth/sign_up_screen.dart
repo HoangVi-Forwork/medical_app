@@ -131,7 +131,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         SizedBox(
                           height: 36,
                         ),
-                        buildSignUpButton(
+                        BuildSignUpButton(
                           text: 'Register',
                           submitType: 'register',
                           submitButton: () {
@@ -140,7 +140,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                         Row(
                           children: [
-                            buildComeBackButton(
+                            BuildComeBackButton(
                               text: 'I have a account!',
                             ),
                           ],
