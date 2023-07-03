@@ -3,13 +3,13 @@ import 'package:http/http.dart' as http;
 import 'package:medical_app/model/diseases_model.dart';
 
 class DiseaseRepository {
-  var url = 'http://172.19.200.140:5090/danhsachbenh';
+  var url = 'http://10.7.131.1:5090/danhsachbenh';
 
   Future<List<DiseasesModel>> fetchDiseasesList() async {
     http.Response response = await http.get(Uri.parse(url));
     if (response.statusCode == 201) {
       final result = jsonDecode(response.body) as List;
-      print('In DiseaseRepository File: ' + result.toString());
+      // print('In DiseaseRepository File: ' + result.toString());
       return result.map((i) => DiseasesModel.fromJson(i)).toList();
     } else {
       throw 'Error In DiseaseRepository';

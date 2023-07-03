@@ -6,6 +6,7 @@ import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:medical_app/model/diseases_model.dart';
 import 'package:medical_app/repositories/diseases_repositories.dart';
+import 'package:medical_app/views/home_detail_disease.dart';
 import 'package:medical_app/widgets/colors.dart';
 import 'package:medical_app/widgets/draw.dart';
 import '../widgets/buttons/floating_scroll_button.dart';
@@ -144,7 +145,11 @@ class _HomeScreenState extends State<HomeScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              _topListViewPoster(imagePosterList),
+              Visibility(
+                visible: isVisibale,
+                child: _topListViewPoster(imagePosterList),
+              ),
+
               const textTitleAndSubTitle(
                 textTitle: 'Dịch vụ',
                 subTitle: 'Lựa chọn dịch vụ y tế',
@@ -166,8 +171,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   future: diseaseRepository.fetchDiseasesList(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
+                      return Center(
+                        // child: CircularProgressIndicator(),
+                        child: Image.asset(
+                          'assets/icons/medicine.gif',
+                          width: 56,
+                          height: 56,
+                        ),
                       );
                     } else if (snapshot.hasError) {
                       return const Center(
@@ -180,21 +190,23 @@ class _HomeScreenState extends State<HomeScreen> {
                       return ListView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
-                        itemCount: limitedList.length,
+                        itemCount: diseasesList.length,
                         itemBuilder: (context, index) {
                           final disease = diseasesList[index];
+                          final imageDisease =
+                              Image.network(disease.hinhAnh.toString());
+                          final imageDiseaseError =
+                              Image.asset('assets/icons/medicine.gif');
                           return GestureDetector(
                             onTap: () {
-                              showBottomSheet(
-                                  context: context,
-                                  builder: (context) {
-                                    return Container(
-                                      width: double.infinity,
-                                      height: 460,
-                                      margin: const EdgeInsets.all(16),
-                                      color: AppColors.primaryColor,
-                                    );
-                                  });
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => HomeDetailDisease(
+                                    diseases: disease,
+                                  ),
+                                ),
+                              );
                             },
                             child: Container(
                               margin: const EdgeInsets.only(bottom: 12),
@@ -212,14 +224,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ],
                               ),
                               child: ListTile(
-                                leading: SizedBox(
-                                  width: 56,
-                                  height: 56,
-                                  child: Image.network(
-                                    '${disease.hinhAnh}',
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
+                                // leading: SizedBox(
+                                //   width: 56,
+                                //   height: 56,
+                                //   child: Image.network(
+                                //     disease.hinhAnh.toString(),
+                                //   ),
+                                // ),
                                 title: Container(
                                   margin: const EdgeInsets.only(bottom: 4),
                                   child: Text(
