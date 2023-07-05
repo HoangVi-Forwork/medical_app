@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:medical_app/views/landing_screen.dart';
+import 'package:medical_app/views/landing/landing_screen.dart';
 import 'package:medical_app/widgets/colors.dart';
-import '../../blocs/auth/auth_bloc.dart';
-import '../../utils/sign_in_utils.dart';
-import '../../widgets/buttons/auth/buttons_widget.dart';
-import '../../widgets/text_input_widgets/auth/text_input_widgets.dart';
+import '../../../blocs/auth/auth_bloc.dart';
+import 'sign_in_utils.dart';
+import '../../../widgets/buttons/auth/buttons_widget.dart';
+import '../../../widgets/text_input_widgets/auth/text_input_widgets.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -25,7 +25,7 @@ class _SignInScreenState extends State<SignInScreen> {
   String message = '';
 
   void login() async {
-    const String apiUrl = 'http://10.7.131.1:5090/login';
+    const String apiUrl = 'http://192.168.0.170:5090/login';
     final response = await http.post(Uri.parse(apiUrl), body: {
       'email': emailController.text,
       'password': passwordController.text,

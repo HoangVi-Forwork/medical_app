@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:medical_app/widgets/colors.dart';
 
-import '../model/diseases_model.dart';
+import '../../model/diseases_model.dart';
 
 class HomeDetailDisease extends StatelessWidget {
   final DiseasesModel diseases;

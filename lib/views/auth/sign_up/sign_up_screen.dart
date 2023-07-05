@@ -2,11 +2,11 @@
 // ignore_for_file: camel_case_types, prefer_const_constructors
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:medical_app/views/landing_screen.dart';
-import '../../blocs/auth/auth_bloc.dart';
-import '../../utils/sign_up_utils.dart';
-import '../../widgets/buttons/auth/buttons_widget.dart';
-import '../../widgets/text_input_widgets/auth/text_input_widgets.dart';
+import 'package:medical_app/views/landing/landing_screen.dart';
+import '../../../blocs/auth/auth_bloc.dart';
+import 'sign_up_utils.dart';
+import '../../../widgets/buttons/auth/buttons_widget.dart';
+import '../../../widgets/text_input_widgets/auth/text_input_widgets.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});

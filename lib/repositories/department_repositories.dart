@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:medical_app/model/department_model.dart';
 
 class DepartmentRepository {
-  var url = 'http://10.7.131.1:5090/khoabenh';
+  var url = 'http://192.168.0.170:5090/khoabenh';
   Future<List<DepartmentModel>> getDepartment() async {
     http.Response response = await http.get(Uri.parse(url));
     if (response.statusCode == 201) {
