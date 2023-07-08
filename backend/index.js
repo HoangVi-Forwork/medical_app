@@ -6,6 +6,7 @@ const mysql = require("mysql2");
 const db = require("./data/data.js");
 require("./data/data.js");
 const session = require("express-session");
+const Login = require('../backend/web/login/login.js');
 const port = 5090;
 
 app.use(express.json());
@@ -20,6 +21,9 @@ app.use(
     },
   })
 );
+
+app.use(Login);
+
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get("/danhsachbenh", (req, res) => {
@@ -81,6 +85,7 @@ app.post("/login", (req, res) => {
     }
   );
 });
+
 
 app.listen(port, () => {
   console.log(`Server is localhost::${port}`);
