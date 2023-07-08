@@ -12,12 +12,12 @@ class DiseaseBloc extends Bloc<DiseaseEvent, DiseaseState> {
   DiseaseBloc(this.diseaseRepository) : super(DiseaseInitial()) {
     on<FetchDiseasesEvent>((event, emit) async {
       emit(DiseaseLoadingState());
-      print('haha');
+      // print('haha');
       try {
-        print('tới đây rồi');
+        // print('tới đây rồi');
         final List<DiseasesModel> diseasesList =
             await diseaseRepository.fetchDiseasesList();
-        print('hết rồi');
+        // print('hết rồi');
         emit(DiseaseLoadedState(diseasesList));
       } catch (e) {
         emit(DiseaseErrorState('Error fetching diseases: $e'));

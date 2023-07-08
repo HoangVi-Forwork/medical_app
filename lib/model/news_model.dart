@@ -1,37 +1,28 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class NewsModel {
-  final String id;
-  final String title;
-  final String content;
-  final String imageUrl;
-  final Timestamp timestamp;
-
+  int? idTintuc;
+  String? tieuDe;
+  String? hinhAnh;
+  String? gioiThieu;
+  String? noiDung;
+  int? idLoaiTinTuc;
+  String? thoiGian;
   NewsModel({
-    required this.id,
-    required this.title,
-    required this.content,
-    required this.imageUrl,
-    required this.timestamp,
+    this.idTintuc,
+    this.tieuDe,
+    this.hinhAnh,
+    this.gioiThieu,
+    this.noiDung,
+    this.idLoaiTinTuc,
+    this.thoiGian,
   });
 
-  factory NewsModel.fromJson(DocumentSnapshot doc) {
-    Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-    return NewsModel(
-      id: doc.id,
-      title: data['title'] ?? '',
-      content: data['content'] ?? '',
-      imageUrl: data['imageUrl'] ?? '',
-      timestamp: data['timestamp'] ?? Timestamp.now(),
-    );
-  }
-
-  Map<String, dynamic> toFirestore() {
-    return {
-      'title': title,
-      'content': content,
-      'imageUrl': imageUrl,
-      'timestamp': timestamp,
-    };
+  NewsModel.fromJson(Map<String, dynamic> json) {
+    idTintuc = json['idTintuc'];
+    tieuDe = json['tentintuc'];
+    hinhAnh = json['hinhanh'];
+    gioiThieu = json['gioithieu'];
+    noiDung = json['noidung'];
+    idLoaiTinTuc = json['idLoaitintuc'];
+    thoiGian = json['thoigian'];
   }
 }
