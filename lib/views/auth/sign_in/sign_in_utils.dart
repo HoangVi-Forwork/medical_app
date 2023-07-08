@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../widgets/colors.dart';
 
-//! Top Imge for Sign In Screen
+// TOP IMAGE SIGIN SCREEN
 Widget topImage(BuildContext context) {
   const String url = 'assets/images/22.jpg';
   return Container(
