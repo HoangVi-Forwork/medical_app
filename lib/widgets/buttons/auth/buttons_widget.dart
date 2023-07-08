@@ -1,12 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
 import 'package:flutter/material.dart';
-import 'package:medical_app/views/auth/sign_up_screen.dart';
+import 'package:medical_app/views/auth/sign_up/sign_up_screen.dart';
 import '../../colors.dart';
 
-class buildComeBackButton extends StatelessWidget {
+class BuildComeBackButton extends StatelessWidget {
   String text;
-  buildComeBackButton({
+  BuildComeBackButton({
     Key? key,
     required this.text,
   }) : super(key: key);
@@ -26,12 +26,12 @@ class buildComeBackButton extends StatelessWidget {
   }
 }
 
-class buildForgotPassword extends StatelessWidget {
+class BuildForgotPassword extends StatelessWidget {
   String text;
   String buttonType;
   final Function submitButton;
 
-  buildForgotPassword({
+  BuildForgotPassword({
     Key? key,
     required this.text,
     required this.buttonType,
@@ -53,10 +53,11 @@ class buildForgotPassword extends StatelessWidget {
   }
 }
 
+@immutable
 class buildSignInButton extends StatelessWidget {
   String text;
   String submitType;
-  final Function submitButton;
+  Function submitButton;
   buildSignInButton({
     Key? key,
     required this.text,
@@ -117,11 +118,11 @@ class buildSignInButton extends StatelessWidget {
   }
 }
 
-class buildSignUpButton extends StatelessWidget {
-  String text;
-  String submitType;
+class BuildSignUpButton extends StatelessWidget {
+  final String text;
+  final String submitType;
   final Function submitButton;
-  buildSignUpButton({
+  const BuildSignUpButton({
     Key? key,
     required this.text,
     required this.submitType,

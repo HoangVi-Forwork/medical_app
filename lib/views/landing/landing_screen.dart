@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:medical_app/views/favourited_screen.dart';
-import 'package:medical_app/views/home_screen.dart';
+import 'package:medical_app/views/favorited/favourited_screen.dart';
+import 'package:medical_app/views/home/home_screen.dart';
+import 'package:medical_app/views/landing/landing_utils.dart';
 import 'package:medical_app/views/news/news_screen.dart';
-import 'package:medical_app/views/search_sreen.dart';
+import 'package:medical_app/views/search/search_sreen.dart';
 import 'package:medical_app/widgets/colors.dart';
 import 'package:medical_app/widgets/draw.dart';
 
@@ -16,20 +17,9 @@ class LandingScreen extends StatefulWidget {
 class _LandingScreenState extends State<LandingScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int currentIndex = 0;
-  final List<String> appBarTitles = ['', 'Tìm Kiếm', 'Tin Tức', 'Quan Tâm'];
-
-  final List<IconData> appBarLeadingIcons = [
-    Icons.menu,
-    Icons.arrow_back,
-    Icons.arrow_back,
-    Icons.arrow_back,
-  ];
-  final List<IconData> appBarActionIcons = [
-    Icons.shopping_cart,
-    Icons.filter_list_alt,
-    Icons.share,
-    Icons.favorite_border,
-  ];
+  final List<IconData> appBarLeadingIcons = LandingUtils.appBarLeadingIcons;
+  final List<IconData> appBarActionIcons = LandingUtils.appBarActionIcons;
+  final List<String> appBarTitles = LandingUtils.appBarTitles;
 
   @override
   Widget build(BuildContext context) {
@@ -42,43 +32,47 @@ class _LandingScreenState extends State<LandingScreen> {
         children: const [
           HomeScreen(),
           SearchScreen(),
-          // NewsScreen(),
+          NewsScreen(),
           FavouritedScreen(),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: currentIndex,
-        onTap: (index) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            setState(() {
-              currentIndex = index;
-            });
+      bottomNavigationBar: buildBottomNavigator(),
+    );
+  }
+
+  BottomNavigationBar buildBottomNavigator() {
+    return BottomNavigationBar(
+      currentIndex: currentIndex,
+      onTap: (index) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          setState(() {
+            currentIndex = index;
           });
-        },
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'landing Screen',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search Screen',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.newspaper),
-            label: 'News Screen',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.bookmark),
-            label: 'Favorited Screen',
-          ),
-        ],
-        backgroundColor: Colors.white,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        selectedItemColor: AppColors.primaryColor,
-        unselectedItemColor: AppColors.primaryColor.withOpacity(0.2),
-      ),
+        });
+      },
+      items: const [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          label: 'landing Screen',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.search),
+          label: 'Search Screen',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.newspaper),
+          label: 'News Screen',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.bookmark),
+          label: 'Favorited Screen',
+        ),
+      ],
+      backgroundColor: Colors.white,
+      showSelectedLabels: false,
+      showUnselectedLabels: false,
+      selectedItemColor: AppColors.primaryColor,
+      unselectedItemColor: AppColors.primaryColor.withOpacity(0.2),
     );
   }
 
