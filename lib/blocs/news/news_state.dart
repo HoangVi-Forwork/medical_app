@@ -1,4 +1,6 @@
-part of 'news_bloc.dart';
+import 'package:equatable/equatable.dart';
+
+import 'package:medical_app/model/news_model.dart';
 
 abstract class NewsState extends Equatable {
   const NewsState();
@@ -9,22 +11,21 @@ abstract class NewsState extends Equatable {
 
 class NewsInitial extends NewsState {}
 
-class NewsLoadingState extends NewsState {
-  @override
-  List<Object> get props => [];
-}
+class NewsInitialState extends NewsState {}
+
+class NewsLoadingState extends NewsState {}
 
 class NewsLoadedState extends NewsState {
   final List<NewsModel> newsList;
+
   const NewsLoadedState(this.newsList);
 
-  @override
-  List<Object> get props => [newsList];
+  // @override
+  // List<Object> get props => [diseasesList];
 }
 
 class NewsErrorState extends NewsState {
-  final String error;
-  const NewsErrorState(this.error);
-  @override
-  List<Object> get props => [error];
+  final String errorMessage;
+
+  const NewsErrorState(this.errorMessage);
 }

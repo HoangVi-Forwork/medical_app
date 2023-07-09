@@ -1,12 +1,11 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: public_member_api_docs, sort_constructors_first, must_be_immutable
 
 import 'package:flutter/material.dart';
-import 'package:medical_app/views/auth/sign_up_screen.dart';
 import '../../colors.dart';
 
-class buildComeBackButton extends StatelessWidget {
+class BuildComeBackButton extends StatelessWidget {
   String text;
-  buildComeBackButton({
+  BuildComeBackButton({
     Key? key,
     required this.text,
   }) : super(key: key);
@@ -26,12 +25,13 @@ class buildComeBackButton extends StatelessWidget {
   }
 }
 
-class buildForgotPassword extends StatelessWidget {
+// FORGOT PASSWORD BUTTON - CALL UPDATE PASSWORD FORM
+class BuildForgotPassword extends StatelessWidget {
   String text;
   String buttonType;
   final Function submitButton;
 
-  buildForgotPassword({
+  BuildForgotPassword({
     Key? key,
     required this.text,
     required this.buttonType,
@@ -53,10 +53,14 @@ class buildForgotPassword extends StatelessWidget {
   }
 }
 
+// SUBMIT SIGNIN BUTTON - USING INTO LOGIN SCREEN
+// IF "submitType == login" -> NAVIAGTOR TO LANDINGCREEN
+// ELSE -> CALL RESIGTER FORM
+@immutable
 class buildSignInButton extends StatelessWidget {
   String text;
   String submitType;
-  final Function submitButton;
+  Function submitButton;
   buildSignInButton({
     Key? key,
     required this.text,
@@ -72,11 +76,74 @@ class buildSignInButton extends StatelessWidget {
               submitButton();
             }
           : () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const SignUpScreen(),
-                ),
+              showBottomSheet(
+                context: context,
+                builder: (context) {
+                  return Container(
+                    width: double.infinity,
+                    constraints: const BoxConstraints(
+                      minHeight: 460,
+                      maxHeight: 600,
+                    ),
+                    margin: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: AppColors.secondaryColor,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Column(
+                      children: [
+                        // CLOSE ICON
+                        Container(
+                          height: 30,
+                          width: double.infinity,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                          ),
+                          child: Center(
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Image.asset(
+                                'assets/images/down-arrow.png',
+                              ),
+                            ),
+                          ),
+                        ),
+                        // RESIGTER BODY
+                        Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 16,
+                            horizontal: 24,
+                          ),
+                          child: Form(
+                            child: Column(
+                              children: [
+                                // TOP TITILE
+                                _topTitle(),
+                                // NHẬP EMAIL
+                                buildResigerTextFormField(
+                                    'Nhập email', Icons.lock),
+                                // TÊN ĐĂNG NHẬP
+                                buildResigerTextFormField(
+                                    'Tên đăng nhập', Icons.lock),
+                                // NHẬP MẬT KHẨU
+                                buildResigerTextFormField(
+                                    'Mật khẩu', Icons.lock),
+                                // NHẬP LẠI MẬT KHẨU
+                                buildResigerTextFormField(
+                                    'Nhập lại mật khẩu', Icons.lock),
+                                // RESIGTER BUTTON
+                                resigterButton(),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
               );
             },
       child: Container(
@@ -115,13 +182,93 @@ class buildSignInButton extends StatelessWidget {
       ),
     );
   }
+
+  // TOP TITLE
+  Container _topTitle() {
+    return Container(
+      margin: const EdgeInsets.only(top: 12, bottom: 12),
+      width: double.infinity,
+      child: Column(
+        children: [
+          const Text(
+            'Đăng ký tài khoản',
+            style: TextStyle(
+              fontSize: 18,
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(
+            height: 18,
+          ),
+          Text(
+            'Tạo tài khoản để nhận những thông tin mới nhất',
+            style: TextStyle(
+              fontSize: 12,
+              color: Colors.white.withOpacity(0.8),
+              fontStyle: FontStyle.italic,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // SUBMIT RESIGTER BUTTON
+  GestureDetector resigterButton() {
+    return GestureDetector(
+      onTap: () {},
+      child: Container(
+        width: double.infinity,
+        height: 48,
+        margin: const EdgeInsets.only(top: 36),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(6),
+        ),
+        child: GestureDetector(
+          child: const Center(
+            child: Text('Gữi mã xác nhận'),
+          ),
+        ),
+      ),
+    );
+  }
+
+  // INPUT TEXTFORMFIELD
+  Container buildResigerTextFormField(String lableText, iconName) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      child: TextFormField(
+        decoration: InputDecoration(
+          labelText: lableText.toString(),
+          labelStyle: const TextStyle(color: Colors.white),
+          border: const OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.white),
+          ),
+          enabledBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.white),
+          ),
+          focusedBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.white),
+          ),
+          prefixIcon: Icon(
+            iconName,
+            color: Colors.white,
+          ),
+        ),
+        style: const TextStyle(color: Colors.white),
+      ),
+    );
+  }
 }
 
-class buildSignUpButton extends StatelessWidget {
-  String text;
-  String submitType;
+// SUBMIT RESIGTER BUTTON - USING INTO SIGNUP SCREEN
+class BuildSignUpButton extends StatelessWidget {
+  final String text;
+  final String submitType;
   final Function submitButton;
-  buildSignUpButton({
+  const BuildSignUpButton({
     Key? key,
     required this.text,
     required this.submitType,
