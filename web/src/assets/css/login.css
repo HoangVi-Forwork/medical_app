@@ -1,0 +1,41 @@
+.login,
+.image {
+  min-height: 100vh;
+}
+.bg-image {
+  background-size: cover;
+  background-position: center center;
+  background-color: #70ea33;
+  background-image: url(../img/BG.svg);
+
+}
+
+.log_in_text{
+  text-align: center;
+}
+
+.input_login{
+  height: 50px;
+}
+
+.mb-3 .password-toggle-icon {
+  margin-top: -2.2em;
+  margin-right: 1em;
+  float: right;
+}
+
+.custom-option {
+  border: none;
+  display: none;
+
+}
+
+.test {
+  font-size: 20px;
+  margin-left: 1rem;
+  font-weight: 700;
+  color: #8a7e7e;
+}
+.form-control{
+  height: 40px;
+}
