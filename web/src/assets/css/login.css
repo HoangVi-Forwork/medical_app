@@ -19,7 +19,23 @@
 }
 
 .mb-3 .password-toggle-icon {
-  margin-top: -2.4em;
+  margin-top: -2.2em;
   margin-right: 1em;
   float: right;
+}
+
+.custom-option {
+  border: none;
+  display: none;
+
+}
+
+.test {
+  font-size: 20px;
+  margin-left: 1rem;
+  font-weight: 700;
+  color: #8a7e7e;
+}
+.form-control{
+  height: 40px;
 }

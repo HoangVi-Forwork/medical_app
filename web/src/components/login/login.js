@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 import '../../assets/css/login.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
-function Home() {
+function Login() {
     const [showPassword, setShowPassword] = useState(false);
     const [password, setPassword] = useState('');
     const togglePasswordVisibility = () => { setShowPassword(!showPassword) };
@@ -50,4 +50,4 @@ function Home() {
     )
 };
 
-export default Home;
+export default Login;
