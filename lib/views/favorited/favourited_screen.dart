@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:medical_app/model/department_model.dart';
 
-import '../repositories/department_repositories.dart';
+import '../../repositories/department_repositories.dart';
 
 class FavouritedScreen extends StatefulWidget {
   //final AppBar appBar;
@@ -40,7 +40,7 @@ class _FavouritedScreenState extends State<FavouritedScreen> {
                   print("Data nè: " + department.toString());
                   return ListTile(
                     title: Text(department.tenKhoa ?? 'Hu'),
-                    subtitle: Text(department.noiDung ?? 'Hu'),
+                    subtitle: Text(department.makhoa ?? 'Hu'),
                   );
                 });
           } else {

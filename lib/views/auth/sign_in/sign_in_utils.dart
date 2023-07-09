@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/colors.dart';
+import '../../../widgets/colors.dart';
 
 //! Top Imge for Sign In Screen
 Widget topImage(BuildContext context) {
