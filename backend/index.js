@@ -53,7 +53,7 @@ app.get("/danhsachbenh", (req, res) => {
     }
   });
 });
-=======
+
 app.use(Login);
 app.use(Logout);
 app.use(Benh);
