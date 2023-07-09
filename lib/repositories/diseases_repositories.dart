@@ -2,8 +2,10 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:medical_app/model/diseases_model.dart';
 
+import '../config/url_config.dart';
+
 class DiseaseRepository {
-  var url = 'http://10.7.131.1:5090/danhsachbenh';
+  var url = '${Configs.IP4Local}danhsachbenh';
 
   Future<List<DiseasesModel>> fetchDiseasesList() async {
     http.Response response = await http.get(Uri.parse(url));

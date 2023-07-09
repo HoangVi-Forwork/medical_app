@@ -2,17 +2,17 @@
 class DepartmentModel {
   int? idKhoa;
   String? tenKhoa;
-  String? noiDung;
+  String? makhoa;
 
   DepartmentModel({
     required this.idKhoa,
     required this.tenKhoa,
-    required this.noiDung,
+    required this.makhoa,
   });
 
   DepartmentModel.fromJson(Map<String, dynamic> json) {
-    idKhoa = json['id_khoabenh'];
+    idKhoa = json['idKhoabenh'];
     tenKhoa = json['tenkhoa'];
-    noiDung = json['noidung'];
+    makhoa = json['Makhoa'];
   }
 }
