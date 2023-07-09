@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medical_app/views/landing/landing_screen.dart';
 import 'package:medical_app/widgets/colors.dart';
 import '../../../blocs/auth/auth_bloc.dart';
+import '../../../config/url_config.dart';
 import 'sign_in_utils.dart';
 import '../../../widgets/buttons/auth/buttons_widget.dart';
 import '../../../widgets/text_input_widgets/auth/text_input_widgets.dart';
@@ -25,7 +26,7 @@ class _SignInScreenState extends State<SignInScreen> {
   String message = '';
 
   void login() async {
-    const String apiUrl = 'http://192.168.0.170:5090/login';
+    String apiUrl = '${Configs.IP4Local}login';
     final response = await http.post(Uri.parse(apiUrl), body: {
       'email': emailController.text,
       'password': passwordController.text,

@@ -33,6 +33,27 @@ app.use(
   })
 );
 
+
+app.get("/tintuc", (req, res) => {
+  db.query("SELECT * FROM tbl_tintuc", (err, result) => {
+    if (err) {
+      res.status(422).json("không thực hiện được");
+    } else {
+      res.status(201).json(result);
+    }
+  });
+});
+
+app.get("/danhsachbenh", (req, res) => {
+  db.query("SELECT * FROM tbl_benh", (err, result) => {
+    if (err) {
+      res.status(422).json("không thực hiện được");
+    } else {
+      res.status(201).json(result);
+    }
+  });
+});
+=======
 app.use(Login);
 app.use(Logout);
 app.use(Benh);

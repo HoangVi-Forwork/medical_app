@@ -3,8 +3,11 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:medical_app/model/department_model.dart';
 
+import '../config/url_config.dart';
+
 class DepartmentRepository {
-  var url = 'http://192.168.0.170:5090/khoabenh';
+  // var endpoint = Configs.IP4Local.toString();
+  var url = '${Configs.IP4Local}khoabenh';
   Future<List<DepartmentModel>> getDepartment() async {
     http.Response response = await http.get(Uri.parse(url));
     if (response.statusCode == 201) {

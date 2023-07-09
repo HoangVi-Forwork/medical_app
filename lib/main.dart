@@ -34,6 +34,11 @@ class MyApp extends StatelessWidget {
           create: (context) => DiseaseBloc(
             DiseaseRepository(),
           ),
+        ),
+        BlocProvider(
+          create: (context) => NewsBloc(
+            NewRepositories(),
+          ),
         )
         // BlocProvider(
         //   create: (context) => NewsBloc(
