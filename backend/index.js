@@ -6,9 +6,9 @@ const mysql = require("mysql2");
 const db = require("./data/data.js");
 require("./data/data.js");
 const session = require("express-session");
-const Login = require('../backend/web/login/login.js');
-const Logout = require('./web/login/signup.js');
-const Benh = require('../backend/app/khoabenh/benh.js');
+const Login = require("../backend/web/login/login.js");
+const Logout = require("./web/login/signup.js");
+const Benh = require("../backend/app/khoabenh/benh.js");
 const port = 5090;
 
 app.use(express.json());
@@ -33,7 +33,6 @@ app.use(
   })
 );
 
-
 app.get("/tintuc", (req, res) => {
   db.query("SELECT * FROM tbl_tintuc", (err, result) => {
     if (err) {
@@ -41,6 +40,17 @@ app.get("/tintuc", (req, res) => {
     } else {
       res.status(201).json(result);
     }
+  });
+});
+
+app.get("/tintuc/:idLoaitintuc", (req, res) => {
+  const { idloaitintuc } = req.params;
+  const sql = "SELECT * FROM tbl_tintuc WHERE idLoaitintuc = ?";
+  db.query(sql, idloaitintuc, (err, result) => {
+    if (err) {
+      console.log(err);
+    }
+    res.send(result);
   });
 });
 
@@ -58,10 +68,7 @@ app.use(Login);
 app.use(Logout);
 app.use(Benh);
 
-
 app.use(bodyParser.urlencoded({ extended: true }));
-
-
 
 app.post("/login", (req, res) => {
   const email = req.body.email;
@@ -91,7 +98,6 @@ app.post("/login", (req, res) => {
     }
   );
 });
-
 
 app.listen(port, () => {
   console.log(`Server is localhost::${port}`);
