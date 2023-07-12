@@ -136,7 +136,6 @@ const RegisterForm = () => {
         <div>
            {message && <p>{message}</p>}
             <form >
-
                 <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
                 <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
                 <input type="password" value={setpassword} onChange={(e) => setSetPassword(e.target.value)} placeholder="Confirm Password" />

@@ -26,5 +26,8 @@
     "mysql": "^2.18.1",
     "mysql2": "^3.4.0",
     "nodemon": "^2.0.22"
+  },
+  "devDependencies": {
+    "@types/cookie-parser": "^1.4.3"
   }
 }
