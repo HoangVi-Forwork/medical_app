@@ -18,7 +18,7 @@ import '../config/url_config.dart';
 
 class NewRepositories {
   var url = '${Configs.IP4Local}tintuc';
-
+  var urlID = '${Configs.IP4Local}tintuc/:idloaitintuc';
   Future<List<NewsModel>> fetchNewsList() async {
     http.Response response = await http.get(Uri.parse(url));
     if (response.statusCode == 201) {
@@ -27,6 +27,17 @@ class NewRepositories {
       return result.map((i) => NewsModel.fromJson(i)).toList();
     } else {
       throw 'Error In DiseaseRepository';
+    }
+  }
+
+  Future<List<NewsModel>> fetchNewsListByType(int typeId) async {
+    final response = await http.get(Uri.parse('$urlID?type=$typeId'));
+    if (response.statusCode == 200) {
+      final result = jsonDecode(response.body) as List;
+
+      return result.map((i) => NewsModel.fromJson(i)).toList();
+    } else {
+      throw 'Error In NewsRepository';
     }
   }
 }

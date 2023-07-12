@@ -24,8 +24,26 @@ class NewsLoadedState extends NewsState {
   // List<Object> get props => [diseasesList];
 }
 
+class NewsLoadedWithIDState extends NewsState {
+  final List<NewsModel> newsList;
+
+  const NewsLoadedWithIDState(this.newsList);
+
+  // @override
+  // List<Object> get props => [diseasesList];
+}
+
 class NewsErrorState extends NewsState {
   final String errorMessage;
 
   const NewsErrorState(this.errorMessage);
+}
+
+class NewsLoadedByTypeState extends NewsState {
+  final List<NewsModel> newsList;
+
+  const NewsLoadedByTypeState(this.newsList);
+
+  @override
+  List<Object> get props => [newsList];
 }

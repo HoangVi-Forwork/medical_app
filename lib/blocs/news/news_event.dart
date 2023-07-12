@@ -8,3 +8,14 @@ abstract class NewsEvent extends Equatable {
 }
 
 class FetchNewsEvent extends NewsEvent {}
+
+class FetchWithNewsIDEvent extends NewsEvent {}
+
+class FetchByNewsTypeEvent extends NewsEvent {
+  final int typeId;
+
+  const FetchByNewsTypeEvent(this.typeId);
+
+  @override
+  List<Object> get props => [typeId];
+}
