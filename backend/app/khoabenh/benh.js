@@ -15,25 +15,25 @@ app.get("/api/danhsachbenh", (req, res) => {
 });
 
 app.get("/api/khoabenh/:idKhoabenh", (req, res) => {
-
-    db.query("SELECT * FROM tbl_khoabenh WHERE idKhoabenh = ''", (err, result) => {
-        if (err) {
-            res.status(422).json("Không thực hiện được");
-        } else {
-            res.status(201).json(result);
-        }
-    })
-})
-
-  db.query("SELECT * FROM tbl_khoabenh WHERE id = ''", (err, result) => {
-    if (err) {
-      res.status(422).json("Không thực hiện được");
-    } else {
-      res.status(201).json(result);
+  db.query(
+    "SELECT * FROM tbl_khoabenh WHERE idKhoabenh = ''",
+    (err, result) => {
+      if (err) {
+        res.status(422).json("Không thực hiện được");
+      } else {
+        res.status(201).json(result);
+      }
     }
-  });
+  );
 });
 
+db.query("SELECT * FROM tbl_khoabenh WHERE id = ''", (err, result) => {
+  if (err) {
+    res.status(422).json("Không thực hiện được");
+  } else {
+    res.status(201).json(result);
+  }
+});
 
 app.get(`/api/khoabenh/:idKhoabenh`, (req, res) => {
   const { idKhoabenh } = req.params;
@@ -58,29 +58,6 @@ app.get("/api/loaibenh", (req, res) => {
 });
 
 app.get("/api/loaibenh/:idLoaibenh", (req, res) => {
-
-    const {idLoaibenh} = req.params;
-        const sql = "SELECT * FROM tbl_loaibenh WHERE idLoaibenh = ?";
-        db.query(sql, idLoaibenh, (err, result) => {
-            if (err) {
-                console.log(err);
-            }
-            res.send(result);
-        });
-})
-
-app.get("/api/benh/:tenbenh", (req, res) => {
-    const { tenbenh } = req.params;
-    const sql = "SELECT * FROM tbl_benh WHERE tenbenh = ?";
-    db.query(sql, tenbenh, (err, result) => {
-        if (err) {
-            console.log(err);
-        }
-        res.send(result);
-    });
-});
-
-
   const { idLoaibenh } = req.params;
   const sql = "SELECT * FROM tbl_loaibenh WHERE idLoaibenh = ?";
   db.query(sql, idLoaibenh, (err, result) => {
@@ -89,6 +66,26 @@ app.get("/api/benh/:tenbenh", (req, res) => {
     }
     res.send(result);
   });
+});
+
+app.get("/api/benh/:tenbenh", (req, res) => {
+  const { tenbenh } = req.params;
+  const sql = "SELECT * FROM tbl_benh WHERE tenbenh = ?";
+  db.query(sql, tenbenh, (err, result) => {
+    if (err) {
+      console.log(err);
+    }
+    res.send(result);
+  });
+});
+
+const { idLoaibenh } = req.params;
+const sql = "SELECT * FROM tbl_loaibenh WHERE idLoaibenh = ?";
+db.query(sql, idLoaibenh, (err, result) => {
+  if (err) {
+    console.log(err);
+  }
+  res.send(result);
 });
 
 app.get("/api/loaibenh/:idLoaibenh", (req, res) => {});
