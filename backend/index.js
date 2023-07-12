@@ -4,14 +4,15 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const mysql = require("mysql2");
 const cookieParser = require("cookie-parser");
+
 const db = require("./data/data.js");
 require("./data/data.js");
 const session = require("express-session");
 
-// const Login = require("../backend/web/login/login.js");
-// const Logout = require("./web/login/signup.js");
-// const Benh = require("../backend/app/khoabenh/benh.js");
-// const Tintuc = require("../backend/app/tintuc/tintuc");
+const Login = require("../backend/web/login/login.js");
+const Logout = require("./web/login/signup.js");
+const Benh = require("../backend/app/khoabenh/benh.js");
+const Tintuc = require("../backend/app/tintuc/tintuc");
 
 const port = 5090;
 
@@ -37,7 +38,7 @@ app.use(
   })
 );
 
-app.get("/tintuc", (req, res, next) => {
+app.get("/tintuc", (req, res) => {
   db.query("SELECT * FROM tbl_tintuc", (err, result) => {
     if (err) {
       res.status(422).json("không thực hiện được");
@@ -47,7 +48,7 @@ app.get("/tintuc", (req, res, next) => {
   });
 });
 
-app.get("/tintuc/:idLoaitintuc", (req, res, next) => {
+app.get("/tintuc/:idLoaitintuc", (req, res) => {
   const { idloaitintuc } = req.params;
   const sql = "SELECT * FROM tbl_tintuc WHERE idLoaitintuc = ?";
   db.query(sql, idloaitintuc, (err, result) => {
@@ -58,7 +59,7 @@ app.get("/tintuc/:idLoaitintuc", (req, res, next) => {
   });
 });
 
-app.get("/danhsachbenh", (req, res, next) => {
+app.get("/danhsachbenh", (req, res) => {
   db.query("SELECT * FROM tbl_benh", (err, result) => {
     if (err) {
       res.status(422).json("không thực hiện được");
@@ -68,15 +69,15 @@ app.get("/danhsachbenh", (req, res, next) => {
   });
 });
 // Web
-// app.use(Login);
-// app.use(Logout);
+app.use(Login);
+app.use(Logout);
 
-// // App
-// app.use(Benh);
-// app.use(Tintuc);
+// App
+app.use(Benh);
+app.use(Tintuc);
 
-// app.use(cookieParser());
-// app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.post("/login", (req, res) => {
   const email = req.body.email;

@@ -12,15 +12,15 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
   final NewRepositories newRepositories;
   NewsBloc(this.newRepositories) : super(NewsInitialState()) {
     // FETCH DATA
-    // on<FetchNewsEvent>((event, emit) async {
-    //   emit(NewsLoadingState());
-    //   try {
-    //     final List<NewsModel> newsList = await newRepositories.fetchNewsList();
-    //     emit(NewsLoadedState(newsList));
-    //   } catch (e) {
-    //     emit(NewsErrorState('Error fetching News: $e'));
-    //   }
-    // });
+    on<FetchNewsEvent>((event, emit) async {
+      emit(NewsLoadingState());
+      try {
+        final List<NewsModel> newsList = await newRepositories.fetchNewsList();
+        emit(NewsLoadedState(newsList));
+      } catch (e) {
+        emit(NewsErrorState('Error fetching News: $e'));
+      }
+    });
 
     // FETCH DATA WITH ID
     on<FetchByNewsTypeEvent>((event, emit) async {
