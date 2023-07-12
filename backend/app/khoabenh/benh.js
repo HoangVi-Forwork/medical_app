@@ -15,7 +15,7 @@ app.get("/api/danhsachbenh", (req, res) => {
 });
 
 app.get("/api/khoabenh/:idKhoabenh", (req, res) => {
-    db.query("SELECT * FROM tbl_khoabenh WHERE id = ''", (err, result) => {
+    db.query("SELECT * FROM tbl_khoabenh WHERE idKhoabenh = ''", (err, result) => {
         if (err) {
             res.status(422).json("Không thực hiện được");
         } else {
@@ -57,8 +57,16 @@ app.get("/api/loaibenh/:idLoaibenh", (req, res) => {
         });
 })
 
-app.get("/api/loaibenh/:idLoaibenh", (req, res) => {
+app.get("/api/benh/:tenbenh", (req, res) => {
+    const { tenbenh } = req.params;
+    const sql = "SELECT * FROM tbl_benh WHERE tenbenh = ?";
+    db.query(sql, tenbenh, (err, result) => {
+        if (err) {
+            console.log(err);
+        }
+        res.send(result);
+    });
+});
 
-})
 
 module.exports = app;
