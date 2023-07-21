@@ -14,20 +14,4 @@ app.get("/api/danhsachbenh", (req, res) => {
   });
 });
 
-
-app.get("/api/loaibenh/:idLoaibenh", (req, res) => {
-
-    const {idLoaibenh} = req.params;
-        const sql = "SELECT * FROM tbl_loaibenh WHERE idLoaibenh = ?";
-        db.query(sql, idLoaibenh, (err, result) => {
-            if (err) {
-                console.log(err);
-            }
-            res.send(result);
-        });
-})
-
-
-app.get("/api/loaibenh/:idLoaibenh", (req, res) => {});
-
 module.exports = app;
