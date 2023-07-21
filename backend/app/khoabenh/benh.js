@@ -46,10 +46,9 @@ app.get("/api/loaibenh", (req, res) => {
     });
 });
 
-app.get("/api/loaibenh/:idLoaibenh", (req, res) => {
-    const {idLoaibenh} = req.params;
-        const sql = "SELECT * FROM tbl_loaibenh WHERE idLoaibenh = ?";
-        db.query(sql, idLoaibenh, (err, result) => {
+app.get("/api/loaibenh/", (req, res) => {
+        const sql = "SELECT * FROM tbl_loaibenh";
+        db.query(sql, (err, result) => {
             if (err) {
                 console.log(err);
             }
