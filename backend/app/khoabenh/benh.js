@@ -28,7 +28,7 @@ app.get("/api/benh/:tenbenh", (req, res) => {
 });
 
 app.get("/api/timkiembenh/", (req, res) => {
-  const query = req.query.tenbenh; // Thay đổi dòng này
+  const query = req.query.tenbenh;
   console.log("bắt query nè:", query);
   db.query(
     "SELECT * FROM tbl_benh WHERE tenbenh LIKE ?",
