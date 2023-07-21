@@ -3,6 +3,7 @@ const app = express();
 const session = require("express-session");
 const db = require("../../data/data.js");
 const mysql = require("mysql2");
+
 app.get("/api/danhsachbenh", (req, res) => {
   db.query("SELECT * FROM tbl_benh", (err, result) => {
     if (err) {
@@ -12,6 +13,7 @@ app.get("/api/danhsachbenh", (req, res) => {
     }
   });
 });
+
 app.get("/api/benh/:tenbenh", (req, res) => {
   const { tenbenh } = req.params;
   const sql = "SELECT * FROM tbl_benh WHERE tenbenh = ?";
@@ -24,8 +26,9 @@ app.get("/api/benh/:tenbenh", (req, res) => {
     }
   });
 });
+
 app.get("/api/timkiembenh/", (req, res) => {
-  const query = req.query.tenbenh; // Thay đổi dòng này
+  const query = req.query.tenbenh;
   console.log("bắt query nè:", query);
   db.query(
     "SELECT * FROM tbl_benh WHERE tenbenh LIKE ?",
