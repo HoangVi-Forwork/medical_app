@@ -21,6 +21,34 @@ class ContainerUtils {
     ),
   );
 
+  static Center emptyDataLoadingState = Center(
+    child: Expanded(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(
+            width: 86,
+            height: 86,
+            child: Image.asset(
+              'assets/icons/band-aid.gif',
+            ),
+          ),
+          const SizedBox(
+            height: 24,
+          ),
+          const Text(
+            'Không có dữ liệu\nHãy thử nhập lại!',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: AppColors.textColor,
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+
   // USING IN NEWS SCREEN
   static Container loadingStateContainer = Container(
     margin: const EdgeInsets.all(24),

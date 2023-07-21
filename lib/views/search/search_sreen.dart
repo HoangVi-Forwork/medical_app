@@ -1,7 +1,15 @@
-// ignore_for_file: unused_local_variable
-
+// File: search_screen.dart
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:medical_app/utils/container_utils.dart';
 import 'package:medical_app/widgets/colors.dart';
+
+import '../../blocs/search/bloc/search_bloc.dart';
+import '../../blocs/search/bloc/search_event.dart';
+import '../../blocs/search/bloc/search_state.dart';
+import '../../repositories/diseases_repositories.dart';
+import '../home/home_detail_disease.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({Key? key}) : super(key: key);
@@ -11,102 +19,156 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  // List<String> selectedDepartment = [
-  //   'Khoa Tim mạch Can thiệp',
-  //   'Khoa Tim mạch tổng quát',
-  //   'Khoa Nhịp tim học',
-  //   'Hồi sức tim mạch',
-  //   'Khoa Phẫu thuật Tim - Lồng ngực mạch máu',
-  //   'Khoa Nội Tiêu hóa',
-  //   'Khoa Nội Thần kinh tổng quát',
-  //   'Khoa Ngoại Thần kinh',
-  //   'Khoa Nội tiết',
-  //   'Khoa Bệnh lý mạch máu não',
-  //   'Khoa Bệnh Nhiệt đới',
-  //   'Khoa Cơ xương khớp',
-  //   'Khoa Hô hấp - Hồi sức tim mạch',
-  //   'Khoa Ngoại Niệu - Ghép thận',
-  //   'Khoa Nội Thận - Miễn dịch ghép',
-  //   'Khoa Cấp cứu Tổng hợp',
-  //   'Khoa Hồi sức tích cực - Chống độc',
-  //   'Khoa Gây mê - Hồi sức Ngoại',
-  //   'Khoa Ngoại tổng quát',
-  //   'Khoa Ngoại Chấn thương chỉnh hình',
-  //   'Khoa Tai mũi họng',
-  //   'Khoa Răng Hàm Mặt - Mắt',
-  //   'Khoa Y học cổ truyền - Phục hồi chức năng',
-  //   'Khoa Điều Trị Theo Yêu Cầu - Y Học Thể Thao',
-  //   'Khoa Khám bệnh',
-  //   'Khoa Khám và Điều trị theo yêu cầu',
-  //   'Khoa Xét nghiệm',
-  //   'Khoa Chẩn đoán hình ảnh',
-  //   'Khoa Giải phẫu bệnh',
-  //   'Đơn vị Nội soi',
-  //   'Khoa Dinh dưỡng',
-  //   'Khoa Kiểm soát nhiễm khuẩn',
-  //   'Khoa Dược',
-  //   'Khoa Ung bướu và Y học hạt nhân',
-  //   'Nhà thuốc',
-  //   'Phòng Tổ chức Cán bộ',
-  //   'Phòng Kế hoạch Tổng hợp',
-  //   'Phòng Điều dưỡng',
-  //   'Phòng Chỉ đạo tuyến',
-  //   'Phòng Tài chính Kế toán',
-  //   'Phòng Hành chính Quản trị',
-  //   'Phòng Vật tư - Thiết bị y tế',
-  //   'Phòng Công nghệ thông tin',
-  //   'Phòng Quản lý chất lượng',
-  //   'Phòng Công tác xã hội'
-  // ];
+  late SearchBloc _searchBloc;
+  late TextEditingController _searchController;
+  FocusNode searchInput = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    _searchBloc = SearchBloc(DiseaseRepository());
+    _searchController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _searchBloc.close();
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void _performSearch() {
+    final tenBenh = _searchController.text;
+    _searchBloc.add(PerformSearchEvent(tenBenh));
+    FocusScope.of(context).requestFocus(searchInput);
+    SystemChannels.textInput.invokeMethod('TextInput.hide');
+  }
 
   @override
   Widget build(BuildContext context) {
-    final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    padding: const EdgeInsets.all(6),
-                    child: Center(
-                      child: TextFormField(
-                        style: const TextStyle(color: Colors.grey),
-                        cursorColor: Colors.grey,
-                        decoration: InputDecoration(
-                          hintText: "Nhập tìm kiếm",
-                          prefixIcon: const Icon(Icons.search),
-                          border: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Colors.black,
-                              width: 1,
+            Expanded(
+              flex: 1,
+              child: BlocBuilder<SearchBloc, SearchState>(
+                  bloc: _searchBloc,
+                  builder: (context, state) {
+                    if (state is SearchLoadingState) {
+                      return Center(
+                        child: ContainerUtils.loadingStateContainer,
+                      );
+                    } else if (state is SearchEmptyResultState) {
+                      return Center(
+                        child: ContainerUtils.emptyDataLoadingState,
+                      );
+                    } else if (state is SearchLoadedState) {
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: state.searchResult.length,
+                        itemBuilder: (context, index) {
+                          final disease = state.searchResult[index];
+                          return Container(
+                            margin: const EdgeInsets.symmetric(
+                              horizontal: 8,
                             ),
-                            borderRadius: BorderRadius.circular(24),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: AppColors.primaryColor,
-                              width: 1,
+                            padding: const EdgeInsets.all(12),
+                            decoration: const BoxDecoration(
+                                color: Colors.white,
+                                border: Border(
+                                    bottom: BorderSide(
+                                        color: Colors.grey, width: 0.75))),
+                            child: ListTile(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => HomeDetailDisease(
+                                      diseases: disease,
+                                    ),
+                                  ),
+                                );
+                              },
+                              title: Container(
+                                margin: const EdgeInsets.only(bottom: 6),
+                                child: Text(
+                                  disease.tenBenh.toString().toUpperCase(),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.clip,
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              subtitle: Text(
+                                disease.trieuChung ?? '',
+                                maxLines: 3,
+                                overflow: TextOverflow.clip,
+                              ),
                             ),
-                            borderRadius: BorderRadius.circular(24),
+                          );
+                        },
+                      );
+                    } else if (state is SearchErrorState) {
+                      return AlertDialog(
+                        title: const Text("Error"),
+                        content: Text(state.errorMessage),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text("OK"),
                           ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+                        ],
+                      );
+                    } else {
+                      return Container();
+                    }
+                  }),
             ),
+            const SizedBox(
+              height: 8,
+            ),
+            _buildSearchInput(),
           ],
         ),
       ),
+    );
+  }
+
+  // SEARCH TEXTFORMFIELD AND SUBMIT INPUT BUTTON
+  Column _buildSearchInput() {
+    return Column(
+      children: [
+        TextField(
+          controller: _searchController,
+          focusNode: searchInput,
+          decoration: const InputDecoration(
+            labelText: 'Nhập từ khóa',
+          ),
+        ),
+        Container(
+          margin: const EdgeInsets.only(top: 12),
+          width: double.infinity,
+          height: 44,
+          child: ElevatedButton(
+            onPressed: _performSearch,
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(
+                AppColors.primaryColor,
+              ),
+            ),
+            child: const Text('Tìm kiếm'),
+          ),
+        ),
+        const SizedBox(height: 16),
+      ],
     );
   }
 }

@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
 import { InboxOutlined, UserOutlined,ContainerOutlined, AppstoreOutlined, DeliveredProcedureOutlined, ClusterOutlined, LogoutOutlined, LoginOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
+import axios from "axios";
 // import '../App.css'
 // import Login from './/login/login';
 // import Blog from './blog/Blog.js';
@@ -46,6 +47,27 @@ function App() {
     setUser(null);
     history('/');
   };  
+  // 
+  // const [userto, setUserto] = useState(null);
+  // const [message, setMessage] = useState('');
+
+  // useEffect(() => {
+  //   const fetchUser = async () => {
+  //     const response = await fetch('http://localhost:5090/userlog', {
+  //       method: 'GET',
+  //       credentials: 'include',
+  //     });
+  //     const data = await response.json();
+  //     if (data.user) {
+  //       setUserto(data.user);
+  //       setMessage('Đã đăng nhập');
+  //     } else {
+  //       setMessage(data.message);
+  //     }
+  //   };
+
+  //   fetchUser();
+  // }, []);
   return (
     <div>
       <Layout>
@@ -56,7 +78,7 @@ function App() {
           overflow: 'auto', // Added overflow property
           left: 0,
         }}>
-          <div className="demo-logo-vertical" />
+  
           {user && 
           <div>
           <img className="menu-item avatar bg-primary text-white w-10 h-10 mb-2" src={user.avatar} alt='' />

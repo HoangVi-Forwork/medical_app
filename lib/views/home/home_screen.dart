@@ -18,6 +18,7 @@ import '../../widgets/buttons/floating_scroll_button.dart';
 import '../../widgets/home/build_list_of_common_diseases.dart';
 import '../../widgets/home/text_title_and_subtitle.dart';
 import 'package:http/http.dart' as http;
+import '../diseases/disease_list_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -97,7 +98,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 width: double.infinity,
                 margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const DiseaseListScreen(),
+                      ),
+                    );
+                  },
                   child: const Text(
                     'Xem Thêm',
                     style: TextStyle(
@@ -155,10 +163,12 @@ class _HomeScreenState extends State<HomeScreen> {
               );
             } else if (state is DiseaseLoadedState) {
               List<DiseasesModel> listDisease = state.diseasesList;
+              var litmitedLen = 4;
               return ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  itemCount: listDisease.length,
+                  // itemCount: listDisease.length,
+                  itemCount: litmitedLen,
                   itemBuilder: (context, index) {
                     return Container(
                       height: 96,

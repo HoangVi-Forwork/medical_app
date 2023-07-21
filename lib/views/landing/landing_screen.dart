@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:medical_app/views/favorited/favourited_screen.dart';
 import 'package:medical_app/views/home/home_screen.dart';
 import 'package:medical_app/views/landing/landing_utils.dart';
 import 'package:medical_app/views/news/news_screen.dart';
 import 'package:medical_app/views/search/search_sreen.dart';
 import 'package:medical_app/widgets/colors.dart';
 import 'package:medical_app/widgets/draw.dart';
+
+import '../favorited/favourited_screen.dart';
 
 class LandingScreen extends StatefulWidget {
   const LandingScreen({super.key});
@@ -33,7 +34,9 @@ class _LandingScreenState extends State<LandingScreen> {
           HomeScreen(),
           SearchScreen(),
           NewsScreen(),
-          FavouritedScreen(),
+          FavouritedScreen(
+            favouritedNewsList: [],
+          ),
         ],
       ),
       bottomNavigationBar: buildBottomNavigator(),

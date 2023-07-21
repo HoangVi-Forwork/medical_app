@@ -2,8 +2,6 @@ const express = require('express');
 const router = express.Router();
 const db = require("../../data/data.js");
 const mysql = require('mysql2');
-const bodyParser = require("body-parser");
-const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const bcrypt = require('bcrypt');
 
@@ -61,7 +59,5 @@ router.post('/api/register', (req, res) => {
         }
     });
 });
-
-
 
 module.exports = router;

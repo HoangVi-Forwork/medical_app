@@ -1,155 +1,113 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:medical_app/blocs/news/news_bloc.dart';
+import 'package:medical_app/blocs/news/news_event.dart';
+import 'package:medical_app/blocs/news/news_state.dart';
 import 'package:medical_app/model/news_model.dart';
 import 'package:medical_app/repositories/news_repositories.dart';
-import 'package:medical_app/utils/container_utils.dart';
+import 'package:medical_app/widgets/colors.dart';
 
-import '../../blocs/news/news_event.dart';
-import '../../blocs/news/news_state.dart';
-import '../../widgets/colors.dart';
+import '../../utils/container_utils.dart';
+import '../favorited/favourited_screen.dart';
 
-class NewsScreen extends StatefulWidget {
+class NewsScreen extends StatelessWidget {
   const NewsScreen({super.key});
 
   @override
-  State<NewsScreen> createState() => _NewsScreenState();
-}
-
-class _NewsScreenState extends State<NewsScreen> {
-  List<bool> isSelected = [
-    true,
-    false
-  ]; // Thay đổi giá trị mặc định của isSelected
-
-  @override
   Widget build(BuildContext context) {
-    final NewRepositories newsRepositories = NewRepositories();
-
     return Scaffold(
-      backgroundColor: AppColors.whiteColor,
-      body: BlocProvider(
-        create: (context) => NewsBloc(newsRepositories)
-          ..add(
-            FetchNewsEvent(),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Container(
+          width: double.infinity,
+          margin: const EdgeInsets.only(top: 24, bottom: 12),
+          child: BlocProvider(
+            create: (context) => NewsBloc(
+              NewRepositories(),
+            )..add(FetchNewsEvent()),
+            child: BlocBuilder<NewsBloc, NewsState>(
+              builder: (context, state) {
+                if (state is NewsLoadingState) {
+                  return ContainerUtils.loadingStateContainer0;
+                } else if (state is NewsErrorState) {
+                  return Container(
+                      margin: const EdgeInsets.all(24),
+                      child: ContainerUtils.loadingErrorStateContainer);
+                } else if (state is NewsLoadedState) {
+                  List<NewsModel> newsList = state.newsList;
+                  return newsBody(newsList);
+                }
+                return Container();
+              },
+            ),
           ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            _buildToggleButtons(),
-            _listNewBody(),
-          ],
         ),
       ),
     );
   }
 
-  // TOGGLE BUTTONS
-  BlocBuilder<NewsBloc, NewsState> _buildToggleButtons() {
-    return BlocBuilder<NewsBloc, NewsState>(
-      builder: (context, state) {
-        return ToggleButtons(
-          isSelected: isSelected,
-          onPressed: (int index) {
-            setState(() {
-              for (int buttonIndex = 0;
-                  buttonIndex < isSelected.length;
-                  buttonIndex++) {
-                if (buttonIndex == index) {
-                  isSelected[buttonIndex] = true;
-                } else {
-                  isSelected[buttonIndex] = false;
-                }
-              }
-            });
-          },
-          color: Colors.grey,
-          selectedColor: AppColors.primaryColor,
-          fillColor: AppColors.primaryColor,
-          borderRadius: BorderRadius.circular(10.0),
-          children: [
-            Container(
-              width: 160,
-              height: 44,
-              color: isSelected[0]
-                  ? AppColors.primaryColor
-                  : Colors.grey, // Cập nhật màu sắc cho button "Tin mới"
-              child: const Center(
-                child: Text(
-                  'Tin mới',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-            Container(
-              width: 160,
-              height: 44,
-              color: isSelected[1]
-                  ? AppColors.primaryColor
-                  : Colors.grey, // Cập nhật màu sắc cho button "Tin khác"
-              child: const Center(
-                child: Text(
-                  'Tin khác',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  // LIST NEWS
-  Expanded _listNewBody() {
-    return Expanded(
-      flex: 1,
-      child: BlocBuilder<NewsBloc, NewsState>(
-        builder: (context, state) {
-          if (state is NewsLoadingState) {
-            return ContainerUtils.loadingStateContainer;
-          } else if (state is NewsErrorState) {
-            return ContainerUtils.loadingErrorStateContainer;
-          } else if (state is NewsLoadedState) {
-            List<NewsModel> listNews = state.newsList;
-            return Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-              child: ListView.builder(
-                itemCount: listNews.length,
-                itemBuilder: (context, index) {
-                  return Container(
-                    width: double.infinity,
-                    height: 160,
-                    color: AppColors.highLightColor,
-                    margin: const EdgeInsets.only(bottom: 12),
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 12, horizontal: 12),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 120,
-                          height: double.infinity,
-                          margin: const EdgeInsets.only(right: 6),
-                          color: Colors.grey,
-                          child: Image.network(
-                            '${listNews[index].hinhAnh}',
-                            fit: BoxFit.cover,
+  SingleChildScrollView newsBody(List<NewsModel> newsList) {
+    return SingleChildScrollView(
+      child: ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: newsList.length,
+          itemBuilder: (context, index) => Slidable(
+                endActionPane: ActionPane(
+                  motion: const StretchMotion(),
+                  children: [
+                    SlidableAction(
+                      onPressed: (context) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => FavouritedScreen(
+                                favouritedNewsList: [newsList[index]]),
                           ),
+                        );
+                      },
+                      icon: Icons.favorite_outline,
+                      backgroundColor: Colors.green,
+                    )
+                  ],
+                ),
+                startActionPane: ActionPane(
+                  motion: const StretchMotion(),
+                  children: [
+                    SlidableAction(
+                      onPressed: (context) {},
+                      icon: Icons.delete_outline,
+                      backgroundColor: Colors.red,
+                    )
+                  ],
+                ),
+                child: Container(
+                  width: double.infinity,
+                  height: 120,
+                  color: AppColors.highLightColor,
+                  margin: const EdgeInsets.only(bottom: 6),
+                  child: Row(
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(right: 4),
+                        width: 160,
+                        height: double.infinity,
+                        child: Image.network(
+                          newsList[index].hinhAnh.toString(),
+                          fit: BoxFit.cover,
                         ),
-                        Expanded(
-                          flex: 1,
-                          child: Column(
-                            children: [
-                              ListTile(
-                                title: Text(
-                                  listNews[index]
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 12),
+                          child: Container(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  newsList[index]
                                       .tieuDe
                                       .toString()
                                       .toUpperCase(),
@@ -157,39 +115,34 @@ class _NewsScreenState extends State<NewsScreen> {
                                   overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(
                                     color: Colors.black,
-                                    fontSize: 14,
-                                    height: 1.2,
+                                    fontStyle: FontStyle.normal,
                                     fontWeight: FontWeight.bold,
+                                    fontSize: 16,
                                   ),
                                 ),
-                                subtitle: Container(
-                                  margin: const EdgeInsets.only(top: 6),
-                                  child: Text(
-                                    listNews[index].gioiThieu.toString(),
-                                    maxLines: 4,
-                                    overflow: TextOverflow.fade,
-                                    style: const TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 12,
-                                        height: 1.2,
-                                        fontWeight: FontWeight.normal,
-                                        fontStyle: FontStyle.italic),
-                                  ),
+                                const SizedBox(
+                                  height: 6,
                                 ),
-                              ),
-                            ],
+                                Text(
+                                  newsList[index].gioiThieu.toString(),
+                                  maxLines: 3,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    color: Colors.black.withOpacity(.6),
+                                    fontStyle: FontStyle.italic,
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 12,
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         ),
-                      ],
-                    ),
-                  );
-                },
-              ),
-            );
-          }
-          return Container();
-        },
-      ),
+                      )
+                    ],
+                  ),
+                ),
+              )),
     );
   }
 }
