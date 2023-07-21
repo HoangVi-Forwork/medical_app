@@ -9,7 +9,6 @@ require("./data/data.js");
 const session = require("express-session");
 const Login = require('../backend/web/login/login.js');
 const Logout = require('./web/login/signup.js');
-const Benh = require('../backend/app/khoabenh/benh.js');
 const webBenh = require('../backend/web/benh/benh');
 const Tintuc = require('../backend/app/tintuc/tintuc');
 const port = 5090;
