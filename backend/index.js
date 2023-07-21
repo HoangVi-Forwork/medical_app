@@ -12,7 +12,6 @@ const Logout = require('./web/login/signup.js');
 const webBenh = require('../backend/web/benh/benh');
 const Tintuc = require('../backend/app/tintuc/tintuc');
 const Benh = require("../backend/app/khoabenh/benh.js");
-const Tintuc = require("../backend/app/tintuc/tintuc");
 
 const port = 5090;
 
