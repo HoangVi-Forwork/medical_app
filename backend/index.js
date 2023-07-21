@@ -36,6 +36,7 @@ app.use(
     },
   })
 );
+
 // Web
 app.use(Login);
 app.use(Logout);
