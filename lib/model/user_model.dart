@@ -7,7 +7,7 @@ class UserModel extends Equatable {
   final String email;
   final String password;
 
-  UserModel({
+  const UserModel({
     required this.uid,
     required this.username,
     required this.email,
