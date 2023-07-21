@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:medical_app/blocs/auth/auth_bloc.dart';
 import 'package:medical_app/blocs/diseases/bloc/disease_bloc.dart';
 import 'package:medical_app/blocs/news/news_bloc.dart';
+import 'package:medical_app/blocs/search/bloc/search_bloc.dart';
 import 'package:medical_app/repositories/auth_repositories.dart';
 import 'package:medical_app/repositories/diseases_repositories.dart';
 import 'package:medical_app/repositories/news_repositories.dart';
@@ -39,12 +40,12 @@ class MyApp extends StatelessWidget {
           create: (context) => NewsBloc(
             NewRepositories(),
           ),
-        )
-        // BlocProvider(
-        //   create: (context) => NewsBloc(
-        //     NewsRepository(),
-        //   ),
-        // ),
+        ),
+        BlocProvider(
+          create: (context) => SearchBloc(
+            DiseaseRepository(),
+          ),
+        ),
       ],
       child: BlocProvider(
         create: (context) => AuthBloc(
