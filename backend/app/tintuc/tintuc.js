@@ -5,13 +5,12 @@ const db = require("../../data/data.js");
 const mysql = require("mysql2");
 
 app.get("/api/tintuc", (req, res) => {
-  const { tentintuc } = req.params;
-  const sql = "SELECT * FROM tbl_tintuc WHERE tentintuc = ?";
-  db.query(sql, tentintuc, (err, result) => {
+  db.query("SELECT * FROM tbl_tintuc", (err, result) => {
     if (err) {
-      console.log(err);
+      res.status(422).json("không thực hiện được");
+    } else {
+      res.status(201).json(result);
     }
-    res.send(result);
   });
 });
 

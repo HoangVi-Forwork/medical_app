@@ -1,12 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:medical_app/model/news_model.dart';
-import 'package:medical_app/repositories/news_repositories.dart';
+import 'package:medical_app/blocs/news/news_event.dart';
 
-import 'news_event.dart';
+import '../../model/news_model.dart';
+import '../../repositories/news_repositories.dart';
 import 'news_state.dart';
-
-// part 'news_event.dart';
-// part 'news_state.dart';
 
 class NewsBloc extends Bloc<NewsEvent, NewsState> {
   final NewRepositories newRepositories;
@@ -23,16 +20,20 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
     });
 
     // FETCH DATA WITH ID
-    on<FetchByNewsTypeEvent>((event, emit) async {
-      emit(NewsLoadingState());
-      try {
-        final List<NewsModel> newsList =
-            await newRepositories.fetchNewsListByType(event.typeId);
-        print(newsList);
-        emit(NewsLoadedByTypeState(newsList));
-      } catch (e) {
-        emit(NewsErrorState('Error fetching News: $e'));
-      }
-    });
+    // on<FetchByNewsTypeEvent>((event, emit) async {
+    //   emit(NewsLoadingState());
+    //   try {
+    //     final List<NewsModel> newsList =
+    //         await newRepositories.fetchNewsListByType(event.typeId);
+    //     emit(NewsLoadedByTypeState(newsList, selectedTypeId: event.typeId));
+    //   } catch (e) {
+    //     emit(NewsErrorState('Error fetching type News: $e'));
+    //   }
+    // });
+
+    //  UPDATE NEWS TYPE
+    // on<UpdateNewsTypeEvent>((event, emit) {
+    //   emit(NewsLoadedByTypeState(state.newsList, selectedTypeId: event.typeId));
+    // });
   }
 }
