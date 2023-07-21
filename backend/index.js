@@ -3,24 +3,49 @@ const app = express();
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const mysql = require("mysql2");
+const cookieParser = require("cookie-parser");
 const db = require("./data/data.js");
 require("./data/data.js");
 const session = require("express-session");
+const Login = require('../backend/web/login/login.js');
+const Logout = require('./web/login/signup.js');
+const Benh = require('../backend/app/khoabenh/benh.js');
+const webBenh = require('../backend/web/benh/benh');
+const Tintuc = require('../backend/app/tintuc/tintuc');
 const port = 5090;
 
 app.use(express.json());
+
+app.use(
+  cors({
+    origin: ["http://localhost:3000"],
+    methods: ["GET", "POST"],
+    credentials: true,
+  })
+);
+
 app.use(
   session({
     key: "userId",
     secret: "subscribe",
-    resave: true,
-    saveUninitialized: true,
+    resave: false,
+    saveUninitialized: false,
     cookie: {
-      express: 60 * 60 * 24,
+      expires: 60 * 60 * 24,
     },
   })
 );
-app.use(bodyParser.urlencoded({ extended: true }));
+
+
+app.get("/tintuc", (req, res) => {
+  db.query("SELECT * FROM tbl_tintuc", (err, result) => {
+    if (err) {
+      res.status(422).json("không thực hiện được");
+    } else {
+      res.status(201).json(result);
+    }
+  });
+});
 
 app.get("/danhsachbenh", (req, res) => {
   db.query("SELECT * FROM tbl_benh", (err, result) => {
@@ -31,27 +56,20 @@ app.get("/danhsachbenh", (req, res) => {
     }
   });
 });
+// Web
+app.use(Login);
+app.use(Logout);
+app.use(webBenh);
+// App
+app.use(Benh);
+app.use(Tintuc);
 
-app.get("/khoabenh", (req, res) => {
-  db.query("SELECT * FROM tbl_khoabenh", (err, result) => {
-    if (err) {
-      res.status(422).json("không thực hiện được");
-    } else {
-      res.status(201).json(result);
-    }
-  });
-});
 
-app.get("/loaibenh", (req, res) => {
-  db.query("SELECT * FROM tbl_loaibenh", (err, result) => {
-    if (err) {
-      res.status(422).json("không thực hiện được");
-    } else {
-      res.status(201).json(result);
-      // print(result.body);
-    }
-  });
-});
+app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+
+
 
 app.post("/login", (req, res) => {
   const email = req.body.email;
@@ -81,6 +99,7 @@ app.post("/login", (req, res) => {
     }
   );
 });
+
 
 app.listen(port, () => {
   console.log(`Server is localhost::${port}`);

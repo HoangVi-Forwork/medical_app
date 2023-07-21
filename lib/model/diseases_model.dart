@@ -22,14 +22,14 @@ class DiseasesModel {
   });
 
   DiseasesModel.fromJson(Map<String, dynamic> json) {
-    idBenh = json['id_benh'];
+    idBenh = json['idBenh'];
     tenBenh = json['tenbenh'];
     hinhAnh = json['hinhanh'];
-    trieuChung = json['trieutrung'];
+    trieuChung = json['trieuchung'];
     nguyenNhan = json['nguyennhan'];
     phongNgua = json['phongngua'];
     noiDung = json['noidung'];
-    idLoaiBenh = json['id_loaibenh'];
+    idLoaiBenh = json['idLoaibenh'];
     tenRieng = json['tenrieng'];
   }
 }

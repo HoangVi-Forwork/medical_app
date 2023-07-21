@@ -1,4 +1,4 @@
-part of 'news_bloc.dart';
+import 'package:equatable/equatable.dart';
 
 abstract class NewsEvent extends Equatable {
   const NewsEvent();
@@ -7,7 +7,4 @@ abstract class NewsEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class NewsLoadEvent extends NewsEvent {
-  @override
-  List<Object> get props => [];
-}
+class FetchNewsEvent extends NewsEvent {}
