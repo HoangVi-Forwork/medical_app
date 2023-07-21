@@ -36,37 +36,6 @@ app.use(
     },
   })
 );
-
-app.get("/tintuc", (req, res) => {
-  db.query("SELECT * FROM tbl_tintuc", (err, result) => {
-    if (err) {
-      res.status(422).json("không thực hiện được");
-    } else {
-      res.status(201).json(result);
-    }
-  });
-});
-
-app.get("/tintuc/:idLoaitintuc", (req, res) => {
-  const { idloaitintuc } = req.params;
-  const sql = "SELECT * FROM tbl_tintuc WHERE idLoaitintuc = ?";
-  db.query(sql, idloaitintuc, (err, result) => {
-    if (err) {
-      console.log(err);
-    }
-    res.send(result);
-  });
-});
-
-app.get("/danhsachbenh", (req, res) => {
-  db.query("SELECT * FROM tbl_benh", (err, result) => {
-    if (err) {
-      res.status(422).json("không thực hiện được");
-    } else {
-      res.status(201).json(result);
-    }
-  });
-});
 // Web
 app.use(Login);
 app.use(Logout);
