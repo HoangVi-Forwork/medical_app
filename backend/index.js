@@ -7,8 +7,9 @@ const cookieParser = require("cookie-parser");
 const db = require("./data/data.js");
 require("./data/data.js");
 const session = require("express-session");
+
 const Login = require('../backend/web/login/login.js');
-const Logout = require('./web/login/signup.js');
+const Logout = require('../backend/web/login/signup.js');
 const webBenh = require('../backend/web/benh/benh');
 const Tintuc = require('../backend/app/tintuc/tintuc');
 const Benh = require("../backend/app/khoabenh/benh.js");
@@ -44,8 +45,6 @@ app.use(webBenh);
 // App
 app.use(Benh);
 app.use(Tintuc);
-
-
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 
