@@ -4,11 +4,9 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const mysql = require("mysql2");
 const cookieParser = require("cookie-parser");
-
 const db = require("./data/data.js");
 require("./data/data.js");
 const session = require("express-session");
-
 const Login = require("../backend/web/login/login.js");
 const Logout = require("./web/login/signup.js");
 const Benh = require("../backend/app/khoabenh/benh.js");
@@ -37,60 +35,6 @@ app.use(
     },
   })
 );
-//
-// app.get("/tintuc", (req, res) => {
-//   db.query("SELECT * FROM tbl_tintuc", (err, result) => {
-//     if (err) {
-//       res.status(422).json("không thực hiện được");
-//     } else {
-//       res.status(201).json(result);
-//     }
-//   });
-// });
-
-// app.get("/tintuc/:idLoaitintuc", (req, res) => {
-//   const { idLoaitintuc } = req.params;
-//   const sql = "SELECT * FROM tbl_tintuc WHERE idLoaitintuc = ?";
-//   db.query(sql, [idLoaitintuc], (err, result) => {
-//     if (err) {
-//       console.log(err);
-//       res.status(422).json("không thực hiện được");
-//     } else {
-//       console.log(result);
-//       res.status(201).json(result);
-//     }
-//   });
-// });
-
-// app.get("/danhsachbenh", (req, res) => {
-//   db.query("SELECT * FROM tbl_benh", (err, result) => {
-//     if (err) {
-//       res.status(422).json("không thực hiện được");
-//     } else {
-//       res.status(201).json(result);
-//     }
-//   });
-// // });
-
-// app.get("/danhsachbenh", (req, res) => {
-//   const { query } = req.query;
-
-//   let sql = "SELECT * FROM tbl_benh";
-//   let params = [];
-
-//   if (query) {
-//     sql += " WHERE tenBenh LIKE ?";
-//     params.push(`%${query}%`);
-//   }
-
-//   db.query(sql, params, (err, result) => {
-//     if (err) {
-//       res.status(422).json("Không thực hiện được");
-//     } else {
-//       res.status(201).json(result);
-//     }
-//   });
-// });
 
 // Web
 app.use(Login);
