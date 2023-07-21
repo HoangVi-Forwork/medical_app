@@ -21,7 +21,7 @@ router.post('/api/register', (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
     const setpassword = req.body.setpassword;
-    const quyenhan = req.body.quyenhan;
+    const quyenhan = req.body.powers;
 
     // Kiểm tra xem password và setpassword giống nhau hay không
     if (password !== setpassword) {
