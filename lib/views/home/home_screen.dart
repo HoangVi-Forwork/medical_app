@@ -14,6 +14,7 @@ import 'package:medical_app/views/home/home_detail_disease.dart';
 import 'package:medical_app/views/home/home_utils.dart';
 import 'package:medical_app/widgets/colors.dart';
 import 'package:medical_app/widgets/draw.dart';
+import '../../model/news_model.dart';
 import '../../widgets/buttons/floating_scroll_button.dart';
 import '../../widgets/home/build_list_of_common_diseases.dart';
 import '../../widgets/home/text_title_and_subtitle.dart';

@@ -35,8 +35,8 @@ class _LandingScreenState extends State<LandingScreen> {
           SearchScreen(),
           NewsScreen(),
           FavouritedScreen(
-            favouritedNewsList: [],
-          ),
+              // favouritedNewsList: [],
+              ),
         ],
       ),
       bottomNavigationBar: buildBottomNavigator(),

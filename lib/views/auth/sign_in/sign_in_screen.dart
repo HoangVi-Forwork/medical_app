@@ -26,26 +26,28 @@ class _SignInScreenState extends State<SignInScreen> {
   String message = '';
 
   void login() async {
-    String apiUrl = '${Configs.IP4Local}login';
-    final response = await http.post(Uri.parse(apiUrl), body: {
-      'email': emailController.text,
-      'password': passwordController.text,
-    });
-
-    final responseBody = json.decode(response.body);
-
-    if (response.statusCode == 200) {
-      // Đăng nhập thành công
-      // ignore: use_build_context_synchronously
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const LandingScreen()),
-      );
-    } else {
-      // Hiển thị thông báo lỗi đăng nhập
-      setState(() {
-        message = responseBody['message'];
+    if (_formKey.currentState!.validate()) {
+      String apiUrl = '${Configs.IP4Local}login';
+      final response = await http.post(Uri.parse(apiUrl), body: {
+        'email': emailController.text,
+        'password': passwordController.text,
       });
+
+      final responseBody = json.decode(response.body);
+
+      if (response.statusCode == 200) {
+        // Đăng nhập thành công
+        // ignore: use_build_context_synchronously
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const LandingScreen()),
+        );
+      } else {
+        // Hiển thị thông báo lỗi đăng nhập
+        setState(() {
+          message = responseBody['message'];
+        });
+      }
     }
   }
 
@@ -57,8 +59,12 @@ class _SignInScreenState extends State<SignInScreen> {
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is Authenticated) {
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => const LandingScreen()));
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const LandingScreen(),
+              ),
+            );
           }
           if (state is AuthError) {
             ScaffoldMessenger.of(context).showSnackBar(
