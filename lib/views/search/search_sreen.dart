@@ -1,4 +1,6 @@
 // File: search_screen.dart
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,6 +11,7 @@ import '../../blocs/search/bloc/search_bloc.dart';
 import '../../blocs/search/bloc/search_event.dart';
 import '../../blocs/search/bloc/search_state.dart';
 import '../../repositories/diseases_repositories.dart';
+import '../favorited/favourited_screen.dart';
 import '../home/home_detail_disease.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -22,18 +25,32 @@ class _SearchScreenState extends State<SearchScreen> {
   late SearchBloc _searchBloc;
   late TextEditingController _searchController;
   FocusNode searchInput = FocusNode();
+  final _favouritedScreen = const FavouritedScreen();
+  final _searchInputController = StreamController<String>.broadcast();
 
   @override
   void initState() {
     super.initState();
     _searchBloc = SearchBloc(DiseaseRepository());
     _searchController = TextEditingController();
+
+    // Thêm listener cho TextField
+    _searchController.addListener(() {
+      final searchText = _searchController.text;
+      if (searchText.length >= 3) {
+        _searchInputController.add(searchText);
+      }
+    });
+    _searchInputController.stream.listen((searchText) {
+      _performSearch();
+    });
   }
 
   @override
   void dispose() {
     _searchBloc.close();
     _searchController.dispose();
+    _searchInputController.close();
     super.dispose();
   }
 
@@ -41,7 +58,21 @@ class _SearchScreenState extends State<SearchScreen> {
     final tenBenh = _searchController.text;
     _searchBloc.add(PerformSearchEvent(tenBenh));
     FocusScope.of(context).requestFocus(searchInput);
-    SystemChannels.textInput.invokeMethod('TextInput.hide');
+    // SystemChannels.textInput.invokeMethod('TextInput.hide');
+  }
+
+  void _addToFavorites(String item) {
+    // Call this method when you want to add an item to the favorites list.
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const FavouritedScreen(),
+      ),
+    ).then((value) {
+      if (value != null && value is String) {
+        _favouritedScreen.addItemToFavorites(value);
+      }
+    });
   }
 
   @override
@@ -78,10 +109,14 @@ class _SearchScreenState extends State<SearchScreen> {
                             ),
                             padding: const EdgeInsets.all(12),
                             decoration: const BoxDecoration(
-                                color: Colors.white,
-                                border: Border(
-                                    bottom: BorderSide(
-                                        color: Colors.grey, width: 0.75))),
+                              color: Colors.white,
+                              border: Border(
+                                bottom: BorderSide(
+                                  color: Colors.grey,
+                                  width: 0.75,
+                                ),
+                              ),
+                            ),
                             child: ListTile(
                               onTap: () {
                                 Navigator.push(
@@ -109,6 +144,12 @@ class _SearchScreenState extends State<SearchScreen> {
                                 disease.trieuChung ?? '',
                                 maxLines: 3,
                                 overflow: TextOverflow.clip,
+                              ),
+                              trailing: IconButton(
+                                onPressed: () {
+                                  _addToFavorites(disease.idBenh.toString());
+                                },
+                                icon: const Icon(Icons.bookmarks_outlined),
                               ),
                             ),
                           );

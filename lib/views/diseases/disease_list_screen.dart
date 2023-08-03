@@ -6,8 +6,10 @@ import 'package:medical_app/widgets/colors.dart';
 
 import '../../blocs/diseases/bloc/disease_bloc.dart';
 import '../../model/diseases_model.dart';
+import '../../model/news_model.dart';
 import '../../repositories/diseases_repositories.dart';
 import '../../utils/container_utils.dart';
+import '../home/home_detail_disease.dart';
 
 class DiseaseListScreen extends StatelessWidget {
   const DiseaseListScreen({super.key});
@@ -38,8 +40,9 @@ class DiseaseListScreen extends StatelessWidget {
                   return ContainerUtils.loadingStateContainer0;
                 } else if (state is DiseaseErrorState) {
                   return Container(
-                      margin: const EdgeInsets.all(24),
-                      child: ContainerUtils.loadingErrorStateContainer);
+                    margin: const EdgeInsets.all(24),
+                    child: ContainerUtils.loadingErrorStateContainer,
+                  );
                 } else if (state is DiseaseLoadedState) {
                   List<DiseasesModel> listDisease = state.diseasesList;
                   return listDiseasesBody(listDisease);
@@ -83,56 +86,73 @@ class DiseaseListScreen extends StatelessWidget {
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Row(
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(right: 8),
-                            child: Text(
-                              '${listDisease[index].idBenh}',
-                            ),
-                          ),
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: Image.network(
-                              '${listDisease[index].hinhAnh}',
-                              width: 56,
-                              height: 56,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Container(
-                              margin: EdgeInsets.only(left: 8),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    listDisease[index]
-                                        .tenBenh
-                                        .toString()
-                                        .toUpperCase(),
-                                    style: const TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  SizedBox(
-                                    height: 2,
-                                  ),
-                                  Text(
-                                    listDisease[index].trieuChung.toString(),
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ],
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => HomeDetailDisease(
+                                diseases: listDisease[index],
                               ),
                             ),
-                          ),
-                          Container(
-                              margin: EdgeInsets.only(right: 8),
-                              child: Icon(Icons.arrow_circle_right_outlined)),
-                        ],
+                          );
+                        },
+                        child: Row(
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(right: 12),
+                              child: Text(
+                                '${listDisease[index].idBenh}',
+                              ),
+                            ),
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Image.network(
+                                '${listDisease[index].hinhAnh}',
+                                width: 56,
+                                height: 56,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: Container(
+                                margin: EdgeInsets.only(left: 8),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      listDisease[index]
+                                          .tenBenh
+                                          .toString()
+                                          .toUpperCase(),
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 2,
+                                    ),
+                                    Text(
+                                      listDisease[index].trieuChung.toString(),
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(
+                                left: 12,
+                                right: 8,
+                              ),
+                              child: Icon(Icons.arrow_circle_right_outlined),
+                            ),
+                          ],
+                        ),
                       )
                     ]),
               ),

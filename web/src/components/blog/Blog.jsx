@@ -78,14 +78,32 @@ const MyComponent = () => {
               )}
             />
           </div>
-          <Pagination
+          {/* <Pagination
             showSizeChanger={false}
             showQuickJumper={false}
             current={page}
             total={totalCount}
             pageSize={limit}
             onChange={handlePageChange}
-          />
+          /> */}
+          <button
+          disabled={page === 1}
+          onClick={() => handlePageChange(page - 1)}
+        >
+          Prev
+        </button>
+        <span>Page {page}</span>
+        <button
+          disabled={page * limit >= totalCount}
+          onClick={() => handlePageChange(page + 1)}
+        >
+          Next
+        </button>
+          {Array.from({ length: totalCount }, (_, index) => (
+          <button key={index + 1} onClick={() => handlePageChange(index + 1)}>
+            {index + 1}
+          </button>
+        ))}
         </div>
       </section>
     </div>

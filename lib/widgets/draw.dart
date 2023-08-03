@@ -1,7 +1,8 @@
-// ignore_for_file: unrelated_type_equality_checks
+// ignore_for_file: unrelated_type_equality_checks, no_leading_underscores_for_local_identifiers
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:medical_app/views/auth/sign_in/sign_in_screen.dart';
 import 'package:medical_app/widgets/colors.dart';
 import 'package:medical_app/widgets/container_config/container_customization.dart';
 
@@ -57,8 +58,15 @@ class buildDrawer extends StatelessWidget {
               ),
               ElevatedButton(
                 onPressed: () {
-                  _logout(context);
-                  Navigator.of(context).pop();
+                  // _logout(context);
+                  // Navigator.of(context).pop();
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SignInScreen(),
+                      fullscreenDialog: true,
+                    ),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primaryColor,
