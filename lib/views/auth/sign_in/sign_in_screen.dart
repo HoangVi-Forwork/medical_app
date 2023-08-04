@@ -1,12 +1,11 @@
-// ignore_for_file: use_build_context_synchronously, prefer_const_constructors
-
+// ignore_for_file: use_build_context_synchronously, unused_local_variable, prefer_const_constructors_in_immutables
 import 'dart:convert';
 import 'package:flutter/material.dart';
-// ignore: depend_on_referenced_packages
-import 'package:http/http.dart' as http;
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:http/http.dart' as http;
 import 'package:medical_app/views/landing/landing_screen.dart';
 import 'package:medical_app/widgets/colors.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../blocs/auth/auth_bloc.dart';
 import '../../../config/url_config.dart';
 import 'sign_in_utils.dart';
@@ -14,58 +13,20 @@ import '../../../widgets/buttons/auth/buttons_widget.dart';
 import '../../../widgets/text_input_widgets/auth/text_input_widgets.dart';
 
 class SignInScreen extends StatefulWidget {
-  const SignInScreen({super.key});
+  SignInScreen({super.key});
 
   @override
   State<SignInScreen> createState() => _SignInScreenState();
 }
 
 class _SignInScreenState extends State<SignInScreen> {
+  // final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-
   String message = '';
-
-  void login() async {
-    if (_formKey.currentState!.validate()) {
-      String apiUrl =
-          '${Configs.IP4Local}login'; // Thay đổi your_server_ip_or_domain bằng địa chỉ IP hoặc tên miền của Node.js server của bạn
-      final response = await http.post(Uri.parse(apiUrl), body: {
-        'email': emailController.text,
-        'password': passwordController.text,
-      });
-      final responseBody = json.decode(response.body);
-
-      if (response.statusCode == 200) {
-        // Đăng nhập thành công
-        // Chuyển hướng đến trang LandingScreen sau khi đăng nhập thành công
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => LandingScreen()),
-        );
-      } else {
-        // Hiển thị thông báo lỗi đăng nhập
-        setState(() {
-          message = responseBody['message'];
-        });
-
-        // Xử lý trường hợp mật khẩu không chính xác
-        if (message == "Tài khoản mật khẩu không chính xác") {
-          // Hiển thị thông báo mật khẩu không chính xác
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Mật khẩu không chính xác'),
-              duration: Duration(seconds: 3),
-            ),
-          );
-        }
-        // Xử lý các trường hợp lỗi khác tại đây (nếu có)
-      }
-    }
-  }
-
   bool isForgotPasswordButtonPressed = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,12 +36,9 @@ class _SignInScreenState extends State<SignInScreen> {
           if (state is Authenticated) {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(
-                builder: (context) => const LandingScreen(),
-              ),
+              MaterialPageRoute(builder: (context) => const LandingScreen()),
             );
-          }
-          if (state is AuthError) {
+          } else if (state is AuthError) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(
@@ -109,7 +67,6 @@ class _SignInScreenState extends State<SignInScreen> {
                 ),
               );
             }
-            if (state is UnAuthenticated) _buildSignInScreen(context);
             return _buildSignInScreen(context);
           },
         ),
@@ -131,78 +88,59 @@ class _SignInScreenState extends State<SignInScreen> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 topTile(context),
-                // TopImage(),
-                const SizedBox(
-                  height: 44,
-                ),
+                const SizedBox(height: 44),
                 Container(
                   margin: const EdgeInsets.only(bottom: 40),
                   child: Form(
                     key: _formKey,
-                    // autovalidateMode: AutovalidateMode.onUserInteraction,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Container(
-                          alignment: Alignment.center,
-                          width: double.infinity,
-                          child: Text(
-                            message,
-                            style: TextStyle(
-                              color: const Color.fromARGB(255, 255, 0, 0)
-                                  .withOpacity(1),
-                              fontSize: 14,
-                              fontStyle: FontStyle.normal,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
+                            alignment: Alignment.center,
+                            width: double.infinity,
+                            child: Text(message,
+                                style: TextStyle(
+                                    color: const Color.fromARGB(255, 255, 0, 0)
+                                        .withOpacity(1),
+                                    fontSize: 14,
+                                    fontStyle: FontStyle.normal,
+                                    fontWeight: FontWeight.bold))),
                         buildTextFormField(
-                          controller: emailController,
-                          hintText: 'Tên đăng nhập',
-                          iconName: const Icon(Icons.email),
-                          inputType: 'email',
-                          validatorType: 'emailValid',
-                        ),
+                            controller: emailController,
+                            hintText: 'Tên đăng nhập',
+                            iconName: const Icon(Icons.email),
+                            inputType: 'email',
+                            validatorType: 'emailValid'),
                         buildTextFormField(
-                          controller: passwordController,
-                          hintText: 'Mật khẩu',
-                          iconName: const Icon(Icons.lock),
-                          inputType: 'password',
-                          validatorType: 'passwordValid',
-                        ),
-                        const SizedBox(
-                          height: 26,
-                        ),
+                            controller: passwordController,
+                            hintText: 'Mật khẩu',
+                            iconName: const Icon(Icons.lock),
+                            inputType: 'password',
+                            validatorType: 'passwordValid'),
+                        const SizedBox(height: 26),
                         buildSignInButton(
-                          text: 'Login',
-                          submitType: 'login',
-                          submitButton: () {
-                            login();
-                          },
-                        ),
+                            text: 'Login',
+                            submitType: 'login',
+                            submitButton: login),
                         Container(
                           margin: const EdgeInsets.symmetric(vertical: 6),
                           child: const Center(
-                            child: Text(
-                              '--- Or ---',
-                              style: TextStyle(
-                                  color: Colors.grey,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
+                              child: Text('--- Or ---',
+                                  style: TextStyle(
+                                      color: Colors.grey,
+                                      fontWeight: FontWeight.bold))),
                         ),
                         buildSignInButton(
-                          text: 'Register',
-                          submitType: 'register',
-                          submitButton: () {},
-                        ),
+                            text: 'Register',
+                            submitType: 'register',
+                            submitButton: () {}),
                         _buildForgotPassButton(context)
                       ],
                     ),
                   ),
-                ),
+                )
               ],
             ),
           ),
@@ -237,21 +175,14 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                   child: Column(
                     children: [
-                      // icon close
                       Container(
                         height: 30,
                         width: double.infinity,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
                         child: Center(
                           child: GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: Image.asset(
-                              'assets/images/down-arrow.png',
-                            ),
+                            onTap: () => Navigator.of(context).pop(),
+                            child: Image.asset('assets/images/down-arrow.png'),
                           ),
                         ),
                       ),
@@ -259,7 +190,6 @@ class _SignInScreenState extends State<SignInScreen> {
                         width: double.infinity,
                         padding: const EdgeInsets.symmetric(
                             vertical: 16, horizontal: 24),
-                        // color: Colors.white,
                         child: Form(
                           child: Column(
                             children: [
@@ -277,9 +207,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                    const SizedBox(
-                                      height: 18,
-                                    ),
+                                    const SizedBox(height: 18),
                                     Text(
                                       'Vui lòng nhập địa chỉ email của bạn. Bạn sẽ nhận được yêu cầu tạo mật khẩu mới tại email của mình.',
                                       style: TextStyle(
@@ -304,10 +232,8 @@ class _SignInScreenState extends State<SignInScreen> {
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(color: Colors.white),
                                   ),
-                                  prefixIcon: Icon(
-                                    Icons.email,
-                                    color: Colors.white,
-                                  ),
+                                  prefixIcon:
+                                      Icon(Icons.email, color: Colors.white),
                                 ),
                                 style: const TextStyle(color: Colors.white),
                               ),
@@ -321,8 +247,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                 ),
                                 child: GestureDetector(
                                   child: const Center(
-                                    child: Text('Gữi mã xác nhận'),
-                                  ),
+                                      child: Text('Gửi mã xác nhận')),
                                 ),
                               ),
                             ],
@@ -347,11 +272,35 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 
-  // void _authenticateWithEmailAndPassword(context) {
-  //   if (_formKey.currentState!.validate()) {
-  //     BlocProvider.of<AuthBloc>(context).add(
-  //       SignInRequested(emailController.text, passwordController.text),
-  //     );
-  //   }
-  // }
+  // LOGIN FUNCTIONS
+  void login() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (_formKey.currentState!.validate()) {
+      String apiUrl = '${Configs.IP4Local}login';
+      final response = await http.post(Uri.parse(apiUrl), body: {
+        'email': emailController.text,
+        'password': passwordController.text,
+      });
+      final responseBody = json.decode(response.body);
+      if (response.statusCode == 200) {
+        prefs.setString('email', emailController.text);
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const LandingScreen()),
+        );
+      } else {
+        setState(() {
+          message = responseBody['message'];
+        });
+        if (message == "Tài khoản hoặc mật khẩu không chính xác") {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Tài khoản hoặc mật khẩu không chính xác'),
+              duration: Duration(seconds: 3),
+            ),
+          );
+        }
+      }
+    }
+  }
 }

@@ -74,7 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Colors.white,
-      drawer: const buildDrawer(),
+      drawer: const BuildDrawer(),
       body: Container(
         margin: const EdgeInsets.only(left: 16, right: 16),
         width: double.infinity,

@@ -1,4 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first, must_be_immutable
+// ignore_for_file: public_member_api_docs, sort_constructors_first, must_be_immutable, camel_case_types, unused_element
 
 import 'package:flutter/material.dart';
 import '../../../views/auth/sign_up/sign_up_screen.dart';
@@ -77,13 +77,13 @@ class buildSignInButton extends StatelessWidget {
               submitButton();
             }
           : () {
-            Navigator.push(
+              Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => const SignUpScreen(),
                 ),
               );
-          },
+            },
       child: Container(
         width: double.infinity,
         height: 44,
@@ -120,6 +120,7 @@ class buildSignInButton extends StatelessWidget {
       ),
     );
   }
+
   // TOP TITLE
   Container _topTitle() {
     return Container(
@@ -150,6 +151,7 @@ class buildSignInButton extends StatelessWidget {
       ),
     );
   }
+
   // SUBMIT RESIGTER BUTTON
   GestureDetector resigterButton() {
     return GestureDetector(
@@ -170,6 +172,7 @@ class buildSignInButton extends StatelessWidget {
       ),
     );
   }
+
   // INPUT TEXTFORMFIELD
   Container buildResigerTextFormField(String lableText, iconName) {
     return Container(
@@ -197,6 +200,7 @@ class buildSignInButton extends StatelessWidget {
     );
   }
 }
+
 // SUBMIT RESIGTER BUTTON - USING INTO SIGNUP SCREEN
 class BuildSignUpButton extends StatelessWidget {
   final String text;
@@ -244,4 +248,3 @@ class BuildSignUpButton extends StatelessWidget {
     );
   }
 }
-

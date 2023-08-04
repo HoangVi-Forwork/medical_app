@@ -1,4 +1,4 @@
-// ignore_for_file: import_of_legacy_library_into_null_safe
+// ignore_for_file: import_of_legacy_library_into_null_safe, avoid_print
 
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -66,24 +66,22 @@ class HomeDetailDisease extends StatelessWidget {
                 ),
                 child: Expanded(
                   flex: 1,
-                  child: Container(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _buildMainContext(
-                          'Triệu chứng:',
-                          diseases.nguyenNhan.toString(),
-                        ),
-                        _buildMainContext(
-                          'Nguyên nhân:',
-                          diseases.nguyenNhan.toString(),
-                        ),
-                        _buildMainContext(
-                          'Phòng ngừa:',
-                          diseases.phongNgua.toString(),
-                        ),
-                      ],
-                    ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildMainContext(
+                        'Triệu chứng:',
+                        diseases.nguyenNhan.toString(),
+                      ),
+                      _buildMainContext(
+                        'Nguyên nhân:',
+                        diseases.nguyenNhan.toString(),
+                      ),
+                      _buildMainContext(
+                        'Phòng ngừa:',
+                        diseases.phongNgua.toString(),
+                      ),
+                    ],
                   ),
                 ),
               ),

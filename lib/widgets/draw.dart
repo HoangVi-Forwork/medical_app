@@ -1,93 +1,49 @@
-// ignore_for_file: unrelated_type_equality_checks, no_leading_underscores_for_local_identifiers
+// ignore_for_file: use_build_context_synchronously, unused_import
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:medical_app/views/auth/sign_in/sign_in_screen.dart';
 import 'package:medical_app/widgets/colors.dart';
 import 'package:medical_app/widgets/container_config/container_customization.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import '../blocs/auth/auth_bloc.dart';
+import '../config/url_config.dart';
+import 'package:http/http.dart' as http;
 
-// ignore: camel_case_types
-class buildDrawer extends StatelessWidget {
-  const buildDrawer({super.key});
+import '../views/auth/sign_in/sign_in_screen.dart';
+
+class BuildDrawer extends StatefulWidget {
+  const BuildDrawer({Key? key}) : super(key: key);
+
+  @override
+  State<BuildDrawer> createState() => _BuildDrawerState();
+}
+
+class _BuildDrawerState extends State<BuildDrawer> {
+  final Future<SharedPreferences> prefs = SharedPreferences.getInstance();
+  final String userImageUrl =
+      'https://i.pinimg.com/564x/ec/fd/c0/ecfdc07b30149c927956fe5bb6126e2c.jpg';
+
+  String userEmail = "";
+
+  @override
+  void initState() {
+    super.initState();
+    loadUserEmail();
+  }
+
+  Future<void> loadUserEmail() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      userEmail = prefs.getString('email') ?? "";
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    // LOGOUT FUNC
-    void _logout(BuildContext context) {
-      BlocProvider.of<AuthBloc>(context).add(SignOutRequested());
-    }
-
-    void _buildShowLogoutDialog(BuildContext context) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            icon: Image.asset(
-              'assets/icons/sad.png',
-              width: 44,
-              height: 44,
-            ),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            backgroundColor: AppColors.highLightColor,
-            title: const Text(
-              'Bạn thật sự muốn đăng xuất?',
-              style: TextStyle(
-                color: AppColors.primaryColor,
-              ),
-            ),
-            content: const Text(
-              'Hãy quay trở lại khi cần bạn nhé!',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: AppColors.primaryColor,
-                fontSize: 12,
-                fontStyle: FontStyle.italic,
-              ),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text('Hủy'),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  // _logout(context);
-                  // Navigator.of(context).pop();
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const SignInScreen(),
-                      fullscreenDialog: true,
-                    ),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primaryColor,
-                ),
-                child: const Text(
-                  'Đăng xuất',
-                  style: TextStyle(
-                    color: AppColors.whiteColor,
-                  ),
-                ),
-              ),
-            ],
-          );
-        },
-      );
-    }
-
     return Drawer(
       backgroundColor: AppColors.highLightColor,
       child: Column(
         children: [
-          // TOP INFOMATIONS
           Container(
             width: double.infinity,
             height: 240,
@@ -111,45 +67,40 @@ class buildDrawer extends StatelessWidget {
                     child: SizedBox(
                       width: 68,
                       height: 68,
-                      // margin: const EdgeInsets.only(bottom: 0),
-                      child: Image.network(
-                        'https://i.pinimg.com/564x/ec/fd/c0/ecfdc07b30149c927956fe5bb6126e2c.jpg',
-                      ),
+                      child: Image.network(userImageUrl),
                     ),
                   ),
-                  //
                   Container(
                     margin: const EdgeInsets.only(bottom: 0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
+                      children: [
                         Text(
-                          "Nguyen Hoang Vi",
-                          style: TextStyle(
-                            fontSize: 18,
+                          userEmail,
+                          overflow: TextOverflow.clip,
+                          style: const TextStyle(
+                            fontSize: 12,
                             color: AppColors.whiteColor,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 4,
                         ),
-                        Text(
-                          "0907656399",
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.grey,
-                            fontWeight: FontWeight.normal,
-                          ),
-                        ),
+                        // Text(
+                        //   userName,
+                        //   style: const TextStyle(
+                        //     fontSize: 12,
+                        //     color: Colors.grey,
+                        //     fontWeight: FontWeight.normal,
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),
                   IconButton(
-                    onPressed: () {
-                      print('Okey, Click cai qq');
-                    },
+                    onPressed: () {},
                     icon: const Icon(
                       Icons.edit,
                       color: Colors.white,
@@ -159,7 +110,6 @@ class buildDrawer extends StatelessWidget {
               ),
             ),
           ),
-          // FUNC ICONS
           Expanded(
             child: Container(
               margin: const EdgeInsets.symmetric(vertical: 26, horizontal: 16),
@@ -184,13 +134,9 @@ class buildDrawer extends StatelessWidget {
                           onTap: () {},
                         ),
                         ListTile(
-                          onTap: () {
-                            print('Okey, Click cai qq');
-                          },
+                          onTap: () {},
                           leading: const Icon(Icons.shopping_bag),
-                          title: const Text(
-                            'Giỏ hàng',
-                          ),
+                          title: const Text('Giỏ hàng'),
                         ),
                       ],
                     ),
@@ -214,5 +160,84 @@ class buildDrawer extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void _buildShowLogoutDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          icon: Image.asset(
+            'assets/icons/sad.png',
+            width: 44,
+            height: 44,
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          backgroundColor: AppColors.highLightColor,
+          title: const Text(
+            'Bạn thật sự muốn đăng xuất?',
+            style: TextStyle(
+              color: AppColors.primaryColor,
+            ),
+          ),
+          content: const Text(
+            'Hãy quay trở lại khi cần bạn nhé!',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: AppColors.primaryColor,
+              fontSize: 12,
+              fontStyle: FontStyle.italic,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Hủy'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                _logout();
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primaryColor,
+              ),
+              child: const Text(
+                'Đăng xuất',
+                style: TextStyle(
+                  color: AppColors.whiteColor,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  // void _logout(BuildContext context) {
+  //   BlocProvider.of<AuthBloc>(context).add(SignOutRequested());
+  // }
+
+  void _logout() async {
+    final apiUrl = '${Configs.IP4Local}logout';
+    final response = await http.post(
+      Uri.parse(apiUrl),
+    );
+    if (response.statusCode == 200) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.remove('email'); // Xóa thông tin đăng nhập khỏi SharedPreferences
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => SignInScreen(),
+        ), // Điều hướng về màn hình đăng nhập
+      );
+    } else {
+      // Xử lý lỗi đăng xuất
+    }
   }
 }
