@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:medical_app/widgets/colors.dart';
 import '../../widgets/container_config/container_customization.dart';
@@ -7,7 +8,7 @@ class NewsDatailScreen extends StatelessWidget {
   final String title;
   final String content;
   final String imageUrl;
-  final DateTime postTime;
+  final String? postTime;
   const NewsDatailScreen({
     super.key,
     required this.title,
@@ -18,7 +19,7 @@ class NewsDatailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> textParagraphs = content.trim().split('.');
+    //final List<String> textParagraphs = content.trim().split('.');
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -75,31 +76,12 @@ class NewsDatailScreen extends StatelessWidget {
                 ),
               ),
               ContainersCustomization.dividerInContainer(),
-              Text(
-                textParagraphs[0].toString(),
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontFamily: GoogleFonts.poppins().toString(),
-                ),
+              Html(
+                data: content,
               ),
               const SizedBox(
                 height: 4,
               ),
-              Column(
-                children: textParagraphs
-                    .sublist(
-                        1) // Bỏ qua đoạn văn bản đầu tiên vì đã được hiển thị trước đó
-                    .map(
-                      (paragraph) => Text(
-                        paragraph,
-                        style: TextStyle(
-                          fontFamily: GoogleFonts.poppins().toString(),
-                          height: 1.5,
-                        ),
-                      ),
-                    )
-                    .toList(),
-              )
             ],
           ),
         ),

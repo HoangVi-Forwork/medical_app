@@ -43,7 +43,6 @@ Widget topImage(BuildContext context) {
 }
 
 //! Top Title for SignIn Screen
-
 Widget topTile(BuildContext context) {
   return SizedBox(
     width: double.infinity,

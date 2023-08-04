@@ -37,7 +37,7 @@ class _SearchScreenState extends State<SearchScreen> {
     // Thêm listener cho TextField
     _searchController.addListener(() {
       final searchText = _searchController.text;
-      if (searchText.length >= 3) {
+      if (searchText.length >= 20) {
         _searchInputController.add(searchText);
       }
     });
