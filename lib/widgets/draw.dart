@@ -15,7 +15,6 @@ class buildDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // LOGOUT FUNC
-
     void _logout(BuildContext context) {
       BlocProvider.of<AuthBloc>(context).add(SignOutRequested());
     }

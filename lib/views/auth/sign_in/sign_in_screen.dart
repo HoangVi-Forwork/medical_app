@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously, prefer_const_constructors
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
@@ -25,34 +27,10 @@ class _SignInScreenState extends State<SignInScreen> {
 
   String message = '';
 
-  // void login() async {
-  //   if (_formKey.currentState!.validate()) {
-  //     String apiUrl = '${Configs.IP4Local}login';
-  //     final response = await http.post(Uri.parse(apiUrl), body: {
-  //       'email': emailController.text,
-  //       'password': passwordController.text,
-  //     });
-
-  //     final responseBody = json.decode(response.body);
-
-  //     if (response.statusCode == 200) {
-  //       // Đăng nhập thành công
-  //       // ignore: use_build_context_synchronously
-  //       Navigator.pushReplacement(
-  //         context,
-  //         MaterialPageRoute(builder: (context) => const LandingScreen()),
-  //       );
-  //     } else {
-  //       // Hiển thị thông báo lỗi đăng nhập
-  //       setState(() {
-  //         message = responseBody['message'];
-  //       });
-  //     }
-  //   }
-  // }
-    void login() async {
+  void login() async {
     if (_formKey.currentState!.validate()) {
-      String apiUrl = '${Configs.IP4Local}login'; // Thay đổi your_server_ip_or_domain bằng địa chỉ IP hoặc tên miền của Node.js server của bạn
+      String apiUrl =
+          '${Configs.IP4Local}login'; // Thay đổi your_server_ip_or_domain bằng địa chỉ IP hoặc tên miền của Node.js server của bạn
       final response = await http.post(Uri.parse(apiUrl), body: {
         'email': emailController.text,
         'password': passwordController.text,

@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import '../../../blocs/auth/auth_bloc.dart';
+import '../../../config/url_config.dart';
 import '../../../widgets/buttons/auth/buttons_widget.dart';
 import '../../landing/landing_screen.dart';
 import '../sign_in/sign_in_screen.dart';
@@ -168,7 +169,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
       };
 
       final response = await http.post(
-        Uri.parse('http://localhost:5090/api/registerd'), // Replace with your backend URL
+        Uri.parse(
+            '${Configs.IP4Local}api/registerd'), // Replace with your backend URL
         body: userData,
       );
 
@@ -223,7 +225,8 @@ Widget buildTextFormField({
         if (value.length < 8) {
           return 'Mật khẩu phải có ít nhất 8 ký tự';
         }
-        if (!RegExp(r'^(?=.*[a-z])(?=.*[A-Z])[a-zA-Z\d]{8,}$').hasMatch(value)) {
+        if (!RegExp(r'^(?=.*[a-z])(?=.*[A-Z])[a-zA-Z\d]{8,}$')
+            .hasMatch(value)) {
           return 'Mật khẩu phải chứa ít nhất 1 chữ hoa và 1 chữ thường';
         }
         return null;

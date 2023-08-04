@@ -26,7 +26,9 @@ class HomeDetailDisease extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.bookmark_add),
-            onPressed: () {},
+            onPressed: () {
+              print('Thêm vào mục quan tâm');
+            },
           ),
         ],
       ),
