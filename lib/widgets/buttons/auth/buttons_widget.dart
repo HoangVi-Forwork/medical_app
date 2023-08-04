@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, must_be_immutable
 
 import 'package:flutter/material.dart';
+import '../../../views/auth/sign_up/sign_up_screen.dart';
 import '../../colors.dart';
 
 class BuildComeBackButton extends StatelessWidget {
@@ -76,76 +77,13 @@ class buildSignInButton extends StatelessWidget {
               submitButton();
             }
           : () {
-              showBottomSheet(
-                context: context,
-                builder: (context) {
-                  return Container(
-                    width: double.infinity,
-                    constraints: const BoxConstraints(
-                      minHeight: 460,
-                      maxHeight: 600,
-                    ),
-                    margin: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: AppColors.secondaryColor,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Column(
-                      children: [
-                        // CLOSE ICON
-                        Container(
-                          height: 30,
-                          width: double.infinity,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                          ),
-                          child: Center(
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: Image.asset(
-                                'assets/images/down-arrow.png',
-                              ),
-                            ),
-                          ),
-                        ),
-                        // RESIGTER BODY
-                        Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 16,
-                            horizontal: 24,
-                          ),
-                          child: Form(
-                            child: Column(
-                              children: [
-                                // TOP TITILE
-                                _topTitle(),
-                                // NHẬP EMAIL
-                                buildResigerTextFormField(
-                                    'Nhập email', Icons.lock),
-                                // TÊN ĐĂNG NHẬP
-                                buildResigerTextFormField(
-                                    'Tên đăng nhập', Icons.lock),
-                                // NHẬP MẬT KHẨU
-                                buildResigerTextFormField(
-                                    'Mật khẩu', Icons.lock),
-                                // NHẬP LẠI MẬT KHẨU
-                                buildResigerTextFormField(
-                                    'Nhập lại mật khẩu', Icons.lock),
-                                // RESIGTER BUTTON
-                                resigterButton(),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const SignUpScreen(),
+                ),
               );
-            },
+          },
       child: Container(
         width: double.infinity,
         height: 44,
@@ -182,7 +120,6 @@ class buildSignInButton extends StatelessWidget {
       ),
     );
   }
-
   // TOP TITLE
   Container _topTitle() {
     return Container(
@@ -213,7 +150,6 @@ class buildSignInButton extends StatelessWidget {
       ),
     );
   }
-
   // SUBMIT RESIGTER BUTTON
   GestureDetector resigterButton() {
     return GestureDetector(
@@ -234,7 +170,6 @@ class buildSignInButton extends StatelessWidget {
       ),
     );
   }
-
   // INPUT TEXTFORMFIELD
   Container buildResigerTextFormField(String lableText, iconName) {
     return Container(
@@ -262,7 +197,6 @@ class buildSignInButton extends StatelessWidget {
     );
   }
 }
-
 // SUBMIT RESIGTER BUTTON - USING INTO SIGNUP SCREEN
 class BuildSignUpButton extends StatelessWidget {
   final String text;
@@ -310,3 +244,4 @@ class BuildSignUpButton extends StatelessWidget {
     );
   }
 }
+

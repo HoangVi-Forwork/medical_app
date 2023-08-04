@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Route, Routes } from "react-router-dom";
 import Login from './components/login/login';
-import LoginComponent from './components/login/Signup'
+import LoginComponent from './components/login/Signup.jsx'
 import AppBlog from './components/Appmax.js';
 import './App.css';
 

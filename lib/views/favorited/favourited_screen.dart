@@ -50,9 +50,9 @@ class _FavouritedScreenState extends State<FavouritedScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Favourite News'),
-      ),
+      // appBar: AppBar(
+      //   title: const Text('Favourite News'),
+      // ),
       body: ListView.builder(
         itemCount: favouriteItems.length,
         itemBuilder: (context, index) {

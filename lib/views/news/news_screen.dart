@@ -8,6 +8,7 @@ import 'package:medical_app/model/news_model.dart';
 import 'package:medical_app/repositories/news_repositories.dart';
 import 'package:medical_app/widgets/colors.dart';
 import '../../utils/container_utils.dart';
+import 'news_detail.dart';
 
 class NewsScreen extends StatelessWidget {
   const NewsScreen({Key? key}) : super(key: key);
@@ -125,11 +126,6 @@ class _NewsItemState extends State<NewsItem> {
                           ),
                           Html(
                             data: widget.newsModel.noiDung!.toString(),
-                            defaultTextStyle: const TextStyle(
-                              fontSize: 12,
-                              color: Colors.black,
-                              fontWeight: FontWeight.normal,
-                            ),
                           ),
                         ],
                       ),
@@ -137,66 +133,81 @@ class _NewsItemState extends State<NewsItem> {
                   ],
                 ),
               )
-            : Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: Center(
-                      child: Container(
-                        margin: const EdgeInsets.only(left: 12),
-                        child: Image.network(
-                          widget.newsModel.hinhAnh.toString(),
-                          fit: BoxFit.cover,
-                          width: double.infinity,
-                          height: 80,
+            : GestureDetector(
+                onLongPress: (() {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => NewsDatailScreen(
+                        title: widget.newsModel.tieuDe!.toString(),
+                        content: widget.newsModel.noiDung!.toString(),
+                        imageUrl: widget.newsModel.hinhAnh!.toString(),
+                        postTime: null,
+                      ),
+                    ),
+                  );
+                }),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: Center(
+                        child: Container(
+                          margin: const EdgeInsets.only(left: 12),
+                          child: Image.network(
+                            widget.newsModel.hinhAnh.toString(),
+                            fit: BoxFit.cover,
+                            width: double.infinity,
+                            height: 80,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                    width: 8,
-                  ), // Add some space between image and content
-                  Expanded(
-                    flex: 3,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 12,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            widget.newsModel.tieuDe.toString().toUpperCase(),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                              color: Colors.black,
-                              fontStyle: FontStyle.normal,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
+                    const SizedBox(
+                      width: 8,
+                    ), // Add some space between image and content
+                    Expanded(
+                      flex: 3,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 12,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              widget.newsModel.tieuDe.toString().toUpperCase(),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontStyle: FontStyle.normal,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
                             ),
-                          ),
-                          const SizedBox(
-                            height: 6,
-                          ),
-                          Text(
-                            widget.newsModel.gioiThieu.toString(),
-                            maxLines: 3,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              color: Colors.black.withOpacity(.6),
-                              fontStyle: FontStyle.italic,
-                              fontWeight: FontWeight.normal,
-                              fontSize: 12,
+                            const SizedBox(
+                              height: 6,
                             ),
-                          ),
-                        ],
+                            Text(
+                              widget.newsModel.gioiThieu.toString(),
+                              maxLines: 3,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                color: Colors.black.withOpacity(.6),
+                                fontStyle: FontStyle.italic,
+                                fontWeight: FontWeight.normal,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
       ),
     );

@@ -25,28 +25,64 @@ class _SignInScreenState extends State<SignInScreen> {
 
   String message = '';
 
-  void login() async {
+  // void login() async {
+  //   if (_formKey.currentState!.validate()) {
+  //     String apiUrl = '${Configs.IP4Local}login';
+  //     final response = await http.post(Uri.parse(apiUrl), body: {
+  //       'email': emailController.text,
+  //       'password': passwordController.text,
+  //     });
+
+  //     final responseBody = json.decode(response.body);
+
+  //     if (response.statusCode == 200) {
+  //       // Đăng nhập thành công
+  //       // ignore: use_build_context_synchronously
+  //       Navigator.pushReplacement(
+  //         context,
+  //         MaterialPageRoute(builder: (context) => const LandingScreen()),
+  //       );
+  //     } else {
+  //       // Hiển thị thông báo lỗi đăng nhập
+  //       setState(() {
+  //         message = responseBody['message'];
+  //       });
+  //     }
+  //   }
+  // }
+    void login() async {
     if (_formKey.currentState!.validate()) {
-      String apiUrl = '${Configs.IP4Local}login';
+      String apiUrl = '${Configs.IP4Local}login'; // Thay đổi your_server_ip_or_domain bằng địa chỉ IP hoặc tên miền của Node.js server của bạn
       final response = await http.post(Uri.parse(apiUrl), body: {
         'email': emailController.text,
         'password': passwordController.text,
       });
-
       final responseBody = json.decode(response.body);
 
       if (response.statusCode == 200) {
         // Đăng nhập thành công
-        // ignore: use_build_context_synchronously
+        // Chuyển hướng đến trang LandingScreen sau khi đăng nhập thành công
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const LandingScreen()),
+          MaterialPageRoute(builder: (context) => LandingScreen()),
         );
       } else {
         // Hiển thị thông báo lỗi đăng nhập
         setState(() {
           message = responseBody['message'];
         });
+
+        // Xử lý trường hợp mật khẩu không chính xác
+        if (message == "Tài khoản mật khẩu không chính xác") {
+          // Hiển thị thông báo mật khẩu không chính xác
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Mật khẩu không chính xác'),
+              duration: Duration(seconds: 3),
+            ),
+          );
+        }
+        // Xử lý các trường hợp lỗi khác tại đây (nếu có)
       }
     }
   }

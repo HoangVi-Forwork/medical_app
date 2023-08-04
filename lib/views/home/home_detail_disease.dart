@@ -87,11 +87,6 @@ class HomeDetailDisease extends StatelessWidget {
               ),
               Html(
                 data: diseases.noiDung!,
-                blockSpacing: 10,
-                defaultTextStyle: const TextStyle(
-                  height: 1,
-                  leadingDistribution: TextLeadingDistribution.even,
-                ),
               )
             ],
           ),

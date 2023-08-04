@@ -37,7 +37,7 @@ class _SearchScreenState extends State<SearchScreen> {
     // Thêm listener cho TextField
     _searchController.addListener(() {
       final searchText = _searchController.text;
-      if (searchText.length >= 3) {
+      if (searchText.length >= 30) {
         _searchInputController.add(searchText);
       }
     });
@@ -57,7 +57,7 @@ class _SearchScreenState extends State<SearchScreen> {
   void _performSearch() {
     final tenBenh = _searchController.text;
     _searchBloc.add(PerformSearchEvent(tenBenh));
-    FocusScope.of(context).requestFocus(searchInput);
+    // FocusScope.of(context).requestFocus(searchInput);
     // SystemChannels.textInput.invokeMethod('TextInput.hide');
   }
 
@@ -145,12 +145,12 @@ class _SearchScreenState extends State<SearchScreen> {
                                 maxLines: 3,
                                 overflow: TextOverflow.clip,
                               ),
-                              trailing: IconButton(
-                                onPressed: () {
-                                  _addToFavorites(disease.idBenh.toString());
-                                },
-                                icon: const Icon(Icons.bookmarks_outlined),
-                              ),
+                              // trailing: IconButton(
+                              //   onPressed: () {
+                              //     _addToFavorites(disease.idBenh.toString());
+                              //   },
+                              //   icon: const Icon(Icons.bookmarks_outlined),
+                              // ),
                             ),
                           );
                         },
