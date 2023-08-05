@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:medical_app/blocs/auth/auth_bloc.dart';
 import 'package:medical_app/blocs/diseases/bloc/disease_bloc.dart';
+import 'package:medical_app/blocs/favourites/bloc/favourites_bloc.dart';
 import 'package:medical_app/blocs/news/news_bloc.dart';
 import 'package:medical_app/blocs/search/bloc/search_bloc.dart';
 import 'package:medical_app/repositories/auth_repositories.dart';
@@ -45,6 +46,9 @@ class MyApp extends StatelessWidget {
           create: (context) => SearchBloc(
             DiseaseRepository(),
           ),
+        ),
+        BlocProvider(
+          create: (context) => FavouritesBloc(),
         ),
       ],
       child: BlocProvider(

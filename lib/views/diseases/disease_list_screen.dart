@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:medical_app/blocs/favourites/bloc/favourites_bloc.dart';
 import 'package:medical_app/widgets/colors.dart';
 import '../../blocs/diseases/bloc/disease_bloc.dart';
 import '../../model/diseases_model.dart';
@@ -89,7 +90,31 @@ SingleChildScrollView listDiseasesBody(List<DiseasesModel> listDisease) {
               SlidableAction(
                 backgroundColor: const Color.fromARGB(255, 24, 163, 29),
                 foregroundColor: Colors.white,
-                onPressed: ((context) {}),
+                onPressed: ((context) {
+                  final favBloc = context.read<FavouritesBloc>();
+                  final disItem = favBloc.state.diseasesItems;
+
+                  if (disItem.any((item) => item.idBenh == disease.idBenh)) {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      backgroundColor: Colors.orange,
+                      content: Text(
+                        'Bệnh lý đã được quan tâm!',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      duration: Duration(seconds: 2),
+                    ));
+                  } else {
+                    favBloc.add(AddToFav(disease));
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      backgroundColor: AppColors.primaryColor,
+                      content: Text(
+                        'Đã thêm vào mục quan tâm!',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      duration: Duration(seconds: 2),
+                    ));
+                  }
+                }),
                 icon: Icons.bookmark_add_outlined,
               ),
             ]),

@@ -251,6 +251,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     backgroundColor: Colors.white,
+                    duration: const Duration(seconds: 2),
                     content: Container(
                       margin: const EdgeInsets.all(12),
                       padding: const EdgeInsets.all(24),
