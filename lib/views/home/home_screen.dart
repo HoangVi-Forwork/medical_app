@@ -40,7 +40,6 @@ class _HomeScreenState extends State<HomeScreen> {
     ],
   );
   final ScrollController scrollController = ScrollController();
-  // listen for user actions funcs
   bool isVisibale = false;
   @override
   void initState() {

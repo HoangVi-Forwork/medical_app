@@ -34,7 +34,7 @@ class _SearchScreenState extends State<SearchScreen> {
     // Thêm listener cho TextField
     _searchController.addListener(() {
       final searchText = _searchController.text;
-      if (searchText.length >= 30) {
+      if (searchText.length >= 5) {
         _searchInputController.add(searchText);
       }
     });
@@ -42,6 +42,11 @@ class _SearchScreenState extends State<SearchScreen> {
       _performSearch();
     });
   }
+
+  // void sharePressed() {
+  //   String message = 'Gửi Tin này tới đâu?';
+  //   Share.share(message);
+  // }
 
   @override
   void dispose() {
@@ -128,12 +133,13 @@ class _SearchScreenState extends State<SearchScreen> {
                                 maxLines: 3,
                                 overflow: TextOverflow.clip,
                               ),
-                              // trailing: IconButton(
-                              //   onPressed: () {
-                              //     _addToFavorites(disease.idBenh.toString());
-                              //   },
-                              //   icon: const Icon(Icons.bookmarks_outlined),
-                              // ),
+                              trailing: IconButton(
+                                onPressed: () {
+                                  // _addToFavorites(disease.idBenh.toString());
+                                  //sharePressed();
+                                },
+                                icon: const Icon(Icons.bookmarks_outlined),
+                              ),
                             ),
                           );
                         },

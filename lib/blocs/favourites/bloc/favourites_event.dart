@@ -9,7 +9,7 @@ abstract class FavouritesEvent extends Equatable {
 
 class AddToFav extends FavouritesEvent {
   final DiseasesModel diseases;
-  AddToFav(this.diseases);
+  const AddToFav(this.diseases);
 
   @override
   List<Object> get props => [diseases];
@@ -17,7 +17,7 @@ class AddToFav extends FavouritesEvent {
 
 class RemoveFromFav extends FavouritesEvent {
   final DiseasesModel diseases;
-  RemoveFromFav(this.diseases);
+  const RemoveFromFav(this.diseases);
 
   @override
   List<Object> get props => [diseases];

@@ -7,9 +7,11 @@ import 'package:medical_app/blocs/diseases/bloc/disease_bloc.dart';
 import 'package:medical_app/blocs/favourites/bloc/favourites_bloc.dart';
 import 'package:medical_app/blocs/news/news_bloc.dart';
 import 'package:medical_app/blocs/search/bloc/search_bloc.dart';
+import 'package:medical_app/blocs/user/bloc/user_bloc.dart';
 import 'package:medical_app/repositories/auth_repositories.dart';
 import 'package:medical_app/repositories/diseases_repositories.dart';
 import 'package:medical_app/repositories/news_repositories.dart';
+import 'package:medical_app/repositories/user_repositories.dart';
 import 'package:medical_app/views/auth/sign_in/sign_in_screen.dart';
 import 'package:medical_app/widgets/colors.dart';
 import 'firebase_options.dart';
@@ -30,26 +32,12 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         RepositoryProvider<AuthRepositories>(
-          create: (context) => AuthRepositories(),
-        ),
-        BlocProvider(
-          create: (context) => DiseaseBloc(
-            DiseaseRepository(),
-          ),
-        ),
-        BlocProvider(
-          create: (context) => NewsBloc(
-            NewRepositories(),
-          ),
-        ),
-        BlocProvider(
-          create: (context) => SearchBloc(
-            DiseaseRepository(),
-          ),
-        ),
-        BlocProvider(
-          create: (context) => FavouritesBloc(),
-        ),
+            create: (context) => AuthRepositories()),
+        BlocProvider(create: (context) => DiseaseBloc(DiseaseRepository())),
+        BlocProvider(create: (context) => NewsBloc(NewRepositories())),
+        BlocProvider(create: (context) => SearchBloc(DiseaseRepository())),
+        BlocProvider(create: (context) => FavouritesBloc()),
+        BlocProvider(create: (context) => UserBloc(UserRepository())),
       ],
       child: BlocProvider(
         create: (context) => AuthBloc(

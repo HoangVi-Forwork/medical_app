@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:medical_app/blocs/favourites/bloc/favourites_bloc.dart';
@@ -7,14 +8,46 @@ import '../../blocs/diseases/bloc/disease_bloc.dart';
 import '../../model/diseases_model.dart';
 import '../../repositories/diseases_repositories.dart';
 import '../../utils/container_utils.dart';
+import '../../widgets/buttons/floating_scroll_button.dart';
 import '../home/home_detail_disease.dart';
 
-class DiseaseListScreen extends StatelessWidget {
+class DiseaseListScreen extends StatefulWidget {
   const DiseaseListScreen({super.key});
+
+  @override
+  State<DiseaseListScreen> createState() => _DiseaseListScreenState();
+}
+
+class _DiseaseListScreenState extends State<DiseaseListScreen> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final ScrollController scrollController = ScrollController();
+  bool isVisibale = false;
+
+  @override
+  void initState() {
+    super.initState();
+    scrollController.addListener(() {
+      if (scrollController.position.userScrollDirection ==
+          ScrollDirection.reverse) {
+        setState(
+          () {
+            isVisibale = false;
+          },
+        );
+      }
+      if (scrollController.position.userScrollDirection ==
+          ScrollDirection.forward) {
+        setState(() {
+          isVisibale = true;
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: const Text('Danh sách bệnh lý'),
         centerTitle: true,
@@ -38,7 +71,7 @@ class DiseaseListScreen extends StatelessWidget {
                     child: ContainerUtils.loadingErrorStateContainer,
                   );
                 } else if (state is DiseaseLoadedState) {
-                  return listDiseasesBody(state.diseasesList);
+                  return listDiseasesBody(state.diseasesList, scrollController);
                 }
                 return Container();
               },
@@ -46,13 +79,19 @@ class DiseaseListScreen extends StatelessWidget {
           ),
         ),
       ),
+      floatingActionButton: BuildFloatingActionScrollButton(
+        isVisibale: isVisibale,
+        scrollController: scrollController,
+      ),
     );
   }
 }
 
 // LIST DISEASE BODY
-SingleChildScrollView listDiseasesBody(List<DiseasesModel> listDisease) {
+SingleChildScrollView listDiseasesBody(
+    List<DiseasesModel> listDisease, dynamic scrollController) {
   return SingleChildScrollView(
+    controller: scrollController,
     child: ListView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),

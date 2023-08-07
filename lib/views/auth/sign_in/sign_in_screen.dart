@@ -282,8 +282,13 @@ class _SignInScreenState extends State<SignInScreen> {
         'password': passwordController.text,
       });
       final responseBody = json.decode(response.body);
+      // final idUser = responseBody['id_taikhoan'];
+      // print(idUser.toString());
       if (response.statusCode == 200) {
+        // print("Day la ket qua:  $responseBody");
         prefs.setString('email', emailController.text);
+        prefs.setInt('id', responseBody['id_taikhoan']);
+        print("Day la ket qua ID:  ${responseBody['id_taikhoan']}");
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const LandingScreen()),

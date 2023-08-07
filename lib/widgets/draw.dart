@@ -1,7 +1,9 @@
 // ignore_for_file: use_build_context_synchronously, unused_import
+import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:medical_app/views/auth/user_profile_screen.dart';
 import 'package:medical_app/widgets/colors.dart';
 import 'package:medical_app/widgets/container_config/container_customization.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -24,11 +26,14 @@ class _BuildDrawerState extends State<BuildDrawer> {
       'https://i.pinimg.com/564x/ec/fd/c0/ecfdc07b30149c927956fe5bb6126e2c.jpg';
 
   String userEmail = "";
+  late int? userID;
 
   @override
   void initState() {
     super.initState();
     loadUserEmail();
+    loadUserID();
+    print(loadUserID());
   }
 
   Future<void> loadUserEmail() async {
@@ -36,6 +41,14 @@ class _BuildDrawerState extends State<BuildDrawer> {
     setState(() {
       userEmail = prefs.getString('email') ?? "";
     });
+  }
+
+  loadUserID() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      userID = prefs.getInt('id') ?? 0;
+    });
+    return userID;
   }
 
   @override
@@ -88,14 +101,14 @@ class _BuildDrawerState extends State<BuildDrawer> {
                         const SizedBox(
                           height: 4,
                         ),
-                        // Text(
-                        //   userName,
-                        //   style: const TextStyle(
-                        //     fontSize: 12,
-                        //     color: Colors.grey,
-                        //     fontWeight: FontWeight.normal,
-                        //   ),
-                        // ),
+                        Text(
+                          userEmail,
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -119,7 +132,18 @@ class _BuildDrawerState extends State<BuildDrawer> {
                     child: ListView(
                       children: [
                         ListTile(
-                          onTap: () {},
+                          onTap: () {
+                            print(userID);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => UserProfileScreen(
+                                  // userEmail: userEmail,
+                                  userID: userID,
+                                ),
+                              ),
+                            );
+                          },
                           leading: const Icon(Icons.person),
                           title: const Text('Hồ sơ'),
                         ),

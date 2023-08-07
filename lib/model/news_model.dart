@@ -6,6 +6,7 @@ class NewsModel {
   String? noiDung;
   int? idLoaiTinTuc;
   String? thoiGian;
+
   NewsModel({
     this.idTintuc,
     this.tieuDe,
