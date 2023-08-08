@@ -27,7 +27,6 @@
 //       password: password ?? '',
 //     );
 //   }
-
 //   @override
 //   List<Object> get props => [uid, username, email, password];
 // }

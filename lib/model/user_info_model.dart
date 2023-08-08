@@ -7,14 +7,14 @@ class UserInfoModel {
   String? avata;
   int? sex;
 
-  UserInfoModel({
+  UserInfoModel(
     this.idInfo,
     this.phone,
     this.address,
     this.id,
     this.avata,
     this.sex,
-  });
+  );
 
   UserInfoModel.fromJson(Map<String, dynamic> json) {
     idInfo = json['id_thongtin'];
@@ -27,10 +27,10 @@ class UserInfoModel {
 }
 
 /**
-id_thongtin int AI PK 
-sdt varchar(225) 
-diachi varchar(225) 
-id_taikhoan int 
-avata varchar(300) 
-gioitinh int
- */
+  id_thongtin int AI PK 
+  sdt varchar(225) 
+  diachi varchar(225) 
+  id_taikhoan int 
+  avata varchar(300) 
+  gioitinh int
+*/

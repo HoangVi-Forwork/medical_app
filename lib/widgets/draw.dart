@@ -12,6 +12,7 @@ import '../config/url_config.dart';
 import 'package:http/http.dart' as http;
 
 import '../views/auth/sign_in/sign_in_screen.dart';
+import '../views/medical/medical_register.dart';
 
 class BuildDrawer extends StatefulWidget {
   const BuildDrawer({Key? key}) : super(key: key);
@@ -150,7 +151,14 @@ class _BuildDrawerState extends State<BuildDrawer> {
                         ListTile(
                           leading: const Icon(Icons.calendar_view_day_rounded),
                           title: const Text('Lịch khám'),
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => RegistrationScreen(),
+                              ),
+                            );
+                          },
                         ),
                         ListTile(
                           leading: const Icon(Icons.medical_services),
