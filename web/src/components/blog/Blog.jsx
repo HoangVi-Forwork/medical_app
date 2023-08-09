@@ -1,59 +1,63 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { List, Card, Input, Popconfirm, Pagination } from 'antd';
+import { List, Card, Input, Popconfirm, Pagination, Option } from 'antd';
 import { PlusOutlined, SearchOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 
-const MyComponent = () => {
+
+// const { Meta } = Card;
+
+function App() {
   const [data, setData] = useState([]);
-  const [page, setPage] = useState(1);
   const [searchName, setSearchName] = useState('');
   const [searchType, setSearchType] = useState('');
-  const [totalCount, setTotalCount] = useState(0);
-
-  const limit = 8; // Số bệnh trên mỗi trang
-  const pageCount = Math.ceil(totalCount / limit); // Tính tổng số trang
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('http://localhost:5090/api/danhsachbenhweb', {
-          params: {
-            name: searchName,
-            type: searchType,
-            page: page
-          }
-        });
+    const apiUrl = `http://localhost:5090/api/danhsachbenhweb?name=${searchName}&type=${searchType}&page=${currentPage}`;
+    axios.get(apiUrl)
+      .then((response) => {
+        const { data, page, totalCount } = response.data;
+        setData(data);
+        setCurrentPage(page);
+        setTotalPages(Math.ceil(totalCount / 8)); // Số trang dựa trên số bệnh trên mỗi trang
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
+  }, [searchName, searchType, currentPage]);
 
-        setData(response.data.data);
-        setTotalCount(response.data.totalCount);
-      } catch (error) {
-        console.error('Đã xảy ra lỗi:', error);
-      }
-    };
-
-    fetchData();
-  }, [page, searchName, searchType]);
-
-  const handleLoadMore = () => {
-    setPage(page + 1); // Tăng số trang lên 1 để tải thêm dữ liệu
+  const handleSearchNameChange = (e) => {
+    setSearchName(e.target.value);
+    setCurrentPage(1); // Reset trang về 1 khi thay đổi tên tìm kiếm
   };
 
-  const handlePageChange = (newPage) => {
-    setPage(newPage); // Thay đổi số trang khi người dùng chọn trang mới
+  const handleSearchTypeChange = (value) => {
+    setSearchType(value);
+    setCurrentPage(1); // Reset trang về 1 khi thay đổi loại tìm kiếm
+  };
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
   };
 
   return (
     <div>
-      <section className="wrapper bg-light">
+    <section className="wrapper bg-light">
         <div className="">
           <Link to="/User/app_blog" className="btn_blog btn btn-blue rounded-pill"><PlusOutlined /><span>Blog</span></Link><br />
           <div className='mb-2' style={{ height: '10px' }}></div>
-          <div className="">
-            <Input placeholder="input search text" value={searchName}
-         onChange={(e) => setSearchName(e.target.value)} prefix={<SearchOutlined />} style={{ marginTop: 5, marginRight: 5 }} className='input_timkiem' />
-            <Input placeholder="input search date" type="date" prefix={<SearchOutlined />} style={{ marginTop: 5, }} className='input_timkiem_ngay' />
-          </div>
+          <Input
+          placeholder="Tìm kiếm theo tên bệnh"
+          value={searchName}
+          onChange={handleSearchNameChange}
+        />
+          <Input
+          placeholder="Tìm kiếm theo tên bệnh"
+          value={searchType}
+          onChange={handleSearchTypeChange}
+        />
           <div className='mb-2' style={{ height: '20px' }}></div>
           <div className="">
             <List
@@ -78,36 +82,33 @@ const MyComponent = () => {
               )}
             />
           </div>
-          {/* <Pagination
-            showSizeChanger={false}
-            showQuickJumper={false}
-            current={page}
-            total={totalCount}
-            pageSize={limit}
-            onChange={handlePageChange}
-          /> */}
+        </div>
+        <div>
+        {Array.from({ length: totalPages }, (_, index) => (
           <button
-          disabled={page === 1}
-          onClick={() => handlePageChange(page - 1)}
-        >
-          Prev
-        </button>
-        <span>Page {page}</span>
-        <button
-          disabled={page * limit >= totalCount}
-          onClick={() => handlePageChange(page + 1)}
-        >
-          Next
-        </button>
-          {Array.from({ length: totalCount }, (_, index) => (
-          <button key={index + 1} onClick={() => handlePageChange(index + 1)}>
+            key={index + 1}
+            onClick={() => handlePageChange(index + 1)}
+            style={{
+              background: currentPage === index + 1 ? '#1890ff' : '#f0f2f5',
+              color: currentPage === index + 1 ? '#fff' : '#000',
+              border: '1px solid #ccc',
+              margin: '5px',
+              cursor: 'pointer',
+            }}
+          >
             {index + 1}
           </button>
         ))}
-        </div>
+      </div>
+      <Pagination
+        current={currentPage}
+        total={totalPages * 10} // Tổng số bệnh, mỗi trang có 10 bệnh
+        onChange={handlePageChange}
+        style={{ marginTop: '10px' }}
+      />
       </section>
     </div>
   );
-};
+}
 
-export default MyComponent;
+export default App;

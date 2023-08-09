@@ -31,59 +31,130 @@ app.use(session({
   }
 }));
 
+// app.get("/api/danhsachbenhweb", (req, res) => {
+//     const searchName = req.query.name || ''; // Giá trị tìm kiếm theo tên bệnh
+//     const searchType = req.query.type || ''; // Giá trị tìm kiếm theo loại bệnh
+//     const page = parseInt(req.query.page) || 1; // Số trang hiện tại
+  
+//     const limit = 8; // Số bệnh trên mỗi trang
+//     const offset = (page - 1) * limit; // Offset cho truy vấn phân trang
+  
+//     // Xây dựng câu truy vấn SQL dựa trên giá trị tìm kiếm và phân trang
+//     let query = `SELECT * FROM tbl_benh JOIN tbl_loaibenh ON tbl_benh.idloaibenh = tbl_loaibenh.idloaibenh`;
+//     // Xử lý tìm kiếm theo tên bệnh
+//     if (searchName) {
+//       query += ` WHERE tbl_benh.tenbenh LIKE '%${searchName}%'`;
+//     }
+//     // Xử lý tìm kiếm theo loại bệnh
+//     if (searchType) {
+//       if (searchName) {
+//         query += ` AND tbl_loaibenh.tenloaibenh LIKE '%${searchType}%'`;
+//       } else {
+//         query += ` WHERE tbl_loaibenh.tenloaibenh LIKE '%${searchType}%'`;
+//       }
+//     }
+//     query += ` LIMIT ${limit} OFFSET ${offset}`;
+//     db.query(query, (err, result) => {
+//       if (err) {
+//         res.status(422).json("Không thực hiện được truy vấn");
+//       } else {
+//         let countQuery = `SELECT COUNT(*) AS totalCount FROM tbl_benh JOIN tbl_loaibenh ON tbl_benh.idloaibenh = tbl_loaibenh.idloaibenh`;
+//         if (searchName) {
+//           countQuery += ` WHERE tbl_benh.tenbenh LIKE '%${searchName}%'`;
+//         }
+//         if (searchType) {
+//           if (searchName) {
+//             countQuery += ` AND tbl_loaibenh.tenloaibenh LIKE '%${searchType}%'`;
+//           } else {
+//             countQuery += ` WHERE tbl_loaibenh.tenloaibenh LIKE '%${searchType}%'`;
+//           }
+//         }
+//         db.query(countQuery, (countErr, countResult) => {
+//           if (countErr) {
+//             res.status(422).json("Không thực hiện được truy vấn");
+//           } else {
+//             const totalCount = countResult[0].totalCount;
+//             res.status(200).json({
+//               data: result,
+//               page: page,
+//               totalCount: totalCount,
+//             });
+//           }
+//         });
+//       }
+//     });
+//   });
+
 app.get("/api/danhsachbenhweb", (req, res) => {
-    const searchName = req.query.name || ''; // Giá trị tìm kiếm theo tên bệnh
-    const searchType = req.query.type || ''; // Giá trị tìm kiếm theo loại bệnh
-    const page = parseInt(req.query.page) || 1; // Số trang hiện tại
+  const searchName = req.query.name || ''; // Giá trị tìm kiếm theo tên bệnh
+  const searchType = req.query.type || ''; // Giá trị tìm kiếm theo loại bệnh
+  let page = parseInt(req.query.page) || 1; // Số trang hiện tại
+
+  const limit = 8; // Số bệnh trên mỗi trang
+  const offset = (page - 1) * limit; // Offset cho truy vấn phân trang
+
+  // Xây dựng câu truy vấn SQL dựa trên giá trị tìm kiếm và phân trang
+  let query = `SELECT * FROM tbl_benh JOIN tbl_loaibenh ON tbl_benh.idloaibenh = tbl_loaibenh.idloaibenh`;
   
-    const limit = 8; // Số bệnh trên mỗi trang
-    const offset = (page - 1) * limit; // Offset cho truy vấn phân trang
+  // Xử lý tìm kiếm theo tên bệnh
+  if (searchName) {
+    query += ` WHERE tbl_benh.tenbenh LIKE '%${searchName}%'`;
+  }
   
-    // Xây dựng câu truy vấn SQL dựa trên giá trị tìm kiếm và phân trang
-    let query = `SELECT * FROM tbl_benh JOIN tbl_loaibenh ON tbl_benh.idloaibenh = tbl_loaibenh.idloaibenh`;
-    // Xử lý tìm kiếm theo tên bệnh
+  // Xử lý tìm kiếm theo loại bệnh
+  if (searchType) {
     if (searchName) {
-      query += ` WHERE tbl_benh.tenbenh LIKE '%${searchName}%'`;
+      query += ` AND tbl_loaibenh.tenloaibenh LIKE '%${searchType}%'`;
+    } else {
+      query += ` WHERE tbl_loaibenh.tenloaibenh LIKE '%${searchType}%'`;
     }
-    // Xử lý tìm kiếm theo loại bệnh
-    if (searchType) {
+  }
+
+  // Thêm LIMIT và OFFSET vào câu truy vấn
+  query += ` LIMIT ${limit} OFFSET ${offset}`;
+  
+  db.query(query, (err, result) => {
+    if (err) {
+      res.status(422).json("Không thực hiện được truy vấn");
+    } else {
+      let countQuery = `SELECT COUNT(*) AS totalCount FROM tbl_benh JOIN tbl_loaibenh ON tbl_benh.idloaibenh = tbl_loaibenh.idloaibenh`;
+      // Xử lý tìm kiếm theo tên bệnh
       if (searchName) {
-        query += ` AND tbl_loaibenh.tenloaibenh LIKE '%${searchType}%'`;
-      } else {
-        query += ` WHERE tbl_loaibenh.tenloaibenh LIKE '%${searchType}%'`;
+        countQuery += ` WHERE tbl_benh.tenbenh LIKE '%${searchName}%'`;
       }
-    }
-    query += ` LIMIT ${limit} OFFSET ${offset}`;
-    db.query(query, (err, result) => {
-      if (err) {
-        res.status(422).json("Không thực hiện được truy vấn");
-      } else {
-        let countQuery = `SELECT COUNT(*) AS totalCount FROM tbl_benh JOIN tbl_loaibenh ON tbl_benh.idloaibenh = tbl_loaibenh.idloaibenh`;
+      // Xử lý tìm kiếm theo loại bệnh
+      if (searchType) {
         if (searchName) {
-          countQuery += ` WHERE tbl_benh.tenbenh LIKE '%${searchName}%'`;
+          countQuery += ` AND tbl_loaibenh.tenloaibenh LIKE '%${searchType}%'`;
+        } else {
+          countQuery += ` WHERE tbl_loaibenh.tenloaibenh LIKE '%${searchType}%'`;
         }
-        if (searchType) {
-          if (searchName) {
-            countQuery += ` AND tbl_loaibenh.tenloaibenh LIKE '%${searchType}%'`;
-          } else {
-            countQuery += ` WHERE tbl_loaibenh.tenloaibenh LIKE '%${searchType}%'`;
-          }
-        }
-        db.query(countQuery, (countErr, countResult) => {
-          if (countErr) {
-            res.status(422).json("Không thực hiện được truy vấn");
-          } else {
-            const totalCount = countResult[0].totalCount;
-            res.status(200).json({
-              data: result,
-              page: page,
-              totalCount: totalCount,
-            });
-          }
-        });
       }
-    });
+
+      db.query(countQuery, (countErr, countResult) => {
+        if (countErr) {
+          res.status(422).json("Không thực hiện được truy vấn");
+        } else {
+          const totalCount = countResult[0].totalCount;
+          const totalPages = Math.ceil(totalCount / limit);
+          
+          // Nếu trang hiện tại vượt quá số trang tổng cộng, quay lại trang đầu tiên
+          if (page > totalPages) {
+            page = 1;
+          }
+
+          res.status(200).json({
+            data: result,
+            page: page,
+            totalCount: totalCount,
+            totalPages: totalPages
+          });
+        }
+      });
+    }
   });
+});
+
   
 
   app.post("/api/thembenh", (req, res) => {
@@ -110,6 +181,16 @@ app.get("/api/danhsachbenhweb", (req, res) => {
     );
   })
 
+  app.get("/api/loaibenhs", (req, res) => {
+    db.query("SELECT * FROM tbl_loaibenh", (err, result) => {
+      if (err) {
+        res.status(422).json("không thực hiện được");
+      } else {
+        res.status(201).json(result);
+      }
+    });
+  });
+
   app.get("/api/timkiembenh", (req, res) => {
   const searchName = req.query.tenbenh; 
   db.query(
@@ -125,5 +206,7 @@ app.get("/api/danhsachbenhweb", (req, res) => {
     }
   );
 });
+
+
 
 module.exports = app;
