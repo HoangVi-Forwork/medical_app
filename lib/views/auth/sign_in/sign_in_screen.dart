@@ -26,6 +26,7 @@ class _SignInScreenState extends State<SignInScreen> {
   final passwordController = TextEditingController();
   String message = '';
   bool isForgotPasswordButtonPressed = true;
+  bool isPasswordVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -98,32 +99,40 @@ class _SignInScreenState extends State<SignInScreen> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Container(
-                            alignment: Alignment.center,
-                            width: double.infinity,
-                            child: Text(message,
-                                style: TextStyle(
-                                    color: const Color.fromARGB(255, 255, 0, 0)
-                                        .withOpacity(1),
-                                    fontSize: 14,
-                                    fontStyle: FontStyle.normal,
-                                    fontWeight: FontWeight.bold))),
+                          alignment: Alignment.center,
+                          width: double.infinity,
+                          child: Text(
+                            message,
+                            style: TextStyle(
+                                color: const Color.fromARGB(255, 255, 0, 0)
+                                    .withOpacity(1),
+                                fontSize: 14,
+                                fontStyle: FontStyle.normal,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
                         buildTextFormField(
-                            controller: emailController,
-                            hintText: 'Tên đăng nhập',
-                            iconName: const Icon(Icons.email),
-                            inputType: 'email',
-                            validatorType: 'emailValid'),
+                          controller: emailController,
+                          hintText: 'Tên đăng nhập',
+                          iconName: const Icon(Icons.email),
+                          inputType: 'email',
+                          validatorType: 'emailValid',
+                          isPasswordVisible: isPasswordVisible,
+                        ),
                         buildTextFormField(
-                            controller: passwordController,
-                            hintText: 'Mật khẩu',
-                            iconName: const Icon(Icons.lock),
-                            inputType: 'password',
-                            validatorType: 'passwordValid'),
+                          controller: passwordController,
+                          hintText: 'Mật khẩu',
+                          iconName: const Icon(Icons.lock),
+                          inputType: 'pass',
+                          validatorType: 'passwordValid',
+                          isPasswordVisible: isPasswordVisible,
+                        ),
                         const SizedBox(height: 26),
                         buildSignInButton(
-                            text: 'Login',
-                            submitType: 'login',
-                            submitButton: login),
+                          text: 'Login',
+                          submitType: 'login',
+                          submitButton: login,
+                        ),
                         Container(
                           margin: const EdgeInsets.symmetric(vertical: 6),
                           child: const Center(

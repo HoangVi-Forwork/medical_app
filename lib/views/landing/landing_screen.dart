@@ -1,11 +1,13 @@
+// ignore_for_file: unrelated_type_equality_checks
+
 import 'package:flutter/material.dart';
 import 'package:medical_app/views/home/home_screen.dart';
 import 'package:medical_app/views/landing/landing_utils.dart';
+import 'package:medical_app/views/landing/qr_code_screen.dart';
 import 'package:medical_app/views/news/news_screen.dart';
 import 'package:medical_app/views/search/search_sreen.dart';
 import 'package:medical_app/widgets/colors.dart';
 import 'package:medical_app/widgets/draw.dart';
-
 import '../favorited/favourited_screen.dart';
 
 class LandingScreen extends StatefulWidget {
@@ -22,6 +24,38 @@ class _LandingScreenState extends State<LandingScreen> {
   final List<IconData> appBarActionIcons = LandingUtils.appBarActionIcons;
   final List<String> appBarTitles = LandingUtils.appBarTitles;
 
+  Future<void> _showQRCodeScannerDialog() async {
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('QR Code Scanner'),
+          content: Container(
+            width: 260,
+            height: 260,
+            child: Text('Scan QR code here'),
+          ), // Customize the content as needed
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Close the dialog
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                // Add your QR code scanning logic here
+                // Once scanning is complete, you can close the dialog
+                Navigator.pop(context); // Close the dialog
+              },
+              child: Text('Scan'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,9 +68,7 @@ class _LandingScreenState extends State<LandingScreen> {
           HomeScreen(),
           SearchScreen(),
           NewsScreen(),
-          FavouritedScreen(
-              // favouritedNewsList: [],
-              ),
+          FavouritedScreen(),
         ],
       ),
       bottomNavigationBar: buildBottomNavigator(),
@@ -88,7 +120,6 @@ class _LandingScreenState extends State<LandingScreen> {
         ),
       ),
       elevation: 0,
-      // backgroundColor: AppColors.primaryColor,
       backgroundColor: Colors.white,
       leading: IconButton(
         onPressed: () {
@@ -107,7 +138,15 @@ class _LandingScreenState extends State<LandingScreen> {
       ),
       actions: [
         IconButton(
-          onPressed: () {},
+          onPressed: () {
+            if (currentIndex == 0) {
+              // _showQRCodeScannerDialog();
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => QRCodeScreen()),
+              );
+            } else {}
+          },
           icon: Icon(
             appBarActionIcons[currentIndex],
             color: AppColors.primaryColor,

@@ -9,7 +9,7 @@ class LandingUtils {
     Icons.arrow_back,
   ];
   static final List<IconData> appBarActionIcons = [
-    Icons.shopping_cart,
+    Icons.qr_code_2_outlined,
     Icons.filter_list_alt,
     Icons.share,
     Icons.favorite_border,

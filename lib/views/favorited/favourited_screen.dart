@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:medical_app/blocs/favourites/bloc/favourites_bloc.dart';
+
+import '../home/home_detail_disease.dart';
 
 class FavouritedScreen extends StatefulWidget {
   const FavouritedScreen({Key? key}) : super(key: key);
@@ -47,7 +48,17 @@ class _FavouritedScreenState extends State<FavouritedScreen> {
                           ),
                         ),
                         Expanded(
-                          child: Container(
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => HomeDetailDisease(
+                                    diseases: state.diseasesItems[index],
+                                  ),
+                                ),
+                              );
+                            },
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -78,8 +89,11 @@ class _FavouritedScreenState extends State<FavouritedScreen> {
                                       final favBloc =
                                           BlocProvider.of<FavouritesBloc>(
                                               context);
-                                      favBloc.add(RemoveFromFav(
-                                          state.diseasesItems[index]));
+                                      favBloc.add(
+                                        RemoveFromFav(
+                                          state.diseasesItems[index],
+                                        ),
+                                      );
                                     },
                                   ),
                                 ),

@@ -2,9 +2,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medical_app/utils/container_utils.dart';
 import 'package:medical_app/widgets/colors.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../blocs/search/bloc/search_bloc.dart';
 import '../../blocs/search/bloc/search_event.dart';
@@ -24,7 +26,7 @@ class _SearchScreenState extends State<SearchScreen> {
   late TextEditingController _searchController;
   FocusNode searchInput = FocusNode();
   final _searchInputController = StreamController<String>.broadcast();
-
+  final Uri urlPharmacityWeb = Uri.parse('https://www.vinmec.com/vi/benh/');
   @override
   void initState() {
     super.initState();
@@ -48,6 +50,12 @@ class _SearchScreenState extends State<SearchScreen> {
   //   Share.share(message);
   // }
 
+  void _onOpenVinMecWeb() async {
+    if (await launchUrl(urlPharmacityWeb)) {
+      await launchUrl(urlPharmacityWeb);
+    }
+  }
+
   @override
   void dispose() {
     _searchBloc.close();
@@ -59,8 +67,8 @@ class _SearchScreenState extends State<SearchScreen> {
   void _performSearch() {
     final tenBenh = _searchController.text;
     _searchBloc.add(PerformSearchEvent(tenBenh));
-    // FocusScope.of(context).requestFocus(searchInput);
-    // SystemChannels.textInput.invokeMethod('TextInput.hide');
+    FocusScope.of(context).requestFocus(searchInput);
+    //SystemChannels.textInput.invokeMethod('TextInput.hide');
   }
 
   @override
@@ -83,7 +91,35 @@ class _SearchScreenState extends State<SearchScreen> {
                       );
                     } else if (state is SearchEmptyResultState) {
                       return Center(
-                        child: ContainerUtils.emptyDataLoadingState,
+                        // child: ContainerUtils.emptyDataLoadingState,
+                        child: Column(
+                          children: [
+                            ContainerUtils.emptyDataLoadingState,
+                            const SizedBox(
+                              height: 24,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                _onOpenVinMecWeb();
+                              },
+                              child: Container(
+                                width: 180,
+                                height: 44,
+                                decoration: BoxDecoration(
+                                  // color: AppColors.highLightColor,
+                                  borderRadius: BorderRadius.circular(8),
+                                  border:
+                                      Border.all(width: 1, color: Colors.grey),
+                                ),
+                                child: const Center(
+                                  child: Text(
+                                    'Hoặc tìm kiếm tại VinMec',
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
                       );
                     } else if (state is SearchLoadedState) {
                       return ListView.builder(

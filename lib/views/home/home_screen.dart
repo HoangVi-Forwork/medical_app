@@ -1,4 +1,4 @@
-// ignore_for_file: depend_on_referenced_packages, unused_import
+// ignore_for_file: depend_on_referenced_packages, unused_import, no_leading_underscores_for_local_identifiers
 import 'dart:convert';
 import 'dart:ffi';
 import 'package:flutter/material.dart';
@@ -20,6 +20,9 @@ import '../../widgets/home/build_list_of_common_diseases.dart';
 import '../../widgets/home/text_title_and_subtitle.dart';
 import 'package:http/http.dart' as http;
 import '../diseases/disease_list_screen.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import '../medical/medical_register.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -39,6 +42,37 @@ class _HomeScreenState extends State<HomeScreen> {
       'assets/images/POSTER_03.png',
     ],
   );
+  final List<Map<String, String>> emergencyNumbers = [
+    {'label': 'Gọi Cấp Cứu', 'number': '115'},
+    {'label': 'Cứu Hỏa', 'number': '114'},
+    {'label': 'Công an hoặc cảnh sát', 'number': '113'},
+    {'label': 'Cứu nạn, cứu hộ khẩn cấp', 'number': '112'},
+    {'label': 'Tổng đài điện thoại quốc gia bảo vệ trẻ em', 'number': '111'},
+    {'label': 'Người thân', 'number': '0907656495'},
+  ];
+
+  final Uri urlPharmacityWeb = Uri.parse(
+      'https://www.pharmacity.vn/?gclid=CjwKCAjw8symBhAqEiwAaTA__AsBqZ4eqkMply1zx1GDqY6dbZZSJStJ6gQczjsnEROZNnM72JaKfhoCd1wQAvD_BwE');
+  final Uri urlVNVC = Uri.parse('https://vnvc.vn/dang-ky-tiem-chung/');
+  final Uri urlDiag = Uri.parse('https://diag.vn/');
+  void _onOpenPharmacityWeb() async {
+    if (await launchUrl(urlPharmacityWeb)) {
+      await launchUrl(urlPharmacityWeb);
+    }
+  }
+
+  void _onOpenVNVCWeb() async {
+    if (await launchUrl(urlVNVC)) {
+      await launchUrl(urlVNVC);
+    }
+  }
+
+  void _onOpenDiagWeb() async {
+    if (await launchUrl(urlDiag)) {
+      await launchUrl(urlDiag);
+    }
+  }
+
   final ScrollController scrollController = ScrollController();
   bool isVisibale = false;
   @override
@@ -244,9 +278,132 @@ class _HomeScreenState extends State<HomeScreen> {
         itemBuilder: (context, index) {
           String iconPath = iconsList[index]['icon'];
           String label = iconsList[index]['label'];
+          void _onOpenEmerPhone() async {
+            await showDialog(
+              barrierDismissible: false,
+              context: context,
+              builder: (BuildContext context) {
+                return SimpleDialog(
+                  elevation: 10,
+                  backgroundColor: Colors.white,
+                  title: Column(
+                    children: const [
+                      Text(
+                        'CUỘC GỌI KHẨN CẤP',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: AppColors.primaryColor,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 6,
+                      ),
+                      Text(
+                        'Chỉ sử dụng khi thật sự cần thiết!',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: AppColors.primaryColor,
+                          fontStyle: FontStyle.italic,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      Divider(
+                        height: 1.5,
+                        color: Colors.grey,
+                      )
+                    ],
+                  ),
+                  children: [
+                    Column(
+                      children: emergencyNumbers
+                          .map((emergency) => Column(
+                                children: [
+                                  ListTile(
+                                    title: Text(
+                                      '${emergency['label']!}: ',
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    subtitle: Container(
+                                      margin: const EdgeInsets.only(top: 6),
+                                      child: Text(
+                                        '📞: ${emergency['number']!}',
+                                        style: const TextStyle(
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                    onTap: () {
+                                      launch("tel://${emergency['number']}");
+                                    },
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 50),
+                                    child: Container(
+                                      margin: const EdgeInsets.only(top: 8),
+                                      child: const Divider(
+                                        height: 1.5,
+                                        color: Colors.grey,
+                                        indent: 2,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ))
+                          .toList(),
+                    ),
+                    Container(
+                      width: double.infinity,
+                      height: 44,
+                      margin: const EdgeInsets.symmetric(
+                          vertical: 24, horizontal: 30),
+                      decoration: BoxDecoration(
+                        color: AppColors.secondaryColor,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pop(0);
+                        },
+                        child: const Center(
+                          child: Text(
+                            'Hủy bỏ',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                );
+              },
+            );
+          }
+
           return GestureDetector(
             onTap: () {
-              setState(() {
+              if (index == 0) {
+                _onOpenEmerPhone();
+              } else if (index == 1) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const RegistrationScreen(),
+                  ),
+                );
+              } else if (index == 2) {
+                _onOpenPharmacityWeb();
+              } else if (index == 3) {
+                _onOpenVNVCWeb();
+              } else if (index == 4) {
+                _onOpenDiagWeb();
+              } else {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     backgroundColor: Colors.white,
@@ -262,7 +419,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 );
-              });
+              }
             },
             child: Column(
               children: [

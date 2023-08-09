@@ -5,14 +5,13 @@ import 'dart:typed_data';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/rendering.dart'; // For RepaintBoundary and RenderRepaintBoundary
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/services.dart'; // For ImageByteFormat
+import 'package:flutter/services.dart';
 import 'package:medical_app/views/medical/qr_code.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:qr_flutter/qr_flutter.dart'; // Import the permission_handler package
-
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:medical_app/widgets/colors.dart';
 
 class RegistrationScreen extends StatefulWidget {
@@ -23,8 +22,6 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
-  // String selectedHospital = '';
-  // String selectedDepartment = '';
   GlobalKey qrImageKey = GlobalKey();
   String phoneNumber = '';
   String fullName = '';
@@ -90,7 +87,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   key: qrImageKey,
                   data: qrData,
                   version: QrVersions.auto,
-                  size: 200.0, // Adjust the size of the QR code
+                  size: 200.0,
                 ),
                 SizedBox(
                   height: 6,
