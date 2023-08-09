@@ -1,22 +1,53 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:medical_app/blocs/favourites/bloc/favourites_bloc.dart';
 import 'package:medical_app/widgets/colors.dart';
-
 import '../../blocs/diseases/bloc/disease_bloc.dart';
 import '../../model/diseases_model.dart';
-import '../../model/news_model.dart';
 import '../../repositories/diseases_repositories.dart';
 import '../../utils/container_utils.dart';
+import '../../widgets/buttons/floating_scroll_button.dart';
 import '../home/home_detail_disease.dart';
 
-class DiseaseListScreen extends StatelessWidget {
+class DiseaseListScreen extends StatefulWidget {
   const DiseaseListScreen({super.key});
+
+  @override
+  State<DiseaseListScreen> createState() => _DiseaseListScreenState();
+}
+
+class _DiseaseListScreenState extends State<DiseaseListScreen> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final ScrollController scrollController = ScrollController();
+  bool isVisibale = false;
+
+  @override
+  void initState() {
+    super.initState();
+    scrollController.addListener(() {
+      if (scrollController.position.userScrollDirection ==
+          ScrollDirection.reverse) {
+        setState(
+          () {
+            isVisibale = false;
+          },
+        );
+      }
+      if (scrollController.position.userScrollDirection ==
+          ScrollDirection.forward) {
+        setState(() {
+          isVisibale = true;
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: const Text('Danh sách bệnh lý'),
         centerTitle: true,
@@ -26,14 +57,10 @@ class DiseaseListScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Container(
           width: double.infinity,
-          // constraints: const BoxConstraints(maxHeight: 560),
           margin: const EdgeInsets.only(top: 24, bottom: 12),
           child: BlocProvider(
-            create: (context) => DiseaseBloc(
-              DiseaseRepository(),
-            )..add(
-                FetchDiseasesEvent(),
-              ),
+            create: (context) =>
+                DiseaseBloc(DiseaseRepository())..add(FetchDiseasesEvent()),
             child: BlocBuilder<DiseaseBloc, DiseaseState>(
               builder: (context, state) {
                 if (state is DiseaseLoadingState) {
@@ -44,8 +71,7 @@ class DiseaseListScreen extends StatelessWidget {
                     child: ContainerUtils.loadingErrorStateContainer,
                   );
                 } else if (state is DiseaseLoadedState) {
-                  List<DiseasesModel> listDisease = state.diseasesList;
-                  return listDiseasesBody(listDisease);
+                  return listDiseasesBody(state.diseasesList, scrollController);
                 }
                 return Container();
               },
@@ -53,111 +79,150 @@ class DiseaseListScreen extends StatelessWidget {
           ),
         ),
       ),
+      floatingActionButton: BuildFloatingActionScrollButton(
+        isVisibale: isVisibale,
+        scrollController: scrollController,
+      ),
     );
   }
+}
 
-  // LIST DISEASE BODY
-  SingleChildScrollView listDiseasesBody(List<DiseasesModel> listDisease) {
-    return SingleChildScrollView(
-      child: ListView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          // itemCount: listDisease.length,
-          itemCount: listDisease.length,
-          itemBuilder: (context, index) {
-            return Container(
-              height: 96,
-              margin: const EdgeInsets.only(bottom: 12),
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 255, 255, 255),
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.3),
-                    blurRadius: 12.0,
-                    spreadRadius: 0.0,
-                    offset: const Offset(0.0, 0.1),
-                  )
+// LIST DISEASE BODY
+SingleChildScrollView listDiseasesBody(
+    List<DiseasesModel> listDisease, dynamic scrollController) {
+  return SingleChildScrollView(
+    controller: scrollController,
+    child: ListView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: listDisease.length,
+      itemBuilder: (context, index) {
+        final disease = listDisease[index];
+
+        return Container(
+          height: 96,
+          margin: const EdgeInsets.only(bottom: 12),
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: const Color.fromARGB(255, 255, 255, 255),
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.3),
+                blurRadius: 12.0,
+                spreadRadius: 0.0,
+                offset: const Offset(0.0, 0.1),
+              ),
+            ],
+          ),
+          child: Slidable(
+            startActionPane:
+                ActionPane(motion: const StretchMotion(), children: [
+              SlidableAction(
+                backgroundColor: Colors.red,
+                foregroundColor: Colors.white,
+                onPressed: ((context) {}),
+                icon: Icons.delete_outlined,
+              ),
+            ]),
+            endActionPane: ActionPane(motion: const StretchMotion(), children: [
+              SlidableAction(
+                backgroundColor: const Color.fromARGB(255, 24, 163, 29),
+                foregroundColor: Colors.white,
+                onPressed: ((context) {
+                  final favBloc = context.read<FavouritesBloc>();
+                  final disItem = favBloc.state.diseasesItems;
+
+                  if (disItem.any((item) => item.idBenh == disease.idBenh)) {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      backgroundColor: Colors.orange,
+                      content: Text(
+                        'Bệnh lý đã được quan tâm!',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      duration: Duration(seconds: 2),
+                    ));
+                  } else {
+                    favBloc.add(AddToFav(disease));
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      backgroundColor: AppColors.primaryColor,
+                      content: Text(
+                        'Đã thêm vào mục quan tâm!',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      duration: Duration(seconds: 2),
+                    ));
+                  }
+                }),
+                icon: Icons.bookmark_add_outlined,
+              ),
+            ]),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            HomeDetailDisease(diseases: disease),
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(right: 12),
+                          child: Text('${disease.idBenh}'),
+                        ),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Image.network(
+                            '${disease.hinhAnh}',
+                            width: 56,
+                            height: 56,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                            margin: const EdgeInsets.only(left: 8),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  disease.tenBenh.toString().toUpperCase(),
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const SizedBox(height: 2),
+                                Text(
+                                  disease.trieuChung.toString(),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.only(left: 12, right: 8),
+                          child: const Icon(Icons.arrow_circle_right_outlined),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => HomeDetailDisease(
-                                diseases: listDisease[index],
-                              ),
-                            ),
-                          );
-                        },
-                        child: Row(
-                          children: [
-                            Container(
-                              margin: EdgeInsets.only(right: 12),
-                              child: Text(
-                                '${listDisease[index].idBenh}',
-                              ),
-                            ),
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: Image.network(
-                                '${listDisease[index].hinhAnh}',
-                                width: 56,
-                                height: 56,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Container(
-                                margin: EdgeInsets.only(left: 8),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      listDisease[index]
-                                          .tenBenh
-                                          .toString()
-                                          .toUpperCase(),
-                                      style: const TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 2,
-                                    ),
-                                    Text(
-                                      listDisease[index].trieuChung.toString(),
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(
-                                left: 12,
-                                right: 8,
-                              ),
-                              child: Icon(Icons.arrow_circle_right_outlined),
-                            ),
-                          ],
-                        ),
-                      )
-                    ]),
-              ),
-            );
-          }),
-    );
-  }
+            ),
+          ),
+        );
+      },
+    ),
+  );
 }

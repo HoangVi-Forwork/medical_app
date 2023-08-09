@@ -1,4 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: public_member_api_docs, sort_constructors_first, must_be_immutable, camel_case_types, duplicate_ignore
 import 'package:flutter/material.dart';
 import '../../colors.dart';
 
@@ -27,28 +27,28 @@ class _buildTextFormFieldState extends State<buildTextFormField> {
   // Validata
   String? validateEmail(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Please enter your email';
+      return 'Email không được bỏ trống';
     }
     final emailRegExp = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
     if (!emailRegExp.hasMatch(value)) {
-      return 'Invalid email format';
+      return 'Hãy nhập Email';
     }
     return null;
   }
 
   String? validateUsername(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Please enter your username';
+      return 'Hãy nhập tên đăng nhập!';
     }
     return null;
   }
 
   String? validatePassword(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Please enter your password';
+      return 'Mật khẩu không được bỏ trống';
     }
     if (value.length < 8) {
-      return 'Password must be at least 8 characters long';
+      return 'Mật khẩu tối thiểu 8 ký tự!';
     }
     return null;
   }

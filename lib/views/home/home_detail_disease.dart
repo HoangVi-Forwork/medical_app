@@ -1,12 +1,16 @@
-// ignore_for_file: import_of_legacy_library_into_null_safe
+// ignore_for_file: import_of_legacy_library_into_null_safe, avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:medical_app/widgets/colors.dart';
 
+import '../../blocs/favourites/bloc/favourites_bloc.dart';
 import '../../model/diseases_model.dart';
+import '../../widgets/buttons/floating_scroll_button.dart';
 
-class HomeDetailDisease extends StatelessWidget {
+class HomeDetailDisease extends StatefulWidget {
   final DiseasesModel diseases;
 
   const HomeDetailDisease({
@@ -15,22 +19,79 @@ class HomeDetailDisease extends StatelessWidget {
   });
 
   @override
+  State<HomeDetailDisease> createState() => _HomeDetailDiseaseState();
+}
+
+class _HomeDetailDiseaseState extends State<HomeDetailDisease> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final ScrollController scrollController = ScrollController();
+  bool isVisibale = false;
+
+  @override
+  void initState() {
+    super.initState();
+    scrollController.addListener(() {
+      if (scrollController.position.userScrollDirection ==
+          ScrollDirection.reverse) {
+        setState(
+          () {
+            isVisibale = false;
+          },
+        );
+      }
+      if (scrollController.position.userScrollDirection ==
+          ScrollDirection.forward) {
+        setState(() {
+          isVisibale = true;
+        });
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: AppColors.whiteColor,
       appBar: AppBar(
         elevation: 1,
         backgroundColor: AppColors.primaryColor,
-        title: Text(diseases.tenBenh!),
+        title: Text(widget.diseases.tenBenh!),
         centerTitle: true,
         actions: [
           IconButton(
             icon: const Icon(Icons.bookmark_add),
-            onPressed: () {},
+            onPressed: (() {
+              final favBloc = context.read<FavouritesBloc>();
+              final disItem = favBloc.state.diseasesItems;
+
+              if (disItem
+                  .any((item) => item.idBenh == widget.diseases.idBenh)) {
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  backgroundColor: Colors.orange,
+                  content: Text(
+                    'Bệnh lý đã được quan tâm!',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  duration: Duration(seconds: 2),
+                ));
+              } else {
+                favBloc.add(AddToFav(widget.diseases));
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  backgroundColor: AppColors.primaryColor,
+                  content: Text(
+                    'Đã thêm vào mục quan tâm!',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  duration: Duration(seconds: 2),
+                ));
+              }
+            }),
           ),
         ],
       ),
       body: SingleChildScrollView(
+        controller: scrollController,
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -39,7 +100,7 @@ class HomeDetailDisease extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: Image.network(
-                  diseases.hinhAnh!,
+                  widget.diseases.hinhAnh!,
                   width: double.infinity,
                   height: 200,
                   fit: BoxFit.cover,
@@ -49,7 +110,7 @@ class HomeDetailDisease extends StatelessWidget {
                 height: 16,
               ),
               Text(
-                diseases.tenRieng!,
+                widget.diseases.tenRieng!,
                 style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
@@ -64,33 +125,35 @@ class HomeDetailDisease extends StatelessWidget {
                 ),
                 child: Expanded(
                   flex: 1,
-                  child: Container(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _buildMainContext(
-                          'Triệu chứng:',
-                          diseases.nguyenNhan.toString(),
-                        ),
-                        _buildMainContext(
-                          'Nguyên nhân:',
-                          diseases.nguyenNhan.toString(),
-                        ),
-                        _buildMainContext(
-                          'Phòng ngừa:',
-                          diseases.phongNgua.toString(),
-                        ),
-                      ],
-                    ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildMainContext(
+                        'Triệu chứng:',
+                        widget.diseases.nguyenNhan.toString(),
+                      ),
+                      _buildMainContext(
+                        'Nguyên nhân:',
+                        widget.diseases.nguyenNhan.toString(),
+                      ),
+                      _buildMainContext(
+                        'Phòng ngừa:',
+                        widget.diseases.phongNgua.toString(),
+                      ),
+                    ],
                   ),
                 ),
               ),
               Html(
-                data: diseases.noiDung!,
+                data: widget.diseases.noiDung!,
               )
             ],
           ),
         ),
+      ),
+      floatingActionButton: BuildFloatingActionScrollButton(
+        isVisibale: isVisibale,
+        scrollController: scrollController,
       ),
     );
   }

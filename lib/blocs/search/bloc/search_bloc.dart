@@ -1,4 +1,5 @@
 // File: search_bloc.dart
+// ignore_for_file: depend_on_referenced_packages, unused_import, avoid_print
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:medical_app/model/diseases_model.dart';

@@ -1,4 +1,7 @@
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:medical_app/blocs/news/news_bloc.dart';
@@ -8,14 +11,46 @@ import 'package:medical_app/model/news_model.dart';
 import 'package:medical_app/repositories/news_repositories.dart';
 import 'package:medical_app/widgets/colors.dart';
 import '../../utils/container_utils.dart';
+import '../../widgets/buttons/floating_scroll_button.dart';
 import 'news_detail.dart';
 
-class NewsScreen extends StatelessWidget {
+class NewsScreen extends StatefulWidget {
   const NewsScreen({Key? key}) : super(key: key);
+
+  @override
+  State<NewsScreen> createState() => _NewsScreenState();
+}
+
+class _NewsScreenState extends State<NewsScreen> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final ScrollController scrollController = ScrollController();
+  bool isVisibale = false;
+
+  @override
+  void initState() {
+    super.initState();
+    scrollController.addListener(() {
+      if (scrollController.position.userScrollDirection ==
+          ScrollDirection.reverse) {
+        setState(
+          () {
+            isVisibale = false;
+          },
+        );
+      }
+      if (scrollController.position.userScrollDirection ==
+          ScrollDirection.forward) {
+        setState(() {
+          isVisibale = true;
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Container(
@@ -39,6 +74,7 @@ class NewsScreen extends StatelessWidget {
                 } else if (state is NewsLoadedState) {
                   List<NewsModel> newsList = state.newsList;
                   return SingleChildScrollView(
+                    controller: scrollController,
                     child: ListView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
@@ -55,6 +91,10 @@ class NewsScreen extends StatelessWidget {
           ),
         ),
       ),
+      floatingActionButton: BuildFloatingActionScrollButton(
+        isVisibale: isVisibale,
+        scrollController: scrollController,
+      ),
     );
   }
 }
@@ -65,6 +105,7 @@ class NewsItem extends StatefulWidget {
   const NewsItem({required this.newsModel, Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _NewsItemState createState() => _NewsItemState();
 }
 

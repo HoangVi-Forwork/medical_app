@@ -14,18 +14,18 @@ app.get("/api/danhsachbenh", (req, res) => {
   });
 });
 
-app.get("/api/benh/:tenbenh", (req, res) => {
-  const { tenbenh } = req.params;
-  const sql = "SELECT * FROM tbl_benh WHERE tenbenh = ?";
-  db.query(sql, [tenbenh], (err, result) => {
-    if (err) {
-      console.log(err);
-      res.status(422).json("Không thực hiện được");
-    } else {
-      res.send(result);
-    }
-  });
-});
+// app.get("/api/benh/:tenbenh", (req, res) => {
+//   const { tenbenh } = req.params;
+//   const sql = "SELECT * FROM tbl_benh WHERE tenbenh = ?";
+//   db.query(sql, [tenbenh], (err, result) => {
+//     if (err) {
+//       console.log(err);
+//       res.status(422).json("Không thực hiện được");
+//     } else {
+//       res.send(result);
+//     }
+//   });
+// });
 
 app.get("/api/timkiembenh/", (req, res) => {
   const query = req.query.tenbenh;
