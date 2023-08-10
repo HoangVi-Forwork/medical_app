@@ -81,7 +81,7 @@ app.get('/profile', (req, res) => {
 
         // Lấy thông tin tài khoản từ cơ sở dữ liệu
         db.query(
-          'SELECT id_taikhoan, email FROM tbl_taikhoan WHERE id_taikhoan = ?',
+          'SELECT * FROM tbl_taikhoan WHERE id_taikhoan = ?',
           [userId],
           (err, results) => {
             if (err) {

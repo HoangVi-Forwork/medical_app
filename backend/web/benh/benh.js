@@ -14,7 +14,7 @@ app.use(express.json());
 app.use(
   cors({
     origin: ["http://localhost:3000"],
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true,
   })
 );
@@ -30,60 +30,6 @@ app.use(session({
       express: 60 * 60 * 24,
   }
 }));
-
-// app.get("/api/danhsachbenhweb", (req, res) => {
-//     const searchName = req.query.name || ''; // Giá trị tìm kiếm theo tên bệnh
-//     const searchType = req.query.type || ''; // Giá trị tìm kiếm theo loại bệnh
-//     const page = parseInt(req.query.page) || 1; // Số trang hiện tại
-  
-//     const limit = 8; // Số bệnh trên mỗi trang
-//     const offset = (page - 1) * limit; // Offset cho truy vấn phân trang
-  
-//     // Xây dựng câu truy vấn SQL dựa trên giá trị tìm kiếm và phân trang
-//     let query = `SELECT * FROM tbl_benh JOIN tbl_loaibenh ON tbl_benh.idloaibenh = tbl_loaibenh.idloaibenh`;
-//     // Xử lý tìm kiếm theo tên bệnh
-//     if (searchName) {
-//       query += ` WHERE tbl_benh.tenbenh LIKE '%${searchName}%'`;
-//     }
-//     // Xử lý tìm kiếm theo loại bệnh
-//     if (searchType) {
-//       if (searchName) {
-//         query += ` AND tbl_loaibenh.tenloaibenh LIKE '%${searchType}%'`;
-//       } else {
-//         query += ` WHERE tbl_loaibenh.tenloaibenh LIKE '%${searchType}%'`;
-//       }
-//     }
-//     query += ` LIMIT ${limit} OFFSET ${offset}`;
-//     db.query(query, (err, result) => {
-//       if (err) {
-//         res.status(422).json("Không thực hiện được truy vấn");
-//       } else {
-//         let countQuery = `SELECT COUNT(*) AS totalCount FROM tbl_benh JOIN tbl_loaibenh ON tbl_benh.idloaibenh = tbl_loaibenh.idloaibenh`;
-//         if (searchName) {
-//           countQuery += ` WHERE tbl_benh.tenbenh LIKE '%${searchName}%'`;
-//         }
-//         if (searchType) {
-//           if (searchName) {
-//             countQuery += ` AND tbl_loaibenh.tenloaibenh LIKE '%${searchType}%'`;
-//           } else {
-//             countQuery += ` WHERE tbl_loaibenh.tenloaibenh LIKE '%${searchType}%'`;
-//           }
-//         }
-//         db.query(countQuery, (countErr, countResult) => {
-//           if (countErr) {
-//             res.status(422).json("Không thực hiện được truy vấn");
-//           } else {
-//             const totalCount = countResult[0].totalCount;
-//             res.status(200).json({
-//               data: result,
-//               page: page,
-//               totalCount: totalCount,
-//             });
-//           }
-//         });
-//       }
-//     });
-//   });
 
 app.get("/api/danhsachbenhweb", (req, res) => {
   const searchName = req.query.name || ''; // Giá trị tìm kiếm theo tên bệnh
@@ -207,6 +153,74 @@ app.get("/api/danhsachbenhweb", (req, res) => {
   );
 });
 
+app.get("/api/danhsachbenhweb/:id", (req, res) => {
+  const diseaseId = req.params.id;
 
+  const query = `SELECT * FROM tbl_benh WHERE idBenh = ?`;
+
+  db.query(query, [diseaseId], (err, result) => {
+    if (err) {
+      res.status(422).json("Không thực hiện được truy vấn");
+    } else {
+      if (result.length === 0) {
+        res.status(404).json("Không tìm thấy bệnh");
+      } else {
+        res.status(200).json(result[0]);
+      }
+    }
+  });
+});
+
+
+
+
+
+app.delete('/api/benhweb/:idBenh', (req, res) => {
+  const idBenh = req.params.idBenh;
+
+  const query = 'DELETE FROM tbl_benh WHERE idBenh = ?';
+
+  db.query(query, [idBenh], (err, result) => {
+    if (err) {
+      res.status(500).json({ error: 'Không thực hiện được truy vấn' });
+    } else {
+      res.status(200).json({ message: 'Bệnh đã được xoá thành công' });
+    }
+  });
+});
+
+
+app.get('/api/danhsachbenh/:21', (req, res) => {
+  const { idBenh } = req.params;
+  const query = 'SELECT * FROM danhsachbenh WHERE idBenh = ?';
+  db.query(query, [idBenh], (err, result) => {
+    if (err) {
+      res.status(500).send(err);
+    } else {
+      if (result.length === 0) {
+        res.status(404).json({ message: 'Disease not found' });
+      } else {
+        res.status(200).json(result[0]);
+      }
+    }
+  });
+});
+
+app.put('/api/suabenh/:idBenh', (req, res) => {
+  const { idBenh } = req.params;
+  const {
+    tenbenh, idLoaibenh, hinhanh, trieuchung, nguyennhan, phongngua, noidung
+  } = req.body;
+  
+  const query = 'UPDATE danhsachbenh SET tenbenh = ?, idLoaibenh = ?, hinhanh = ?, trieuchung = ?, nguyennhan = ?, phongngua = ?, noidung = ? WHERE idBenh = ?';
+
+  db.query(query, [tenbenh, idLoaibenh, hinhanh, trieuchung, nguyennhan, phongngua, noidung, idBenh], (err) => {
+    if (err) {
+      res.status(500).send(err);
+    } else {
+      res.status(200).json({ message: 'Disease updated successfully' });
+    }
+  });
+});
 
 module.exports = app;

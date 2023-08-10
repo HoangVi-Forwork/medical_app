@@ -21,8 +21,12 @@ router.post('/api/register', (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
     const setpassword = req.body.setpassword;
-    const ten = 'vu';
+    const ten = req.body.name;
     const quyenhan = req.body.powers;
+    const sdt = req.body.phone;
+    const diachi = req.body.address;
+    const gioitinh = req.body.gioitinh;
+    const avatar = req.body.avatar
 
     // Kiểm tra xem password và setpassword giống nhau hay không
     if (password !== setpassword) {
@@ -45,8 +49,8 @@ router.post('/api/register', (req, res) => {
                         console.log(err);
                         return res.status(500).json({ message: "Đã xảy ra lỗi. Vui lòng thử lại sau." });
                     }
-                    db.query("INSERT INTO tbl_taikhoan (email, password, setpassword, quyenhan, ten) VALUES (?, ?, ?, ?, ?)",
-                        [email, passwordHash, setpasswordHash, quyenhan, ten],
+                    db.query("INSERT INTO tbl_taikhoan (email, password, setpassword, quyenhan, ten, sdt, diachi, avatar, gioitinh) VALUES (?, ?, ?, ?, ?, ?, ? ,? ,? )",
+                        [email, passwordHash, setpasswordHash, quyenhan, ten, sdt, diachi, avatar, gioitinh],
                         (err, result) => {
                            if (err) {
                                 console.log(err);

@@ -10,6 +10,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 const { TextArea } = Input;
 const { Option } = Select;
+const getBase64 = (file) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => reject(error);
+  });
 
 const Sinup = () => {
   const [email, setEmail] = useState('');
@@ -24,11 +31,63 @@ const Sinup = () => {
   const passwordInputType = showPassword ? 'text' : 'password';
   const togglePasswordVisibilit = () => { sohwShowPassword(!showPasswordset) };
   const passwordInput = showPasswordset ? 'text' : 'password';
+  const [avatar, setAvatar] = useState('');
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewImage, setPreviewImage] = useState('');
+  const [previewTitle, setPreviewTitle] = useState('');
+  const [name, setName] = useState('');
+  const [phone, setphone] = useState('');
+  const [address, setaddress] = useState('');
+  const [gioitinh, setgiotinh] = useState('');
 
   const handState = (value) => {
     setpowers(value);
   };
 
+  const handgiotinh = (value) => {
+    setgiotinh(value);
+  }
+
+  const normFile = (e) => {
+    if (Array.isArray(e)) {
+      return e;
+    }
+    return e && e.fileList;
+  };
+
+  const handleImageUpload2 = async (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', 'pbby1fhc');
+    try {
+      const response = await axios.post(
+        'https://api.cloudinary.com/v1_1/dpe65cn71/image/upload',
+        formData
+      );
+      if (response.status === 200) {
+        const avatar = response.data.secure_url;
+        setAvatar(avatar);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleCancel = () => setPreviewOpen(false);
+
+  const handleFileChange02 = (e) => {
+    const file = e.target.files[0];
+    handleImageUpload2(file);
+  };
+
+  const handlePreview = async (file) => {
+    if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj);
+    }
+    setPreviewImage(file.url || file.preview);
+    setPreviewOpen(true);
+    setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1));
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -54,6 +113,11 @@ const Sinup = () => {
         password,
         setpassword,
         powers,
+        name,
+        phone,
+        address,
+        gioitinh,
+        avatar,
       });
 
       // Xử lý phản hồi từ server
@@ -98,6 +162,21 @@ const Sinup = () => {
                         <label className='test'>Email</label>
                         <input type="email" placeholder="Email address" className="form-control input_login border-0 shadow-sm px-4" value={email} onChange={(e) => setEmail(e.target.value)} />
                       </div>
+                      {/*  */}
+                      <div className="mb-3">
+                        <label className='test'>Name</label>
+                        <input type="name" placeholder="Name address" className="form-control input_login border-0 shadow-sm px-4" value={name} onChange={(e) => setName(e.target.value)} />
+                      </div>
+                      <div className="mb-3">
+                        <label className='test'>Phone Number</label>
+                        <input type="phone" placeholder="Phone address" className="form-control input_login border-0 shadow-sm px-4" value={phone} onChange={(e) => setphone(e.target.value)} />
+                      </div>
+                      <div className="mb-3">
+                        <label className='test'>Address</label>
+                        <input type="address" placeholder="Address address" className="form-control input_login border-0 shadow-sm px-4" value={address} onChange={(e) => setaddress(e.target.value)} />
+                      </div>
+
+                      {/*  */}
                       <div className="mb-3">
                         <label className='test'>Password</label>
                         <input type={passwordInputType} name="password" className="input_login form-control  border-0 shadow-sm px-4 text-primary form-control-pass" value={password} onChange={(e) => setPassword(e.target.value)} />
@@ -108,6 +187,52 @@ const Sinup = () => {
                       <div className="mb-3">
                         <label className='test'>Confirm Password</label>
                         <input type={passwordInput} name="Enterpassword" className="input_login form-control border-0 shadow-sm px-4 text-primary form-control-pass" value={setpassword} onChange={(e) => setSetPassword(e.target.value)} placeholder="Confirm Password" />
+                      </div>
+                      <div className="form-group">
+                        <label>Avatar</label>
+                        <Form.Item
+                          valuePropName="fileList"
+                          getValueFromEvent={normFile}
+                          onChange={handleFileChange02}
+                        >
+                          <Upload
+                            name="avatar"
+                            src={avatar}
+                            listType="picture-card"
+                            className="avatar-uploader"
+                            maxCount={1}
+                            beforeUpload={handleFileChange02}
+                            onPreview={handlePreview}
+                          >
+                            <div>
+                              <PlusOutlined />
+                              <div style={{ marginTop: 8 }}>Img Blog</div>
+                            </div>
+                          </Upload>
+                          <Modal
+                            open={previewOpen}
+                            title={previewTitle}
+                            footer={null}
+                            onCancel={handleCancel}
+                          >
+                            <img alt="example" style={{ width: '100%' }} src={previewImage} />
+                          </Modal>
+                        </Form.Item>
+                      </div>
+                      <div className="mb-3">
+                        <label className='test'>Gender</label>
+                        <Form.Item >
+                          <Select
+                            onChange={handgiotinh}
+                            value={gioitinh}
+                            placeholder="Storage location"
+                            defaultValue="Study"
+                            size="large"
+                          >
+                            <Option value="1" className="custom-option">Nam</Option>
+                            <Option value="2" className="custom-option">Nữ</Option>
+                          </Select>
+                        </Form.Item>
                       </div>
                       <div className="mb-3">
                         <label className='test'>Powers</label>

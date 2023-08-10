@@ -9,6 +9,9 @@ import '../assets/css/blog.css';
 import '../assets/css/style.css';
 import Blog from '../components/blog/Blog.jsx'
 import Appblog from '../components/blog/app_blog.jsx'
+import DetailBenh from '../components/blog/detail.jsx'
+import Edit from '../components/blog/editbenh.jsx'
+
 // import '../App.css'
 // import Login from './/login/login';
 // import Blogdetail from './blog/Blog_detail.js';
@@ -100,7 +103,7 @@ function App() {
           {user &&
             <div>
               <img className="menu-item avatar bg-primary text-white w-10 h-10 mb-2" size={54} src={user.avatar} alt='' />
-              <p className='span-item'>{user.email}</p>
+              <p className='span-item'>{user.ten}</p>
             </div>}
           <Menu theme="dark" defaultSelectedKeys={['']} mode="inline" openKeys={openKeys} onOpenChange={onOpenChange}>
             <Menu.SubMenu key="sub2" icon={<AppstoreOutlined style={{ fontSize: '19px', }} />} title="Blog New" >
@@ -145,6 +148,8 @@ function App() {
               <Routes>
                   <Route path="/blog" element={<Blog />} />
                   <Route path="/app_blog" element={<Appblog />} />
+                  <Route path="/blog/:id" element={<DetailBenh />} />
+                  <Route path="/edit/:id" element={<Edit />} />
               </Routes>
             </div>
           </Content>
