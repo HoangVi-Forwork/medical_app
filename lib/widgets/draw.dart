@@ -7,6 +7,7 @@ import 'package:medical_app/views/auth/user_profile_screen.dart';
 import 'package:medical_app/widgets/colors.dart';
 import 'package:medical_app/widgets/container_config/container_customization.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../blocs/auth/auth_bloc.dart';
 import '../config/url_config.dart';
 import 'package:http/http.dart' as http;
@@ -25,6 +26,8 @@ class _BuildDrawerState extends State<BuildDrawer> {
   final Future<SharedPreferences> prefs = SharedPreferences.getInstance();
   final String userImageUrl =
       'https://i.pinimg.com/564x/ec/fd/c0/ecfdc07b30149c927956fe5bb6126e2c.jpg';
+  final Uri urlPharmacityWeb = Uri.parse(
+      'https://www.pharmacity.vn/?gclid=CjwKCAjw8symBhAqEiwAaTA__AsBqZ4eqkMply1zx1GDqY6dbZZSJStJ6gQczjsnEROZNnM72JaKfhoCd1wQAvD_BwE');
 
   String userEmail = "";
   late int? userID;
@@ -50,6 +53,12 @@ class _BuildDrawerState extends State<BuildDrawer> {
       userID = prefs.getInt('id') ?? 0;
     });
     return userID;
+  }
+
+  void _onOpenPharmacityWeb() async {
+    if (await launchUrl(urlPharmacityWeb)) {
+      await launchUrl(urlPharmacityWeb);
+    }
   }
 
   @override
@@ -155,7 +164,8 @@ class _BuildDrawerState extends State<BuildDrawer> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => RegistrationScreen(),
+                                builder: (context) =>
+                                    const RegistrationScreen(),
                               ),
                             );
                           },
@@ -163,7 +173,9 @@ class _BuildDrawerState extends State<BuildDrawer> {
                         ListTile(
                           leading: const Icon(Icons.medical_services),
                           title: const Text('Mua thuốc nhanh'),
-                          onTap: () {},
+                          onTap: () {
+                            _onOpenPharmacityWeb();
+                          },
                         ),
                         ListTile(
                           onTap: () {},

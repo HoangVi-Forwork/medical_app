@@ -7,6 +7,7 @@ class buildTextFormField extends StatefulWidget {
   final Icon iconName;
   final String inputType;
   final String validatorType;
+  bool isPasswordVisible;
   TextEditingController controller;
 
   buildTextFormField({
@@ -16,6 +17,7 @@ class buildTextFormField extends StatefulWidget {
     required this.inputType,
     required this.validatorType,
     required this.controller,
+    required this.isPasswordVisible,
   }) : super(key: key);
 
   @override
@@ -69,7 +71,8 @@ class _buildTextFormFieldState extends State<buildTextFormField> {
       margin: const EdgeInsets.only(bottom: 24),
       child: TextFormField(
         controller: widget.controller,
-        obscureText: widget.inputType == 'password' ? true : false,
+        obscureText:
+            widget.inputType == 'pass' ? !widget.isPasswordVisible : false,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         cursorColor: AppColors.primaryColor,
         decoration: InputDecoration(
@@ -84,11 +87,21 @@ class _buildTextFormFieldState extends State<buildTextFormField> {
           prefixIconConstraints:
               const BoxConstraints(minWidth: 0, minHeight: 0),
           suffixIcon: widget.inputType == 'pass'
-              ? Container(
-                  margin: const EdgeInsets.only(right: 16),
-                  child: const Icon(
-                    Icons.visibility,
-                    color: AppColors.primaryColor,
+              ? GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      widget.isPasswordVisible = !widget
+                          .isPasswordVisible; // Access and update the isPasswordVisible property
+                    });
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.only(right: 16),
+                    child: Icon(
+                      widget.isPasswordVisible
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                      color: AppColors.primaryColor,
+                    ),
                   ),
                 )
               : null,
