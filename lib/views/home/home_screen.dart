@@ -40,7 +40,6 @@ class _HomeScreenState extends State<HomeScreen> {
     ],
   );
   final ScrollController scrollController = ScrollController();
-  // listen for user actions funcs
   bool isVisibale = false;
   @override
   void initState() {
@@ -74,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Colors.white,
-      drawer: const buildDrawer(),
+      drawer: const BuildDrawer(),
       body: Container(
         margin: const EdgeInsets.only(left: 16, right: 16),
         width: double.infinity,
@@ -251,6 +250,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     backgroundColor: Colors.white,
+                    duration: const Duration(seconds: 2),
                     content: Container(
                       margin: const EdgeInsets.all(12),
                       padding: const EdgeInsets.all(24),

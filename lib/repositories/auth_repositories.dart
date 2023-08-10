@@ -1,30 +1,29 @@
 import 'package:firebase_auth/firebase_auth.dart';
-
 import '../config/url_config.dart';
 
 class AuthRepositories {
   final firebaseAuth = FirebaseAuth.instance;
 
   // Sign Up Func
-  Future<void> signUp({
-    required String email,
-    required String password,
-  }) async {
-    try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        throw Exception('The password provided is too weak.');
-      } else if (e.code == 'email-already-in-use') {
-        throw Exception('The account already exists for that email.');
-      }
-    } catch (e) {
-      throw Exception(e.toString());
-    }
-  }
+  // Future<void> signUp({
+  //   required String email,
+  //   required String password,
+  // }) async {
+  //   try {
+  //     await FirebaseAuth.instance.createUserWithEmailAndPassword(
+  //       email: email,
+  //       password: password,
+  //     );
+  //   } on FirebaseAuthException catch (e) {
+  //     if (e.code == 'weak-password') {
+  //       throw Exception('The password provided is too weak.');
+  //     } else if (e.code == 'email-already-in-use') {
+  //       throw Exception('The account already exists for that email.');
+  //     }
+  //   } catch (e) {
+  //     throw Exception(e.toString());
+  //   }
+  // }
 
   // var url = '${Configs.IP4Local}api/danhsachbenh';
 
@@ -38,11 +37,11 @@ class AuthRepositories {
   //   }
   // }
 
-  var url = '${Configs.IP4Local}api/danhsachbenh';
-  Future<void> signIn({
-    required String email,
-    required String password,
-  }) async {}
+  // var url = '${Configs.IP4Local}api/danhsachbenh';
+  // Future<void> signIn({
+  //   required String email,
+  //   required String password,
+  // }) async {}
 
   // // Sign In Func
   // Future<void> signIn({
@@ -62,11 +61,12 @@ class AuthRepositories {
   // }
 
   // Sign Out Func
-  Future<void> signOut() async {
-    try {
-      await firebaseAuth.signOut();
-    } catch (e) {
-      throw Exception(e);
-    }
-  }
+  // Future<void> signOut() async {
+  //   try {
+  //     await firebaseAuth.signOut();
+  //   } catch (e) {
+  //     throw Exception(e);
+  //   }
+  // }
+
 }

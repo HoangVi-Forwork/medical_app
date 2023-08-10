@@ -27,7 +27,7 @@ class _LandingScreenState extends State<LandingScreen> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: customAppBar(),
-      drawer: const buildDrawer(),
+      drawer: const BuildDrawer(),
       body: IndexedStack(
         index: currentIndex,
         children: const [

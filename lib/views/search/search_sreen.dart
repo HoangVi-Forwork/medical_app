@@ -2,7 +2,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medical_app/utils/container_utils.dart';
 import 'package:medical_app/widgets/colors.dart';
@@ -11,7 +10,6 @@ import '../../blocs/search/bloc/search_bloc.dart';
 import '../../blocs/search/bloc/search_event.dart';
 import '../../blocs/search/bloc/search_state.dart';
 import '../../repositories/diseases_repositories.dart';
-import '../favorited/favourited_screen.dart';
 import '../home/home_detail_disease.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -25,7 +23,6 @@ class _SearchScreenState extends State<SearchScreen> {
   late SearchBloc _searchBloc;
   late TextEditingController _searchController;
   FocusNode searchInput = FocusNode();
-  final _favouritedScreen = const FavouritedScreen();
   final _searchInputController = StreamController<String>.broadcast();
 
   @override
@@ -37,7 +34,7 @@ class _SearchScreenState extends State<SearchScreen> {
     // Thêm listener cho TextField
     _searchController.addListener(() {
       final searchText = _searchController.text;
-      if (searchText.length >= 30) {
+      if (searchText.length >= 5) {
         _searchInputController.add(searchText);
       }
     });
@@ -45,6 +42,11 @@ class _SearchScreenState extends State<SearchScreen> {
       _performSearch();
     });
   }
+
+  // void sharePressed() {
+  //   String message = 'Gửi Tin này tới đâu?';
+  //   Share.share(message);
+  // }
 
   @override
   void dispose() {
@@ -59,20 +61,6 @@ class _SearchScreenState extends State<SearchScreen> {
     _searchBloc.add(PerformSearchEvent(tenBenh));
     // FocusScope.of(context).requestFocus(searchInput);
     // SystemChannels.textInput.invokeMethod('TextInput.hide');
-  }
-
-  void _addToFavorites(String item) {
-    // Call this method when you want to add an item to the favorites list.
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const FavouritedScreen(),
-      ),
-    ).then((value) {
-      if (value != null && value is String) {
-        _favouritedScreen.addItemToFavorites(value);
-      }
-    });
   }
 
   @override
@@ -145,12 +133,13 @@ class _SearchScreenState extends State<SearchScreen> {
                                 maxLines: 3,
                                 overflow: TextOverflow.clip,
                               ),
-                              // trailing: IconButton(
-                              //   onPressed: () {
-                              //     _addToFavorites(disease.idBenh.toString());
-                              //   },
-                              //   icon: const Icon(Icons.bookmarks_outlined),
-                              // ),
+                              trailing: IconButton(
+                                onPressed: () {
+                                  // _addToFavorites(disease.idBenh.toString());
+                                  //sharePressed();
+                                },
+                                icon: const Icon(Icons.bookmarks_outlined),
+                              ),
                             ),
                           );
                         },
